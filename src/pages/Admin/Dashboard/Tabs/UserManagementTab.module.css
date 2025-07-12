@@ -1,0 +1,162 @@
+/* src/pages/Admin/Dashboard/Tabs/UserManagementTab.module.css */
+
+.tabContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 25px;
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-light);
+}
+
+.filtersContainer {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    background-color: var(--naks-white-surface);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--naks-border-light);
+    flex-wrap: wrap;
+}
+:global(body.dark-mode) .filtersContainer {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+.filtersContainer .form-group {
+    margin-bottom: 0;
+}
+.filtersContainer .input-field {
+    min-width: 150px;
+}
+
+.tableContainer {
+    overflow-x: auto;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
+    background-color: var(--naks-white-surface);
+}
+:global(body.dark-mode) .tableContainer {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.tableContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.tableContainer th, .tableContainer td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--naks-border-light);
+    font-size: 0.95rem;
+    color: var(--naks-text-primary);
+}
+.tableContainer th {
+    background-color: var(--naks-gray-100);
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+}
+:global(body.dark-mode) .tableContainer th {
+    background-color: var(--naks-gray-200);
+}
+
+.tableContainer tr:last-child td {
+    border-bottom: none;
+}
+.tableContainer tbody tr:hover {
+    background-color: var(--naks-primary-light);
+}
+
+.statusBadge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--naks-white-surface);
+}
+.statusBadge.pending {
+    background-color: var(--naks-warning);
+}
+.statusBadge.active {
+    background-color: var(--naks-success);
+}
+.statusBadge.suspended {
+    background-color: var(--naks-info);
+}
+.statusBadge.banned {
+    background-color: var(--naks-error);
+}
+
+.actionButtons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.actionButtons .btn-small {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tabContainer {
+        gap: 20px;
+    }
+    .sectionTitle {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+    .filtersContainer {
+        padding: 15px;
+        gap: 10px;
+    }
+    .filtersContainer .input-field {
+        min-width: unset;
+        width: 100%;
+    }
+    .tableContainer {
+        border-radius: 10px;
+    }
+    .tableContainer th, .tableContainer td {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    .actionButtons .btn-small {
+        font-size: 0.75rem;
+        padding: 5px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionTitle {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+    .filtersContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .tableContainer table {
+        min-width: 500px;
+    }
+    .tableContainer th, .tableContainer td {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+    .actionButtons .btn-small {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+    }
+}

@@ -1,0 +1,751 @@
+/* src/pages/Events/EventDetailPage.module.css */
+
+/* --- Event Hero Section (Dynamic for Portrait/Landscape) --- */
+.eventHeroSection {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Default height for landscape */
+    overflow: hidden;
+    background-color: var(--naks-gray-300);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+}
+
+.eventHeroImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.eventHeroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 40px;
+}
+
+.eventHeroContent {
+    color: var(--naks-white-surface);
+    text-align: center;
+    max-width: 800px;
+    padding: 0 20px;
+    z-index: 3;
+}
+
+.eventHeroTitle {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.1;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.eventHeroMeta {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.heroActionBtn {
+    margin-top: 25px;
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.heroActionBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Portrait Hero Layout --- */
+.eventHeroSection.portraitLayout {
+    height: auto; /* Auto height for portrait layout */
+    min-height: 500px; /* Minimum height */
+    display: flex;
+    flex-direction: row; /* Image and content side-by-side */
+    align-items: stretch; /* Stretch to fill height */
+    padding: 0;
+    background-color: var(--naks-dark-bg); /* Dark background for portrait hero */
+}
+
+.eventHeroSection.portraitLayout .eventHeroImage {
+    position: static; /* Remove absolute positioning */
+    width: 60%; /* Occupy 60% of width */
+    height: auto; /* Auto height */
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.eventHeroSection.portraitLayout .eventHeroOverlay {
+    position: static; /* Remove absolute positioning */
+    width: 40%; /* Occupy 40% of width */
+    height: auto;
+    background: var(--naks-dark-bg); /* Solid dark background for content area */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start; /* Align content to left */
+    justify-content: center; /* Center vertically */
+    padding: 30px; /* Generous padding */
+    color: var(--naks-white-surface);
+    text-align: left; /* Align text to left */
+    text-shadow: none; /* Remove text shadow */
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.3); /* Subtle inner shadow */
+}
+:global(body.dark-mode) .eventHeroSection.portraitLayout .eventHeroOverlay {
+    background-color: var(--naks-black-logo); /* Even darker in dark mode */
+}
+
+
+.eventHeroSection.portraitLayout .eventHeroContent {
+    max-width: 100%; /* Use full width of its container */
+    padding: 0;
+    text-align: left; /* Align text to left */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px; /* Smaller gap between meta items */
+}
+
+.eventHeroSection.portraitLayout .eventHeroTitle {
+    font-size: 2.5rem; /* Smaller for this layout */
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary)); /* Gradient remains */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.eventHeroSection.portraitLayout .eventHeroMeta {
+    font-size: 0.95rem; /* Smaller font */
+    margin-bottom: 5px;
+    justify-content: flex-start; /* Align to left */
+    text-shadow: none;
+    color: var(--naks-text-light); /* Lighter text */
+}
+.eventHeroSection.portraitLayout .eventHeroMeta svg {
+    font-size: 1rem;
+    color: var(--naks-text-light);
+}
+
+.eventHeroSection.portraitLayout .heroActionBtn {
+    margin-top: 20px; /* Smaller margin */
+    padding: 12px 25px; /* Smaller padding */
+    font-size: 1rem; /* Smaller font */
+}
+
+.naksYetuBranding {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--naks-white-surface);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.naksYetuBranding img {
+    height: 30px;
+    width: 30px;
+    border-radius: var(--border-radius-full);
+}
+
+/* Countdown for Portrait Layout */
+.eventHeroSection.portraitLayout .countdownContainer {
+    position: static; /* Remove absolute positioning */
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: var(--naks-white-surface);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.eventHeroSection.portraitLayout .countdownItem {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.eventHeroSection.portraitLayout .countdownEnded {
+    color: var(--sys-error);
+    font-size: 1rem;
+}
+
+
+/* --- Main Layout (Content Area) --- */
+.mainWrapper {
+    display: flex;
+    min-height: calc(100vh - 60px - 500px);
+    padding: 30px;
+    gap: 30px;
+    box-sizing: border-box;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- Event Main Info Column (Left Column) --- */
+.eventMainInfoColumn {
+    flex-grow: 1;
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sectionContent {
+    background-color: var(--naks-white-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-light);
+    color: var(--naks-text-primary);
+}
+
+.gradientText {
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.textContent p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    color: var(--naks-text-secondary);
+}
+.textContent p:last-child {
+    margin-bottom: 0;
+}
+.textContent a {
+    color: var(--naks-secondary);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* --- Gallery Section --- */
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.galleryItem {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+.galleryItem:hover {
+    transform: scale(1.03);
+    box-shadow: var(--shadow-md);
+}
+
+/* --- Organizer Info Section --- */
+.organizerInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.organizerLogo {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--border-radius-full);
+    object-fit: cover;
+    border: 3px solid var(--naks-primary);
+    box-shadow: 0 0 0 3px var(--naks-primary-light);
+    flex-shrink: 0;
+}
+
+.organizerDetails {
+    flex-grow: 1;
+}
+
+.organizerName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 8px;
+}
+
+.organizerBio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--naks-text-secondary);
+    margin-bottom: 15px;
+}
+
+.organizerSocialLinks {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+.organizerSocialLink {
+    color: var(--naks-text-secondary);
+    font-size: 1.5rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.organizerSocialLink:hover {
+    color: var(--naks-primary);
+    transform: translateY(-2px);
+}
+
+/* --- Coupon Availability Message --- */
+.couponMessage {
+    background-color: var(--naks-info-light); /* Light blue background */
+    color: var(--naks-info); /* Blue text */
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    border: 1px solid var(--naks-info);
+}
+.couponMessage svg {
+    font-size: 1.5rem;
+}
+
+/* --- Sponsors Section --- */
+.sponsorsSection {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--naks-border-light);
+}
+
+.sponsorsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.sponsorLogoContainer {
+    position: relative;
+    width: 100px; /* Fixed size for logos */
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--naks-gray-100); /* Light background for logos */
+}
+.sponsorLogoContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.sponsorLogo {
+    max-width: 80%; /* Ensure logo fits within container */
+    max-height: 80%;
+    object-fit: contain;
+}
+
+.sponsorNameTooltip {
+    position: absolute;
+    bottom: 0; /* Position at the bottom of the container */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+    color: var(--naks-white-surface);
+    font-size: 0.8rem;
+    padding: 5px;
+    text-align: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s ease;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+.sponsorLogoContainer:hover .sponsorNameTooltip {
+    opacity: 1; /* Show on hover */
+}
+
+
+/* --- Event Sidebar Actions (Right Column) --- */
+.eventSidebarActions {
+    flex-basis: 30%;
+    flex-shrink: 0;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 80px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 5;
+    background-color: var(--naks-surface);
+}
+
+/* Ticket Type List */
+.ticketTypeList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.ticketTypeItem {
+    background-color: var(--naks-gray-100);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--naks-border-medium);
+    box-shadow: var(--shadow-sm);
+}
+:global(body.dark-mode) .ticketTypeItem {
+    background-color: var(--naks-gray-200);
+}
+
+.ticketTypeItem.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.ticketInfo {
+    flex-grow: 1;
+}
+
+.ticketName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin-bottom: 5px;
+}
+
+.ticketPrice {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+    margin-bottom: 5px;
+}
+
+.ticketSalesInfo {
+    font-size: 0.85rem;
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.ticketSalesInfo svg {
+    color: var(--naks-gray-400);
+}
+.ticketSalesInfo.status-active {
+    color: var(--naks-success);
+}
+.ticketSalesInfo.status-upcoming {
+    color: var(--naks-info);
+}
+.ticketSalesInfo.status-ended {
+    color: var(--naks-error);
+}
+
+
+.ticketAvailability {
+    font-size: 0.85rem;
+    color: var(--naks-text-secondary);
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.ticketQuantityControl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.quantityBtn {
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    border: none;
+    border-radius: var(--border-radius-full);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.quantityBtn:hover {
+    background-color: var(--naks-gray-300);
+    transform: scale(1.05);
+}
+.quantityBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+:global(body.dark-mode) .quantityBtn {
+    background-color: var(--naks-gray-300);
+}
+:global(body.dark-mode) .quantityBtn:hover {
+    background-color: var(--naks-gray-400);
+}
+
+
+.ticketQty {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    min-width: 20px;
+    text-align: center;
+}
+
+.totalSummary {
+    border-top: 1px solid var(--naks-border-light);
+    padding-top: 20px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.totalSummary p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--naks-text-primary);
+}
+.totalSummary span {
+    font-weight: 700;
+    color: var(--naks-primary);
+}
+
+.checkoutBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 1.1rem;
+    border-radius: 15px;
+}
+
+.shareContactSection {
+    border-top: 1px solid var(--naks-border-light);
+    padding-top: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.shareHeading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+}
+
+.socialShareIcons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.socialIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+.socialIcon:hover {
+    background-color: var(--naks-secondary);
+    color: var(--naks-white-surface);
+    transform: translateY(-3px);
+}
+:global(body.dark-mode) .socialIcon {
+    background-color: var(--naks-gray-300);
+    color: var(--naks-text-primary);
+}
+:global(body.dark-mode) .socialIcon:hover {
+    background-color: var(--naks-secondary);
+}
+
+.contactOrganizerBtn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 1024px) {
+    .eventHeroSection {
+        height: 350px;
+        padding-bottom: 20px;
+    }
+    .eventHeroTitle {
+        font-size: 2.5rem;
+    }
+    .eventHeroMeta {
+        font-size: 1rem;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .heroActionBtn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    .mainWrapper {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .sectionContent {
+        padding: 20px;
+    }
+    .sectionTitle {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+    .textContent p {
+        font-size: 0.9rem;
+    }
+
+    .galleryGrid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    .galleryItem {
+        height: 100px;
+    }
+
+    .organizerInfo {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+    .organizerName {
+        font-size: 1.3rem;
+    }
+    .organizerBio {
+        font-size: 0.85rem;
+    }
+
+    .eventSidebarActions {
+        position: relative;
+        top: auto;
+        align-self: auto;
+        padding: 20px;
+    }
+
+    .sidebarHeading {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .ticketTypeItem {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .ticketQuantityControl {
+        width: 100%;
+        justify-content: center;
+    }
+    .totalSummary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .totalSummary p {
+        width: 100%;
+        text-align: left;
+    }
+    .checkoutBtn, .contactOrganizerBtn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    .socialShareIcons {
+        justify-content: center;
+    }
+
+    /* Portrait Layout on Mobile (adjusts to stack) */
+    .eventHeroSection.portraitLayout {
+        flex-direction: column; /* Stack image and content */
+        height: auto; /* Auto height */
+        min-height: 400px; /* Min height for mobile portrait */
+    }
+    .eventHeroSection.portraitLayout .eventHeroImage {
+        width: 100%; /* Full width */
+        height: 250px; /* Fixed height for mobile image */
+    }
+    .eventHeroSection.portraitLayout .eventHeroOverlay {
+        width: 100%; /* Full width */
+        padding: 20px; /* Adjust padding */
+        align-items: center; /* Center content */
+        text-align: center;
+    }
+    .eventHeroSection.portraitLayout .eventHeroContent {
+        align-items: center; /* Center content */
+        text-align: center;
+    }
+    .eventHeroSection.portraitLayout .countdownContainer {
+        text-align: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .eventHeroTitle {
+        font-size: 2rem;
+    }
+    .eventHeroMeta {
+        font-size: 0.9rem;
+    }
+    .galleryGrid {
+        grid-template-columns: 1fr;
+    }
+}

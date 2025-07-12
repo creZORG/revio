@@ -1,0 +1,135 @@
+/* src/components/Common/GlobalLoadingScreen.module.css */
+
+.loadingScreenOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--naks-bg-light); /* Match body background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of everything */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Dark mode for overlay */
+:global(body.dark-mode) .loadingScreenOverlay {
+    background-color: var(--naks-bg-light); /* Dark background */
+}
+
+/* Hide when not needed (controlled by parent component) */
+.loadingScreenOverlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Allow clicks through when hidden */
+}
+
+.loadingContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    padding: 30px;
+    background-color: var(--naks-surface);
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--naks-border-light);
+}
+:global(body.dark-mode) .loadingContent {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.loadingLogo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: contain;
+    margin-bottom: 10px;
+    animation: pulse-logo 2s infinite alternate; /* Subtle animation for logo */
+}
+
+.loadingText {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--naks-text-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.naksYetuGradient {
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.spinner {
+    font-size: 2rem;
+    color: var(--naks-primary);
+    animation: spin 1s linear infinite; /* Standard spin animation */
+}
+
+.loadingSubtitle {
+    font-size: 1.1rem;
+    color: var(--naks-text-secondary);
+    margin-top: 10px;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-logo {
+    0% { transform: scale(1); box-shadow: 0 0 0px rgba(var(--naks-primary-rgb), 0.5); }
+    50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(var(--naks-primary-rgb), 0.7); }
+    100% { transform: scale(1); box-shadow: 0 0 0px rgba(var(--naks-primary-rgb), 0.5); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .loadingContent {
+        padding: 20px;
+        gap: 15px;
+    }
+    .loadingLogo {
+        width: 80px;
+        height: 80px;
+    }
+    .loadingText {
+        font-size: 2rem;
+    }
+    .spinner {
+        font-size: 1.8rem;
+    }
+    .loadingSubtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loadingContent {
+        padding: 15px;
+        gap: 10px;
+    }
+    .loadingLogo {
+        width: 60px;
+        height: 60px;
+    }
+    .loadingText {
+        font-size: 1.5rem;
+    }
+    .spinner {
+        font-size: 1.5rem;
+    }
+    .loadingSubtitle {
+        font-size: 0.9rem;
+    }
+}

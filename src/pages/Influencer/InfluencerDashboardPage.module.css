@@ -1,0 +1,395 @@
+/* src/pages/Influencer/InfluencerDashboardPage.module.css */
+
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    gap: 25px; /* FIX: Slightly reduced gap */
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: var(--naks-white-surface);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg); /* Changed to lg for consistency with other cards/sections */
+    min-height: calc(100vh - 120px);
+    border: 1px solid var(--naks-border-light);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+:global(body.dark-mode) .dashboardContainer {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+    box-shadow: var(--glass-shadow-dark);
+}
+
+
+.dashboardTitle {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+}
+
+.profileSummaryCard {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-light);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+:global(body.dark-mode) .profileSummaryCard {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+
+.profileHeading {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.profileDetail {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+.profileDetail strong {
+    color: var(--naks-primary);
+    font-weight: 600;
+}
+
+
+.sectionHeading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-top: 40px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--naks-border-medium);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.sectionHeading svg {
+    font-size: 1.8rem;
+    color: var(--naks-secondary);
+}
+
+.couponListGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.couponCard {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-light);
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.couponCard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+:global(body.dark-mode) .couponCard {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+
+.couponHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.couponCode {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.couponStatus {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--naks-white-surface);
+}
+.couponStatus.active {
+    background-color: var(--naks-success);
+}
+.couponStatus.inactive {
+    background-color: var(--naks-gray-400);
+}
+
+.couponDetail {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+.couponDetail svg {
+    color: var(--naks-gray-400);
+    font-size: 1.2rem;
+}
+
+.couponActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--naks-border-light);
+}
+
+/* --- Username Setup Modal Specific Styles --- */
+.usernameSetupModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* FIX: Reduced gap for compactness */
+    padding: 25px; /* FIX: Slightly less padding */
+    text-align: center;
+}
+
+.modalHeading {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 10px; /* FIX: Reduced margin */
+    line-height: 1.2;
+}
+.modalHeading .naksYetuGradient {
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+
+.modalDescription {
+    font-size: 1rem; /* FIX: Slightly smaller description font */
+    color: var(--naks-text-secondary);
+    margin-bottom: 10px; /* FIX: Reduced margin */
+    line-height: 1.5; /* FIX: Adjusted line height */
+}
+.modalDescriptionSmall {
+    font-size: 0.85rem;
+    color: var(--naks-text-light);
+    margin-bottom: 15px; /* FIX: Reduced margin */
+}
+
+.modalActions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* FIX: Reduced margin */
+    gap: 10px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 30px; /* FIX: Reduced padding */
+    background-color: var(--naks-gray-100);
+    border-radius: 12px;
+    border: 2px dashed var(--naks-border-medium);
+    color: var(--naks-text-secondary);
+}
+.emptyIcon {
+    font-size: 3rem;
+    color: var(--naks-gray-400);
+    margin-bottom: 15px;
+}
+.emptyState p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+.emptyState p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboardContainer {
+        padding: 20px;
+        gap: 15px;
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+    .dashboardTitle {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    .profileSummaryCard {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    .profileHeading {
+        font-size: 1.6rem;
+    }
+    .profileDetail {
+        font-size: 0.85rem;
+    }
+    .sectionHeading {
+        font-size: 1.6rem;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    .sectionHeading svg {
+        font-size: 1.4rem;
+    }
+    .couponListGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .couponCard {
+        padding: 15px;
+        border-radius: 10px;
+        gap: 8px;
+    }
+    .couponCode {
+        font-size: 1.2rem;
+    }
+    .couponStatus {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    .couponDetail {
+        font-size: 0.85rem;
+        gap: 6px;
+    }
+    .couponDetail svg {
+        font-size: 0.9rem;
+    }
+    .couponActions {
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+    .usernameSetupModalContent {
+        padding: 20px;
+        gap: 15px;
+    }
+    .modalHeading {
+        font-size: 1.8rem;
+    }
+    .modalDescription {
+        font-size: 1rem;
+    }
+    .modalDescriptionSmall {
+        font-size: 0.85rem;
+    }
+    .modalActions {
+        margin-top: 15px;
+        gap: 10px;
+    }
+    .emptyState {
+        padding: 25px;
+    }
+    .emptyIcon {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+    }
+    .emptyState p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboardContainer {
+        padding: 10px;
+        gap: 10px;
+        margin: 5px auto;
+        border-radius: 8px;
+    }
+    .dashboardTitle {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    .profileSummaryCard {
+        padding: 10px;
+    }
+    .profileHeading {
+        font-size: 1.4rem;
+    }
+    .profileDetail {
+        font-size: 0.75rem;
+    }
+    .sectionHeading {
+        font-size: 1.4rem;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .sectionHeading svg {
+        font-size: 1.2rem;
+    }
+    .couponListGrid {
+        gap: 10px;
+    }
+    .couponCard {
+        padding: 10px;
+        gap: 6px;
+    }
+    .couponCode {
+        font-size: 1.1rem;
+    }
+    .couponStatus {
+        font-size: 0.65rem;
+    }
+    .couponDetail {
+        font-size: 0.75rem;
+        gap: 5px;
+    }
+    .couponDetail svg {
+        font-size: 0.85rem;
+    }
+    .couponActions {
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+    .usernameSetupModalContent {
+        padding: 15px;
+        gap: 10px;
+    }
+    .modalHeading {
+        font-size: 1.5rem;
+    }
+    .modalDescription {
+        font-size: 0.9rem;
+    }
+    .modalDescriptionSmall {
+        font-size: 0.8rem;
+    }
+    .modalActions {
+        margin-top: 10px;
+        gap: 8px;
+    }
+    .emptyState {
+        padding: 15px;
+    }
+    .emptyIcon {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+    .emptyState p {
+        font-size: 0.85rem;
+    }
+}

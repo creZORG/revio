@@ -1,0 +1,599 @@
+/* src/pages/NightlifePage.module.css */
+
+/* --- Nightlife Page Container --- */
+.nightlifePageContainer {
+    background-color: var(--naks-dark-bg);
+    color: var(--naks-white-surface);
+    padding: 20px 15px;
+    min-height: calc(100vh - 60px - 45px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* --- Nightlife Hero Section --- */
+.nightlifeHeroSection {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background-color: var(--naks-dark-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 15px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Subtle Disco Lights Effect */
+.discoLights {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.lightBeam {
+    position: absolute;
+    width: 8px;
+    height: 100%;
+    opacity: 0.1;
+    animation: light-sweep 15s linear infinite;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5), transparent);
+}
+
+/* Individual beam positions and colors */
+.beam1 { left: 10%; background: linear-gradient(to bottom, transparent, var(--naks-primary), transparent); animation-delay: 0s; }
+.beam2 { left: 30%; background: linear-gradient(to bottom, transparent, var(--naks-secondary), transparent); animation-delay: 3s; }
+.beam3 { left: 60%; background: linear-gradient(to bottom, transparent, var(--sys-info), transparent); animation-delay: 6s; }
+.beam4 { left: 85%; background: linear-gradient(to bottom, transparent, var(--sys-warning), transparent); animation-delay: 9s; }
+
+@keyframes light-sweep {
+    0% { transform: translateX(0) rotate(0deg); opacity: 0.05; }
+    25% { transform: translateX(50vw) rotate(15deg); opacity: 0.15; }
+    50% { transform: translateX(100vw) rotate(0deg); opacity: 0.05; }
+    50.1% { transform: translateX(-100vw) rotate(-15deg); opacity: 0.05; }
+    75% { transform: translateX(-50vw) rotate(0deg); opacity: 0.15; }
+    100% { transform: translateX(0) rotate(0deg); opacity: 0.05; }
+}
+
+
+.nightlifeHeroContent {
+    position: relative;
+    z-index: 2;
+    color: var(--naks-white-surface);
+    padding: 20px;
+    border-radius: 10px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-sm);
+}
+
+.nightlifeHeroTitle {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+}
+
+.nightlifeHeroDescription {
+    font-size: 0.9rem;
+    max-width: 500px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    color: var(--naks-text-light);
+}
+
+.nightlifeSearch {
+    width: 90%;
+    max-width: 350px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--naks-border-medium);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--naks-text-primary);
+    font-size: 0.85rem;
+    outline: none;
+}
+.nightlifeSearch::placeholder {
+    color: var(--naks-text-placeholder);
+}
+.nightlifeSearch:focus {
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.2);
+    outline: none;
+}
+
+.nightlifeExploreBtn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.nightlifeExploreBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* --- Main Content (Right side of main-wrapper) --- */
+.mainWrapper {
+    display: flex;
+    min-height: calc(100vh - 60px - 350px);
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Sidebar (Filters) --- */
+.sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    padding: 15px;
+    background-color: var(--naks-dark-bg);
+    box-shadow: var(--shadow-md);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebarHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+}
+
+.sidebarHeader h2 {
+    font-size: 1.1rem;
+    color: var(--naks-white-surface);
+}
+
+.sidebar.collapsed .sidebarHeader h2 {
+    font-size: 0;
+}
+
+.sidebarToggleBtn {
+    background: none;
+    border: none;
+    color: var(--naks-white-surface);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebarToggleBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--naks-white-surface);
+}
+
+.sidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filterGroup {
+    margin-bottom: 0;
+}
+
+.filterHeading {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--naks-text-light);
+    margin-bottom: 8px;
+}
+
+.sidebar.collapsed .filterHeading {
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+
+.filterList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filterLink {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--naks-text-light);
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.filterLink i {
+    font-size: 0.9rem;
+    color: var(--naks-text-light);
+}
+
+.filterLink:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--naks-white-surface);
+}
+.filterLink:hover i {
+    color: var(--naks-white-surface);
+}
+
+.filterLink.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+}
+.filterLink.active i {
+    color: var(--naks-white-surface);
+}
+
+/* Collapsed state for filter links */
+.sidebar.collapsed .filterList {
+    align-items: center;
+}
+.sidebar.collapsed .filterLink {
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 0;
+}
+.sidebar.collapsed .filterLink .filterText {
+    display: none;
+}
+.sidebar.collapsed .filterLink .filterAbbr {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--naks-white-surface);
+    text-align: center;
+    width: 100%;
+}
+.sidebar.collapsed .filterLink i {
+    font-size: 1rem;
+    position: static;
+    transform: none;
+}
+
+
+/* --- Top Filters Section (Search & Age Filters) --- */
+/* This section is REMOVED from NightlifePage.jsx, but its styles are here for reference if used elsewhere */
+.topFiltersSection {
+    background-color: var(--naks-surface);
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.searchInput, .locationSelect {
+    padding: 8px 12px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    background-color: var(--naks-surface);
+    color: var(--naks-text-primary);
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    flex: 1;
+    min-width: 120px;
+}
+
+.searchInput::placeholder {
+    color: var(--naks-text-placeholder);
+}
+
+.searchInput:focus, .locationSelect:focus {
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.2);
+    outline: none;
+}
+
+.searchButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    background: none;
+    border: none;
+    color: var(--naks-text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.searchButton:hover {
+    color: var(--naks-primary);
+    background-color: var(--naks-gray-100);
+}
+
+
+.locationSelect {
+    padding: 8px 12px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    background-color: var(--naks-surface);
+    color: var(--naks-text-primary);
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    flex: 0 0 auto;
+    min-width: 150px;
+}
+
+.locationSelect:focus {
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.2);
+    outline: none;
+}
+
+.ageFiltersGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-grow: 2;
+    justify-content: flex-end;
+}
+
+.ageFilterPill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--naks-text-secondary);
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.ageFilterPill i {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+}
+
+.ageFilterPill:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--naks-white-surface);
+}
+.ageFilterPill:hover i {
+    color: var(--naks-white-surface);
+}
+
+
+.ageFilterPill.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+}
+.ageFilterPill.active i {
+    color: var(--naks-white-surface);
+}
+
+/* NEW: Entry Type Toggle Group */
+.entryTypeToggleGroup {
+    display: flex;
+    border: 1px solid var(--naks-border-medium); /* Border around the group */
+    border-radius: 10px; /* Rounded corners for the group */
+    overflow: hidden; /* Ensures buttons fit within rounded border */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.entryTypeToggleButton {
+    flex-grow: 1; /* Distribute space evenly */
+    padding: 8px 12px;
+    border: none;
+    background-color: var(--naks-surface); /* Default background */
+    color: var(--naks-text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.entryTypeToggleButton:not(:last-child) {
+    border-right: 1px solid var(--naks-border-medium); /* Separator between buttons */
+}
+
+.entryTypeToggleButton:hover {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+}
+
+.entryTypeToggleButton.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    font-weight: 600;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2); /* Subtle inner shadow */
+}
+.entryTypeToggleButton.active svg {
+    color: var(--naks-white-surface); /* White icon when active */
+}
+.entryTypeToggleButton svg {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary); /* Default icon color */
+}
+
+
+/* --- Responsive Design for Nightlife Page --- */
+@media (max-width: 1023px) {
+    /* Navbar styles are in Navbar.module.css */
+}
+
+@media (max-width: 767px) { /* Mobile specific styles */
+    .nightlifePageContainer {
+        padding: 15px;
+        gap: 15px;
+    }
+    .nightlifeHeroSection {
+        height: 300px;
+        padding: 0 10px;
+    }
+    .nightlifeHeroContent {
+        padding: 15px;
+    }
+    .nightlifeHeroTitle {
+        font-size: 2rem;
+    }
+    .nightlifeHeroDescription {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    .nightlifeSearch {
+        width: 100%;
+        max-width: none;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    .nightlifeExploreBtn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+
+    .mainWrapper {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 15px;
+        border-bottom: 1px solid var(--naks-border-light);
+        border-right: none;
+        box-shadow: var(--shadow-sm);
+        border-radius: 10px;
+    }
+
+    .sidebar.collapsed {
+        height: 50px;
+        overflow: hidden;
+    }
+    .sidebar.collapsed .sidebarNav {
+        display: none;
+    }
+
+    .sidebarHeader {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .sidebarHeader h2 {
+        font-size: 1.1rem;
+    }
+    .sidebarToggleBtn {
+        font-size: 1.1rem;
+    }
+    .sidebarToggleBtn i.fa-chevron-up::before {
+        content: "\f077";
+    }
+    .sidebar.collapsed .sidebarToggleBtn i.fa-chevron-up::before {
+        content: "\f078";
+    }
+
+    .mainContent {
+        padding: 0;
+        gap: 15px;
+    }
+
+    .topFiltersSection { /* This section is removed from JSX, but styles are here for reference */
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 10px;
+    }
+    .searchInput, .locationSelect {
+        width: 100%;
+        min-width: unset;
+    }
+    .ageFiltersGroup {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    /* Entry Type Toggle Group on Mobile */
+    .entryTypeToggleGroup {
+        width: 100%;
+        flex-wrap: nowrap; /* Prevent wrapping on mobile */
+        justify-content: stretch; /* Stretch buttons */
+    }
+    .entryTypeToggleButton {
+        flex-grow: 1;
+        font-size: 0.8rem;
+        padding: 8px 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nightlifeHeroSection {
+        height: 250px;
+    }
+    .nightlifeHeroTitle {
+        font-size: 2rem;
+    }
+    .nightlifeHeroDescription {
+        font-size: 0.85rem;
+    }
+    .nightlifeSearch {
+        max-width: 100%;
+    }
+    .nightlifeExploreBtn {
+        width: 100%;
+    }
+}

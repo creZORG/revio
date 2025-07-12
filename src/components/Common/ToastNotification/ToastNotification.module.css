@@ -1,0 +1,201 @@
+/* src/components/Common/ToastNotification/ToastNotification.module.css */
+
+.toast {
+    position: relative;
+    background-color: var(--naks-surface); /* Base background from root */
+    color: var(--naks-text-primary); /* Base text color from root */
+    padding: 20px 30px; /* More generous padding */
+    border-radius: 15px; /* More rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Stronger, diffused shadow */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(30px) scale(0.95); /* Start slightly lower and smaller */
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s ease-out; /* Smoother animation */
+    min-width: 320px; /* Wider min-width */
+    max-width: 450px; /* Wider max-width */
+    display: flex;
+    align-items: flex-start; /* Align icon/content to top */
+    gap: 20px; /* More space between icon and content */
+    font-weight: 500;
+    border: 1px solid var(--naks-border-light); /* Subtle border */
+    pointer-events: all; /* Make clickable when visible */
+    box-sizing: border-box;
+    overflow: hidden; /* Ensure content stays within border-radius */
+    animation: pulse-glow 2s infinite alternate; /* Subtle glow animation for attention */
+}
+
+/* Pause animation on hover */
+.toast:hover {
+    animation-play-state: paused;
+    transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge on hover */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); /* More pronounced shadow on hover */
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1); /* Slide up and scale to normal */
+}
+
+.toastIcon {
+    font-size: 2.5rem; /* Much larger icon */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-top: 0; /* Align perfectly with heading */
+    line-height: 1; /* Ensure icon doesn't affect line height */
+}
+
+.toastContent {
+    flex-grow: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between heading and message */
+}
+
+.toastHeading {
+    font-size: 1.25rem; /* Larger heading */
+    font-weight: 700;
+    margin: 0;
+    color: var(--naks-text-primary);
+    line-height: 1.2;
+}
+
+.toastMessage {
+    font-size: 1rem; /* Clear message font size */
+    margin: 0;
+    color: var(--naks-text-secondary);
+    line-height: 1.5;
+}
+
+.toastDismissBtn {
+    background: none;
+    border: none;
+    color: var(--naks-text-secondary);
+    font-size: 1.2rem; /* Larger dismiss icon */
+    cursor: pointer;
+    position: absolute;
+    top: 15px; /* Position from top */
+    right: 15px; /* Position from right */
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.toastDismissBtn:hover {
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    transform: rotate(90deg); /* Subtle rotate on hover */
+}
+
+/* Toast types (colors and border accents) */
+.toast.success {
+    background-color: var(--naks-success);
+    color: var(--naks-white-surface);
+    border-color: var(--naks-success);
+    border-left: 8px solid var(--naks-success); /* Prominent left border */
+}
+.toast.success .toastIcon, .toast.success .toastHeading, .toast.success .toastMessage, .toast.success .toastDismissBtn {
+    color: var(--naks-white-surface); /* Ensure text/icons are white on colored background */
+}
+
+.toast.error {
+    background-color: var(--naks-error);
+    color: var(--naks-white-surface);
+    border-color: var(--naks-error);
+    border-left: 8px solid var(--naks-error);
+}
+.toast.error .toastIcon, .toast.error .toastHeading, .toast.error .toastMessage, .toast.error .toastDismissBtn {
+    color: var(--naks-white-surface);
+}
+
+.toast.info {
+    background-color: var(--naks-info);
+    color: var(--naks-white-surface);
+    border-color: var(--naks-info);
+    border-left: 8px solid var(--naks-info);
+}
+.toast.info .toastIcon, .toast.info .toastHeading, .toast.info .toastMessage, .toast.info .toastDismissBtn {
+    color: var(--naks-white-surface);
+}
+
+.toast.warning {
+    background-color: var(--naks-warning);
+    color: var(--naks-white-surface);
+    border-color: var(--naks-warning);
+    border-left: 8px solid var(--naks-warning);
+}
+.toast.warning .toastIcon, .toast.warning .toastHeading, .toast.warning .toastMessage, .toast.warning .toastDismissBtn {
+    color: var(--naks-white-surface);
+}
+
+/* Dark mode overrides for toast */
+:global(body.dark-mode) .toast {
+    background-color: var(--naks-surface); /* Use surface color for dark mode */
+    border-color: var(--naks-border-medium);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow in dark mode */
+}
+:global(body.dark-mode) .toast .toastHeading, :global(body.dark-mode) .toast .toastMessage {
+    color: var(--naks-text-primary);
+}
+:global(body.dark-mode) .toast .toastDismissBtn {
+    color: var(--naks-text-secondary);
+}
+:global(body.dark-mode) .toast .toastDismissBtn:hover {
+    background-color: var(--naks-gray-400);
+}
+
+/* Animation for subtle glow */
+@keyframes pulse-glow {
+    0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); }
+    50% { box-shadow: 0 10px 35px rgba(var(--naks-primary-rgb), 0.3), 0 0 15px rgba(var(--naks-secondary-rgb), 0.2); }
+    100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .toast {
+        min-width: unset;
+        width: calc(100% - 40px); /* Full width minus page padding */
+        padding: 15px 20px;
+        font-size: 0.9rem;
+        gap: 15px;
+        border-radius: 10px;
+    }
+    .toastIcon {
+        font-size: 2rem;
+    }
+    .toastHeading {
+        font-size: 1.1rem;
+    }
+    .toastMessage {
+        font-size: 0.85rem;
+    }
+    .toastDismissBtn {
+        font-size: 1rem;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .toast {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+        gap: 10px;
+        border-radius: 8px;
+    }
+    .toastIcon {
+        font-size: 1.8rem;
+    }
+    .toastHeading {
+        font-size: 1rem;
+    }
+    .toastMessage {
+        font-size: 0.8rem;
+    }
+    .toastDismissBtn {
+        font-size: 0.9rem;
+        top: 8px;
+        right: 8px;
+    }
+}

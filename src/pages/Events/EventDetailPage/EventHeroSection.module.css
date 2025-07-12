@@ -1,0 +1,362 @@
+/* src/pages/Events/EventDetailPage/EventHeroSection.module.css */
+
+.heroSection {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 550px; /* Taller min-height for the hero section */
+    display: flex;
+    flex-direction: row; /* Image and content side-by-side */
+    align-items: stretch; /* Stretch to fill height */
+    padding: 0;
+    background-color: var(--naks-dark-bg); /* Dark background for the whole hero container */
+    box-shadow: var(--shadow-lg);
+    border-radius: 15px; /* Applied to the whole section */
+    overflow: hidden; /* Ensures contained elements respect border-radius */
+    margin-bottom: 30px; /* Space below the hero section */
+}
+
+.heroImageWrapper {
+    width: 40%; /* Image wrapper takes 40% of hero width */
+    flex-shrink: 0;
+    height: auto;
+    display: flex;
+    align-items: center; /* Vertically center the image within its wrapper */
+    justify-content: center; /* Horizontally center the image within its wrapper */
+    background-color: #000; /* Black background for image area to ensure clean letterboxing */
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    overflow: hidden;
+    padding: 0;
+}
+:global(body.dark-mode) .heroImageWrapper {
+    background-color: #121212;
+}
+
+.heroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure full image is visible, no cropping */
+    display: block;
+}
+
+.heroContentWrapper {
+    width: 60%; /* Content takes 60% */
+    height: auto;
+    background: var(--naks-dark-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the left */
+    justify-content: flex-start; /* Align content to the top */
+    padding: 30px; /* Generous padding for content */
+    color: var(--naks-white-surface);
+    text-align: left;
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.3);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+:global(body.dark-mode) .heroContentWrapper {
+    background-color: #121212;
+}
+
+.heroContent {
+    max-width: 100%;
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Slightly more relaxed gap for readability */
+    margin-bottom: 20px; /* Space below the main info block before action component */
+}
+
+.heroTitle {
+    font-size: 1.1rem; /* As small as p tag (similar to meta info) */
+    font-weight: 700;
+    margin-bottom: 5px;
+    line-height: 1.2;
+    color: var(--naks-primary); /* Orange-ish color */
+}
+
+.heroMeta {
+    font-size: 0.95rem; /* Same size as event title text (for alignment) */
+    font-weight: 500;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    color: var(--naks-text-light);
+    line-height: 1.3;
+    flex-wrap: wrap;
+}
+.heroMeta svg {
+    font-size: 0.95rem;
+    color: var(--naks-text-light);
+    flex-shrink: 0;
+}
+
+.organizerInfoInHero { /* NEW: Styling for organizer info in hero */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--naks-text-light);
+    font-size: 0.95rem;
+    margin-top: 10px; /* Space above organizer info */
+}
+.organizerInfoInHero svg {
+    color: var(--naks-gray-400);
+    font-size: 1.1rem;
+}
+.organizerInfoInHero span {
+    font-weight: 600;
+    color: var(--naks-primary);
+}
+
+
+.naksYetuBranding {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--naks-white-surface);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.naksYetuBranding img {
+    height: 30px;
+    width: 30px;
+    border-radius: var(--border-radius-full);
+}
+
+.couponMessage {
+    background-color: var(--naks-info-light);
+    color: var(--naks-info);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    border: 1px solid var(--naks-info);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+.couponMessage svg {
+    font-size: 1.2rem;
+}
+
+/* Countdown Styling within Hero Section */
+.countdownContainer {
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: var(--naks-white-surface);
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 15px 20px;
+    border-radius: 12px;
+    width: fit-content;
+}
+.countdownDisplay {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+.countdownSegment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    background-color: rgba(255,255,255,0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+.countdownValue {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--naks-primary);
+    line-height: 1;
+}
+.countdownUnit {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--naks-text-light);
+}
+.countdownSeparator {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naks-white-surface);
+    margin: 0 5px;
+    line-height: 1;
+}
+.countdownEnded {
+    color: var(--naks-error);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+/* Container for Action Component within Hero */
+.heroActionComponentContainer {
+    margin-top: auto;
+    width: 100%;
+}
+.heroActionComponentContainer .sectionContent {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+.heroActionComponentContainer .sidebarHeading {
+    font-size: 1.5rem;
+    color: var(--naks-white-surface);
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.heroActionComponentContainer .ticketTypeItem {
+    background-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: none;
+}
+.heroActionComponentContainer .ticketName,
+.heroActionComponentContainer .ticketPrice,
+.heroActionComponentContainer .ticketSalesInfo,
+.heroActionComponentContainer .ticketAvailability,
+.heroActionComponentContainer .ticketQty,
+.heroActionComponentContainer .quantityBtn {
+    color: var(--naks-white-surface);
+}
+.heroActionComponentContainer .ticketPrice {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--naks-primary);
+}
+.heroActionComponentContainer .ticketSalesInfo svg {
+    color: rgba(255,255,255,0.6);
+}
+.heroActionComponentContainer .quantityBtn {
+    background-color: rgba(255,255,255,0.2);
+}
+.heroActionComponentContainer .quantityBtn:hover {
+    background-color: rgba(255,255,255,0.35);
+}
+.heroActionComponentContainer .totalSummary {
+    border-color: rgba(255,255,255,0.3);
+}
+.heroActionComponentContainer .totalSummary p,
+.heroActionComponentContainer .totalSummary span {
+    color: var(--naks-white-surface);
+}
+.heroActionComponentContainer .checkoutBtn {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+}
+.heroActionComponentContainer .checkoutBtn:hover {
+    background-position: 100% 50%;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .heroSection {
+        min-height: 400px;
+        flex-direction: column; /* Stack image and content */
+        border-radius: 0; /* No border-radius on top for mobile */
+        box-shadow: none;
+        margin-bottom: 20px;
+    }
+    .heroImageWrapper {
+        width: 100%; /* Full width */
+        height: 250px; /* Fixed height for mobile image */
+        border-radius: 0;
+    }
+    .heroImage {
+        border-radius: 0;
+    }
+    .heroContentWrapper {
+        width: 100%;
+        padding: 20px;
+        align-items: center;
+        text-align: center;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .heroContent {
+        align-items: center;
+        text-align: center;
+    }
+    .heroTitle {
+        font-size: 2.5rem;
+    }
+    .heroMeta {
+        font-size: 1rem;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .countdownContainer {
+        text-align: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .countdownValue {
+        font-size: 1.8rem;
+    }
+    .countdownUnit {
+        font-size: 0.7rem;
+    }
+    .countdownSeparator {
+        font-size: 1.8rem;
+    }
+    .heroActionComponentContainer .sidebarHeading {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 2rem;
+    }
+    .heroMeta {
+        font-size: 0.9rem;
+    }
+    .countdownValue {
+        font-size: 1.5rem;
+    }
+    .countdownUnit {
+        font-size: 0.65rem;
+    }
+    .countdownSeparator {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: 1.8rem;
+    }
+    .heroMeta {
+        font-size: 0.8rem;
+    }
+    .countdownValue {
+        font-size: 1.2rem;
+    }
+    .countdownUnit {
+        font-size: 0.6rem;
+    }
+    .countdownSeparator {
+        font-size: 1.2rem;
+    }
+}

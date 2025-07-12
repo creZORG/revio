@@ -1,0 +1,345 @@
+/* src/pages/Organizer/Dashboard/Forms/CreateNormalEventWizard/CreateNormalEventWizard.module.css */
+
+/* --- Wizard Container (Overall Wrapper) --- */
+.wizardContainer {
+    background-color: var(--naks-white-surface); /* White in light, dark gray in dark */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: var(--shadow-lg); /* Prominent shadow */
+    padding: 40px; /* Generous padding */
+    max-width: 900px; /* Wider for better form layout */
+    margin: 20px auto; /* Center on page with some top/bottom margin */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Spacing between main sections */
+    transition: background-color var(--transition-speed) ease;
+}
+
+.wizardTitle {
+    font-size: 2.5rem; /* Larger, more prominent title */
+    font-weight: 800; /* Extra bold */
+    color: var(--naks-primary); /* Primary brand color */
+    text-align: center;
+    margin-bottom: 25px; /* More space */
+    letter-spacing: -0.5px;
+}
+
+/* --- Progress Bar --- */
+.progressBarContainer {
+    margin-bottom: 30px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px; /* Space for circles */
+}
+
+.progressLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 6px; /* Thicker line */
+    background-color: var(--naks-gray-200); /* Lighter gray for inactive line */
+    border-radius: 3px;
+    z-index: 0;
+    width: calc(100% - 30px); /* Adjust width for circles */
+    margin: 0 15px;
+}
+
+.progressLineFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--naks-primary), var(--naks-secondary)); /* Gradient fill */
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
+}
+
+.progressStep {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.progressCircle {
+    width: 44px; /* Larger circle */
+    height: 44px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--naks-gray-300); /* Inactive circle background */
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700; /* Bolder number */
+    font-size: 1.2rem; /* Larger number */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border: 3px solid var(--naks-border-medium); /* Thicker border */
+    box-shadow: var(--shadow-sm);
+}
+
+.progressCircle.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary)); /* Active circle gradient */
+    color: var(--naks-white-surface);
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 4px rgba(var(--naks-primary-rgb), 0.3); /* Glow effect */
+}
+
+.progressLabel {
+    margin-top: 10px; /* More space */
+    font-size: 0.95rem; /* Slightly larger label */
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+    text-align: center;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.progressLabel.active {
+    color: var(--naks-text-primary);
+}
+
+/* --- Wizard Content (Current Step's Form Section) --- */
+.wizardContent {
+    padding: 20px 0; /* Padding for content within the wizard container */
+}
+
+.formSection { /* This is the actual step content container */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Spacing between form groups/elements */
+    background-color: var(--naks-surface); /* White in light, dark gray in dark */
+    padding: 30px; /* Generous padding for form content */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: var(--shadow-md); /* Subtle shadow */
+    border: 1px solid var(--naks-border-light); /* Light border */
+    transition: background-color var(--transition-speed) ease;
+}
+
+.sectionHeading { /* Heading for each step (e.g., "Basic Event Information") */
+    font-size: 1.8rem; /* Prominent heading */
+    font-weight: 700;
+    color: var(--naks-primary); /* Primary brand color */
+    margin-bottom: 20px; /* Space below heading */
+    border-bottom: 2px solid var(--naks-border-medium); /* Underline */
+    padding-bottom: 10px;
+}
+
+/* --- Form Elements (Overriding global if necessary, but using global classes) --- */
+/* These styles will primarily use global classes from index.css, but can be fine-tuned here */
+
+.formGroup { /* Inherits from global form-group */
+    margin-bottom: 0; /* Remove default margin-bottom if gap handles it */
+}
+
+.formLabel { /* Inherits from global form-label */
+    /* Adjustments if needed */
+}
+
+.requiredStar { /* Inherits from global required-star */
+    /* Adjustments if needed */
+}
+
+.inputField { /* Inherits from global input-field */
+    /* Adjustments if needed */
+}
+
+.inputField::placeholder { /* Inherits from global input-field */
+    /* Adjustments if needed */
+}
+
+textarea.inputField { /* Inherits from global input-field */
+    /* Adjustments if needed */
+}
+
+.radioGroup, .checkboxGroup { /* Inherits from global radio-group/checkbox-group */
+    gap: 15px; /* Slightly smaller gap than default */
+}
+
+.radioGroup label, .checkboxGroup label { /* Inherits from global label */
+    font-size: 0.95rem; /* Slightly smaller font */
+}
+
+.formCheckbox { /* Inherits from global form-checkbox */
+    /* Adjustments if needed */
+}
+
+.fileUploadArea { /* Inherits from global file-upload-area */
+    /* Adjustments if needed */
+}
+
+.fileUploadIcon { /* Inherits from global file-upload-icon */
+    /* Adjustments if needed */
+}
+
+.fileUploadText { /* Inherits from global file-upload-text */
+    /* Adjustments if needed */
+}
+
+.imagePreviewContainer { /* Inherits from global image-preview-container */
+    /* Adjustments if needed */
+}
+.imagePreviewContainerImg { /* Image inside preview container */
+    max-width: 100%;
+    height: 200px; /* Fixed height for preview */
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--naks-border-light);
+}
+
+.uploadStatus { /* For spinner/text during upload */
+    font-size: 0.9rem;
+    color: var(--sys-info);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center; /* Center status text */
+}
+
+/* --- Action Buttons (Next/Previous/Submit) --- */
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px; /* More space above buttons */
+    gap: 20px; /* Space between buttons */
+}
+
+.actionButtons.justifyEnd {
+    justify-content: flex-end;
+}
+
+.actionButtons .btn { /* Inherits from global .btn */
+    padding: 14px 30px; /* Larger buttons */
+    font-size: 1.1rem; /* Larger font */
+    border-radius: 10px; /* More rounded */
+}
+
+/* --- Ticket/RSVP Setup specific styles --- */
+.ticketTypeItem {
+    border: 1px solid var(--naks-border-light);
+    border-radius: 10px;
+    padding: 20px; /* More padding */
+    margin-bottom: 15px; /* More space */
+    background-color: var(--naks-gray-100); /* Light gray background */
+    position: relative;
+}
+
+.removeBtn {
+    position: absolute;
+    top: 15px; /* Adjust position */
+    right: 15px; /* Adjust position */
+    background: none;
+    border: none;
+    color: var(--sys-error);
+    font-size: 1.5rem; /* Larger icon */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.removeBtn:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .wizardContainer {
+        padding: 25px;
+        border-radius: 10px;
+        gap: 20px;
+    }
+    .wizardTitle {
+        font-size: 2rem;
+    }
+    .progressBarContainer {
+        padding: 0 5px;
+    }
+    .progressCircle {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    .progressLabel {
+        font-size: 0.8rem;
+    }
+    .formSection {
+        padding: 20px;
+        gap: 15px;
+    }
+    .sectionHeading {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    .actionButtons {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 25px;
+    }
+    .actionButtons .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    .radioGroup, .checkboxGroup {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .radioGroup label, .checkboxGroup label {
+        width: 100%;
+    }
+    .ageCategoryCheckboxesContainer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .ageCategoryCheckboxLabel {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .ticketTypeItem {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    .removeBtn {
+        font-size: 1.1rem;
+        top: 10px;
+        right: 10px;
+    }
+    .imagePreviewContainerImg {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wizardContainer {
+        padding: 15px;
+        gap: 15px;
+    }
+    .wizardTitle {
+        font-size: 1.6rem;
+    }
+    .progressCircle {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    .progressLabel {
+        font-size: 0.7rem;
+    }
+    .formSection {
+        padding: 15px;
+        gap: 10px;
+    }
+    .sectionHeading {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    .inputField {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .radioGroup label, .checkboxGroup label {
+        font-size: 0.9rem;
+    }
+    .imagePreviewContainerImg {
+        height: 120px;
+    }
+}

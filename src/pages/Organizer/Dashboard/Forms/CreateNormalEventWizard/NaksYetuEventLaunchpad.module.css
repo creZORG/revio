@@ -1,0 +1,1060 @@
+/* src/pages/Organizer/Dashboard/Forms/CreateNormalEventWizard/NaksYetuEventLaunchpad.module.css */
+
+/* --- Wizard Container (Overall Wrapper) --- */
+.wizardContainer {
+    background-color: var(--naks-white-surface);
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    padding: 40px;
+    max-width: 900px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.wizardTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--naks-primary);
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+}
+
+/* --- Progress Bar --- */
+.progressBarContainer {
+    margin-bottom: 30px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.progressLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background-color: var(--naks-gray-200);
+    border-radius: 3px;
+    z-index: 0;
+    width: calc(100% - 30px);
+    margin: 0 15px;
+}
+
+.progressLineFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--naks-primary), var(--naks-secondary));
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.progressStep {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.progressCircle {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--naks-gray-300);
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border: 3px solid var(--naks-border-medium);
+    box-shadow: var(--shadow-sm);
+}
+
+.progressCircle.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 4px rgba(var(--naks-primary-rgb), 0.3);
+}
+
+.progressLabel {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+    text-align: center;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.progressLabel.active {
+    color: var(--naks-text-primary);
+}
+
+/* --- Wizard Content (Current Step's Form Section) --- */
+.wizardContent {
+    padding: 20px 0;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background-color: var(--naks-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
+    transition: background-color var(--transition-speed) ease;
+}
+
+.sectionHeading {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--naks-border-medium);
+    padding-bottom: 10px;
+}
+
+/* --- Form Elements --- */
+.formGroup {
+    margin-bottom: 0;
+}
+
+.formLabel {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--naks-text-primary);
+    margin-bottom: 8px;
+}
+
+.requiredStar {
+    color: var(--sys-error);
+    margin-left: 4px;
+}
+
+.optionalLabel {
+    font-weight: normal;
+    color: var(--naks-text-light);
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.inputField {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    background-color: var(--naks-surface);
+    color: var(--naks-text-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.inputField::placeholder {
+    color: var(--naks-text-placeholder);
+}
+
+.inputField:focus {
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.2);
+}
+
+textarea.inputField {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.radioGroup, .checkboxGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.radioGroup label, .checkboxGroup label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--naks-text-primary);
+    margin-bottom: 0;
+}
+
+.formCheckbox {
+    margin-right: 8px;
+    accent-color: var(--naks-primary);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.fileUploadArea {
+    border: 2px dashed var(--naks-border-medium);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--naks-gray-100);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+}
+.fileUploadArea:hover {
+    border-color: var(--naks-primary);
+    background-color: var(--naks-primary-light);
+}
+
+.fileUploadIcon {
+    color: var(--naks-text-secondary);
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.fileUploadText {
+    color: var(--naks-text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.imagePreviewContainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.imagePreviewContainerImg {
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--naks-border-light);
+}
+
+.uploadStatus {
+    font-size: 0.9rem;
+    color: var(--sys-info);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.filePreviewContainer {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.filePreviewItem {
+    position: relative;
+    width: 100px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--naks-border-light);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.filePreviewItem img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+}
+.filePreviewItem .fileDescriptionInput {
+    width: calc(100% - 10px);
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    border: none;
+    border-top: 1px solid var(--naks-border-light);
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+    border-radius: 0 0 8px 8px;
+    outline: none;
+    flex-grow: 1;
+}
+.filePreviewItem .removeFileBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--naks-white-surface);
+    border: none;
+    border-radius: var(--border-radius-full);
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* --- Action Buttons --- */
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.actionButtons.justifyEnd {
+    justify-content: flex-end;
+}
+
+.actionButtons .btn {
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+/* --- Ticket/RSVP Setup specific styles --- */
+.ticketTypeItem {
+    border: 1px solid var(--naks-border-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: var(--naks-gray-100);
+    position: relative;
+}
+
+.removeBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--sys-error);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.removeBtn:hover {
+    transform: scale(1.1);
+}
+
+/* Age Category Pills */
+.ageCategoryCheckboxesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ageCategoryCheckboxLabel {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-md);
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.ageCategoryCheckboxLabel:hover {
+    background-color: rgba(var(--naks-secondary-rgb), 0.1);
+    border-color: var(--naks-secondary);
+    color: var(--naks-secondary);
+}
+
+.ageCategoryCheckboxLabel.active {
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-brown));
+    color: var(--naks-white-surface);
+    border-color: var(--naks-secondary);
+}
+
+.ageCategoryCheckboxLabel.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ageCategoryCheckboxInput {
+    display: none;
+}
+
+.ageCategoryCustomCheckbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    background-color: var(--naks-white-surface);
+    transition: all 0.3s ease;
+}
+
+.ageCategoryCheckboxLabel.active .ageCategoryCustomCheckbox {
+    background-color: var(--naks-white-surface);
+    border-color: var(--naks-white-surface);
+}
+
+.ageCategoryCustomCheckbox svg {
+    color: var(--naks-secondary);
+    font-size: 0.8rem;
+}
+
+.ageCategoryCheckboxIcon {
+    font-size: 1rem;
+    margin-right: 5px;
+    color: var(--naks-text-secondary);
+}
+.ageCategoryCheckboxLabel.active .ageCategoryCheckboxIcon {
+    color: var(--naks-white-surface);
+}
+
+/* --- Event Type Selection Modal Specific Styles --- */
+.eventTypeSelectionModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
+    text-align: center;
+    background-color: var(--naks-white-surface); /* Light mode: White background */
+    border-radius: 15px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--naks-border-light);
+}
+
+/* FIX: Dark mode for modal content */
+:global(body.dark-mode) .eventTypeSelectionModalContent {
+    background-color: var(--naks-surface); /* Dark mode: Dark background */
+    border-color: var(--naks-border-medium);
+}
+
+.modalHeading {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 10px;
+}
+
+.modalDescription {
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+    margin-bottom: 20px;
+}
+
+.eventTypeOptionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.eventTypeOptionCard {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.eventTypeOptionCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--naks-secondary-light);
+    border-color: var(--naks-secondary);
+}
+
+/* FIX: Dark mode for event type option cards */
+:global(body.dark-mode) .eventTypeOptionCard {
+    background-color: var(--naks-gray-300);
+    border-color: var(--naks-border-medium);
+}
+:global(body.dark-mode) .eventTypeOptionCard:hover {
+    background-color: var(--naks-gray-400);
+    border-color: var(--naks-secondary);
+}
+
+
+.eventTypeOptionIcon {
+    font-size: 2.8rem;
+    color: var(--naks-secondary);
+    margin-bottom: 15px;
+}
+
+.eventTypeOptionTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 8px;
+}
+
+.eventTypeOptionDescription {
+    font-size: 0.85rem;
+    color: var(--naks-text-secondary);
+    line-height: 1.4;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+    gap: 10px;
+}
+.modalActions .btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+
+/* --- Dark Mode Overrides for Wizard --- */
+:global(body.dark-mode) .wizardContainer,
+:global(body.dark-mode) .formSection {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+:global(body.dark-mode) .wizardTitle,
+:global(body.dark-mode) .sectionHeading,
+:global(body.dark-mode) .formLabel,
+:global(body.dark-mode) .progressLabel.active,
+:global(body.dark-mode) .inputField,
+:global(body.dark-mode) .radioGroup label,
+:global(body.dark-mode) .checkboxGroup label,
+:global(body.dark-mode) .fileUploadText,
+:global(body.dark-mode) .fileUploadIcon,
+:global(body.dark-mode) .filePreviewItem .fileDescriptionInput {
+    color: var(--naks-text-primary);
+}
+:global(body.dark-mode) .progressCircle,
+:global(body.dark-mode) .ticketTypeItem,
+:global(body.dark-mode) .fileUploadArea,
+:global(body.dark-mode) .ageCategoryCheckboxLabel,
+:global(body.dark-mode) .ageCategoryCustomCheckbox {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+:global(body.dark-mode) .progressLabel,
+:global(body.dark-mode) .inputField::placeholder {
+    color: var(--naks-text-secondary);
+}
+:global(body.dark-mode) .fileUploadArea:hover,
+:global(body.dark-mode) .ageCategoryCheckboxLabel:hover {
+    background-color: var(--naks-gray-300);
+}
+:global(body.dark-mode) .filePreviewItem .fileDescriptionInput {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+
+/* Responsive Adjustments for Wizard */
+@media (max-width: 768px) {
+    .wizardContainer {
+        padding: 25px;
+        border-radius: 10px;
+        gap: 15px;
+    }
+    .wizardTitle {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    .progressBarContainer {
+        padding: 0 5px;
+        margin-bottom: 20px;
+    }
+    .progressCircle {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    .progressLabel {
+        font-size: 0.8rem;
+    }
+    .formSection {
+        padding: 20px;
+        gap: 15px;
+    }
+    .sectionHeading {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .actionButtons {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .actionButtons .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    .radioGroup, .checkboxGroup {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .radioGroup label, .checkboxGroup label {
+        width: 100%;
+    }
+    .ageCategoryCheckboxesContainer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .ageCategoryCheckboxLabel {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .ticketTypeItem {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    .removeBtn {
+        font-size: 1.1rem;
+        top: 10px;
+        right: 10px;
+    }
+    .imagePreviewContainerImg {
+        height: 150px;
+    }
+
+    /* Event Type Selection Modal Responsive */
+    .eventTypeSelectionModalContent {
+        padding: 15px;
+        gap: 15px;
+    }
+    .modalHeading {
+        font-size: 1.5rem;
+    }
+    .modalDescription {
+        font-size: 0.9rem;
+    }
+    .eventTypeOptionsGrid {
+        grid-template-columns: 1fr;
+    }
+    .eventTypeOptionCard {
+        padding: 15px;
+    }
+    .eventTypeOptionIcon {
+        font-size: 2.2rem;
+    }
+    .eventTypeOptionTitle {
+        font-size: 1rem;
+    }
+    .eventTypeOptionDescription {
+        font-size: 0.8rem;
+    }
+    .modalActions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .modalActions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .wizardContainer {
+        padding: 15px;
+        border-radius: 10px;
+        gap: 15px;
+    }
+    .wizardTitle {
+        font-size: 1.6rem;
+    }
+    .progressCircle {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    .progressLabel {
+        font-size: 0.7rem;
+    }
+    .formSection {
+        padding: 15px;
+        gap: 10px;
+    }
+    .sectionHeading {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    .inputField {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .radioGroup label, .checkboxGroup label {
+        font-size: 0.9rem;
+    }
+    .imagePreviewContainer img {
+        height: 120px;
+    }
+}
+/* Add this to the end of your existing NaksYetuEventLaunchpad.module.css file */
+
+/* --- Sponsors Section Specific Styles --- */
+.sponsorsSection {
+    /* This is the formSection container for sponsors, already has padding/shadow */
+}
+
+.sponsorsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* FIX: Smaller grid items */
+    gap: 15px; /* FIX: Smaller gap */
+    margin-top: 20px;
+    justify-content: center; /* Center items in the grid */
+    align-items: flex-start; /* Align items to the top */
+}
+
+.sponsorItem { /* Individual sponsor container */
+    position: relative;
+    background-color: var(--naks-gray-100); /* Light background for card */
+    border: 1px solid var(--naks-border-light);
+    border-radius: 10px;
+    padding: 10px; /* Compact padding */
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px; /* Space between logo and inputs */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    min-height: 180px; /* FIX: Ensure consistent height for cards with inputs */
+    justify-content: space-between; /* Push inputs to bottom */
+}
+
+.sponsorItem:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--naks-secondary-light); /* Light pink hover */
+    border-color: var(--naks-secondary);
+}
+
+/* Dark mode for sponsor items */
+:global(body.dark-mode) .sponsorItem {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+:global(body.dark-mode) .sponsorItem:hover {
+    background-color: var(--naks-gray-300);
+    border-color: var(--naks-secondary);
+}
+
+
+.sponsorLogoContainer { /* The div holding the image and file input */
+    width: 80px; /* FIX: Smaller logo container */
+    height: 80px;
+    border-radius: 8px; /* Slightly rounded */
+    overflow: hidden;
+    background-color: var(--naks-white-surface); /* White background for logo area */
+    border: 1px solid var(--naks-border-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent shrinking */
+    margin-bottom: 5px; /* Space below logo */
+}
+:global(body.dark-mode) .sponsorLogoContainer {
+    background-color: var(--naks-surface); /* Dark mode background */
+}
+
+.sponsorLogo {
+    max-width: 90%; /* Logo fits well inside container */
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.sponsorInput { /* Common style for sponsor name and link inputs */
+    width: 100%;
+    padding: 6px 8px; /* Compact padding */
+    border: 1px solid var(--naks-border-light);
+    border-radius: 6px;
+    font-size: 0.8rem; /* Small font size */
+    color: var(--naks-text-primary);
+    background-color: var(--naks-white-surface);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.sponsorInput::placeholder {
+    color: var(--naks-text-placeholder);
+}
+.sponsorInput:focus {
+    border-color: var(--naks-secondary); /* Pink focus */
+    box-shadow: 0 0 0 2px rgba(var(--naks-secondary-rgb), 0.2);
+}
+/* Dark mode for sponsor inputs */
+:global(body.dark-mode) .sponsorInput {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+    color: var(--naks-text-primary);
+}
+
+
+.removeSponsorBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(var(--sys-error-rgb), 0.8); /* Red background */
+    color: var(--naks-white-surface);
+    border: none;
+    border-radius: var(--border-radius-full);
+    width: 20px; /* Smaller button */
+    height: 20px;
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.removeSponsorBtn:hover {
+    transform: scale(1.1);
+    background-color: var(--sys-error);
+}
+
+.addSponsorArea { /* The label for adding new sponsors */
+    width: 120px; /* Fixed width */
+    height: 180px; /* Fixed height to match sponsorItem */
+    border: 2px dashed var(--naks-border-medium);
+    border-radius: 10px;
+    background-color: var(--naks-gray-100);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    flex-shrink: 0;
+}
+.addSponsorArea:hover {
+    border-color: var(--naks-secondary);
+    background-color: var(--naks-secondary-light);
+}
+.addSponsorArea .fileUploadIcon { /* Icon inside add sponsor area */
+    font-size: 2rem;
+    color: var(--naks-text-secondary);
+}
+.addSponsorArea .fileUploadText { /* Text inside add sponsor area */
+    font-size: 0.8rem;
+    color: var(--naks-text-secondary);
+}
+
+/* Responsive adjustments for sponsors */
+@media (max-width: 768px) {
+    .sponsorsGrid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Even smaller grid items */
+        gap: 10px;
+    }
+    .sponsorItem {
+        padding: 8px;
+        min-height: 160px; /* Adjusted height */
+    }
+    .sponsorLogoContainer {
+        width: 70px;
+        height: 70px;
+    }
+    .sponsorInput {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+    }
+    .removeSponsorBtn {
+        width: 18px;
+        height: 18px;
+        font-size: 0.6rem;
+    }
+    .addSponsorArea {
+        width: 100px;
+        height: 160px;
+    }
+    .addSponsorArea .fileUploadIcon {
+        font-size: 1.8rem;
+    }
+    .addSponsorArea .fileUploadText {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sponsorsGrid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Very small grid items */
+        gap: 8px;
+    }
+    .sponsorItem {
+        padding: 5px;
+        min-height: 140px;
+    }
+    .sponsorLogoContainer {
+        width: 60px;
+        height: 60px;
+    }
+    .sponsorInput {
+        font-size: 0.65rem;
+        padding: 3px 5px;
+    }
+    .addSponsorArea {
+        width: 80px;
+        height: 140px;
+    }
+}
+/* Add this to the end of your existing NaksYetuEventLaunchpad.module.css file */
+
+/* --- Responsive Adjustments for Wizard --- */
+@media (max-width: 768px) {
+    .wizardContainer {
+        padding: 25px;
+        border-radius: 10px;
+        gap: 15px;
+    }
+    .wizardTitle {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    .progressBarContainer {
+        padding: 0 5px;
+        margin-bottom: 20px;
+    }
+    .progressCircle {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    .progressLabel {
+        font-size: 0.8rem;
+    }
+    .formSection {
+        padding: 20px;
+        gap: 15px;
+    }
+    .sectionHeading {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .actionButtons {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .actionButtons .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    .radioGroup, .checkboxGroup {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .radioGroup label, .checkboxGroup label {
+        width: 100%;
+    }
+    .ageCategoryCheckboxesContainer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .ageCategoryCheckboxLabel {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .ticketTypeItem {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    .removeBtn {
+        font-size: 1.1rem;
+        top: 10px;
+        right: 10px;
+    }
+    .imagePreviewContainerImg {
+        height: 150px;
+    }
+
+    /* FIX: Event Type Selection Modal Responsive */
+    .eventTypeSelectionModalContent {
+        padding: 15px; /* More compact padding on mobile */
+        gap: 15px; /* More compact gap */
+        max-width: 90%; /* Allow modal to shrink */
+        width: auto; /* Auto width */
+    }
+    .modalHeading {
+        font-size: 1.5rem; /* Smaller heading */
+    }
+    .modalDescription {
+        font-size: 0.9rem; /* Smaller description */
+    }
+    .eventTypeOptionsGrid {
+        grid-template-columns: 1fr; /* Stack cards on mobile */
+    }
+    .eventTypeOptionCard {
+        padding: 15px; /* More compact card padding */
+    }
+    .eventTypeOptionIcon {
+        font-size: 2.2rem; /* Smaller icon */
+    }
+    .eventTypeOptionTitle {
+        font-size: 1rem; /* Smaller title */
+    }
+    .eventTypeOptionDescription {
+        font-size: 0.8rem; /* Smaller description */
+    }
+    .modalActions {
+        flex-direction: column; /* Stack buttons */
+        gap: 10px;
+    }
+    .modalActions .btn {
+        width: 100%; /* Full width buttons */
+    }
+}
+
+@media (max-width: 480px) {
+    .wizardContainer {
+        padding: 15px;
+        border-radius: 10px;
+        gap: 15px;
+    }
+    .wizardTitle {
+        font-size: 1.6rem;
+    }
+    .progressCircle {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    .progressLabel {
+        font-size: 0.7rem;
+    }
+    .formSection {
+        padding: 15px;
+        gap: 10px;
+    }
+    .sectionHeading {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    .inputField {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .radioGroup label, .checkboxGroup label {
+        font-size: 0.9rem;
+    }
+    .imagePreviewContainer img {
+        height: 120px;
+    }
+}

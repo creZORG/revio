@@ -1,0 +1,183 @@
+/* src/pages/Organizer/Dashboard/Tabs/overview.module.css */
+
+.overviewSection {
+    /* Inherits section-content from global CSS */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.overviewTitle { /* For "Your Performance At A Glance" */
+    font-size: 1.5rem; /* Smaller title */
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 10px;
+}
+
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Smaller cards */
+    gap: 15px; /* Compact gap */
+    margin-bottom: 20px;
+}
+
+.summaryCard {
+    background-color: var(--naks-surface); /* White in light, dark gray in dark */
+    border: 1px solid var(--naks-border-light);
+    border-radius: 10px; /* Slightly less rounded */
+    box-shadow: var(--shadow-sm); /* Smaller shadow */
+    padding: 15px; /* Compact padding */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px; /* Compact gap inside card */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+.summaryCard:hover {
+    transform: translateY(-3px); /* Subtle lift */
+    box-shadow: var(--shadow-md);
+}
+
+.cardIcon {
+    font-size: 2rem; /* Smaller icons */
+    color: var(--naks-primary); /* Orange as default */
+    margin-bottom: 5px; /* Smaller margin */
+}
+.cardIcon.pink { color: var(--naks-secondary); }
+.cardIcon.blue { color: var(--sys-info); }
+
+
+.cardValue {
+    font-size: 1.8rem; /* Smaller value */
+    font-weight: 700;
+    color: var(--naks-text-primary);
+}
+
+.cardLabel {
+    font-size: 0.85rem; /* Smaller label */
+    color: var(--naks-text-secondary);
+    opacity: 0.8;
+}
+
+.quickActionsSection {
+    margin-top: 10px; /* Space from summary grid */
+}
+
+.quickActionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust for action cards */
+    gap: 15px;
+}
+
+.actionCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px; /* Compact padding */
+    border-radius: 10px; /* Slightly less rounded */
+    border: 1px solid var(--naks-border-light);
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    background-color: var(--naks-surface); /* White in light, dark gray in dark */
+}
+
+.actionCard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--naks-gray-100);
+}
+
+.actionCard svg { /* Icon in action card */
+    font-size: 2rem; /* Smaller icon */
+    margin-bottom: 10px; /* Smaller margin */
+    color: var(--naks-primary); /* Default icon color */
+}
+.actionCard svg.pink { color: var(--naks-secondary); }
+
+
+.actionCard h4 {
+    font-size: 1.1rem; /* Smaller title */
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--naks-text-primary);
+}
+
+.actionCard p {
+    font-size: 0.85rem; /* Smaller description */
+    color: var(--naks-text-secondary);
+}
+
+/* Recent Activity Section (Optional, can be removed if too much for "small overview") */
+.recentActivitySection {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--naks-border-light);
+}
+
+.recentActivityList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.recentActivityList li {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.recentActivityList li svg {
+    font-size: 1rem;
+    color: var(--naks-primary);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .overviewSection {
+        padding: 15px;
+        gap: 15px;
+    }
+    .overviewTitle {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    .summaryGrid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Even smaller cards on mobile */
+        gap: 10px;
+    }
+    .summaryCard {
+        padding: 12px;
+        gap: 5px;
+    }
+    .cardIcon {
+        font-size: 1.8rem;
+    }
+    .cardValue {
+        font-size: 1.5rem;
+    }
+    .cardLabel {
+        font-size: 0.75rem;
+    }
+    .quickActionsGrid {
+        grid-template-columns: 1fr; /* Stack actions on mobile */
+    }
+    .actionCard {
+        padding: 15px;
+    }
+    .actionCard svg {
+        font-size: 1.8rem;
+    }
+    .actionCard h4 {
+        font-size: 1rem;
+    }
+    .actionCard p {
+        font-size: 0.8rem;
+    }
+}
