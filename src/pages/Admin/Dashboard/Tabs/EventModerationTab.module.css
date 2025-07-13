@@ -1,4 +1,4 @@
-.userManagementSection {
+.moderationSection {
     background-color: var(--naks-surface);
     padding: 30px;
     border-radius: 15px;
@@ -21,38 +21,33 @@
     margin: 0;
 }
 
-.searchContainer {
+.filterContainer {
     display: flex;
-    align-items: center;
     gap: 10px;
+    background-color: var(--naks-gray-100);
+    padding: 5px;
+    border-radius: 10px;
 }
 
-.searchInput {
-    padding: 10px 15px;
-    border: 1px solid var(--naks-border-medium);
-    border-radius: 8px;
-    font-size: 1rem;
-    min-width: 300px;
-    transition: all 0.2s ease;
-}
-.searchInput:focus {
-    border-color: var(--naks-primary);
-    box-shadow: 0 0 0 3px var(--naks-primary-light);
-    outline: none;
-}
-
-.searchButton {
-    padding: 10px 15px;
+.filterContainer button {
+    background: none;
     border: none;
-    background-color: var(--naks-primary);
-    color: white;
+    padding: 8px 15px;
     border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 1rem;
+    transition: all 0.2s ease;
+    color: var(--naks-text-secondary);
 }
 
-/* Role Badges */
-.role {
+.filterContainer button.activeFilter {
+    background-color: var(--naks-surface);
+    color: var(--naks-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Status Badges */
+.status {
     padding: 5px 12px;
     border-radius: 20px;
     font-weight: 600;
@@ -61,21 +56,24 @@
     white-space: nowrap;
 }
 
-.role.user {
-    background-color: var(--naks-info-light);
-    color: var(--naks-info);
-}
-.role.organizer {
+.status.live {
     background-color: var(--naks-success-light);
     color: var(--naks-success);
 }
-.role.influencer {
-    background-color: var(--naks-secondary-light);
-    color: var(--naks-secondary);
+
+.status.pending {
+    background-color: var(--naks-warning-light);
+    color: var(--naks-warning);
 }
-.role.admin {
+
+.status.rejected {
     background-color: var(--naks-error-light);
     color: var(--naks-error);
+}
+
+.status.archived {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
 }
 
 /* Action Buttons */
@@ -93,20 +91,14 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    color: var(--naks-text-secondary);
 }
+
+.actionIconBtn.approve { color: var(--naks-success); }
+.actionIconBtn.reject { color: var(--naks-error); }
+.actionIconBtn.takedown { color: var(--naks-warning); }
+.actionIconBtn.edit { color: var(--naks-primary); }
+
 
 .actionIconBtn:hover {
     background-color: var(--naks-gray-200);
-}
-
-@media (max-width: 768px) {
-    .sectionHeader {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .searchInput {
-        min-width: 0;
-        width: 100%;
-    }
 }

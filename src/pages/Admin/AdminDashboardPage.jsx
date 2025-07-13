@@ -3,158 +3,130 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.js';
 import { useNotification } from '../../contexts/NotificationContext.jsx';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import Modal from '../../components/Common/Modal.jsx';
-import LoadingSkeleton from '../../components/Common/LoadingSkeleton.jsx';
-import Button from '../../components/Common/Button.jsx';
-// Import Tab Components
+
+// Import all components for the dashboard
+import AdminSidebar from './Dashboard/AdminSidebar.jsx';
+import TopBar from './Dashboard/TopBar.jsx';
+import PermissionDenied from './Dashboard/components/PermissionDenied.jsx';
+import OverviewTab from './Dashboard/Tabs/OverviewTab.jsx';
 import UserManagementTab from './Dashboard/Tabs/UserManagementTab.jsx';
-import CreateContentTab from './Dashboard/Tabs/CreateContentTab.jsx';
+import ContentTab from './Dashboard/Tabs/ContentTab.jsx'; 
 import GlobalSettingsTab from './Dashboard/Tabs/GlobalSettingsTab.jsx';
-import AnalyticsTab from './Dashboard/Tabs/AnalyticsTab.jsx'; // Placeholder
+import AnalyticsTab from './Dashboard/Tabs/AnalyticsTab.jsx';
+import SecurityAuditTab from './Dashboard/Tabs/SecurityAuditTab.jsx';
+import CreateContentTab from './Dashboard/Tabs/CreateContentTab.jsx';
+import AdPerformanceTab from './Dashboard/Tabs/AdPerformanceTab.jsx';
+import ShortlinkCreatorTab from './Dashboard/Tabs/ShortlinkCreatorTab.jsx';
 
-import {
-  FaHome, FaUsers, FaPlusCircle, FaCog, FaChartLine, FaSignOutAlt, FaMoon, FaSun, FaBars, FaBell
-} from 'react-icons/fa';
+import styles from './AdminDashboardPage.module.css';
+import { FaSpinner } from 'react-icons/fa';
 
-import styles from './AdminDashboardPage.module.css'; // Dedicated CSS for AdminDashboardPage
-
-const appId = "1:147113503727:web:1d9d351c30399b2970241a";
+// Custom hook to detect if the screen is mobile
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoint);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
+  return isMobile;
+};
 
 const AdminDashboardPage = () => {
-  const { currentUser, isAuthenticated, userRole, loading: authLoading, signOutUser } = useAuth();
+  const { currentUser, isAuthenticated, userRole, adminLevel, loading: authLoading, signOutUser } = useAuth();
   const { showNotification } = useNotification();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
-  const [activeSection, setActiveSection] = useState('user-management');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState([]); // Placeholder for notifications
-  const [showNotificationsModal, setShowNotificationsModal] = useState(false); // Placeholder for notifications modal
+  const [activeSection, setActiveSection] = useState('overview');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
 
-  // Redirect if not authenticated or not an admin
+  // Effect to protect the route
   useEffect(() => {
     if (!authLoading && (!isAuthenticated || userRole !== 'admin')) {
-      showNotification('You must be logged in as an admin to access this dashboard.', 'error');
+      showNotification('You must be an admin to access this page.', 'error');
       navigate('/auth', { replace: true });
     }
   }, [isAuthenticated, userRole, authLoading, navigate, showNotification]);
 
-  const handleLogout = useCallback(async () => {
-    try {
-      await signOutUser();
+  // Logout handler
+  const handleLogout = useCallback(() => {
+    signOutUser().then(() => {
       showNotification('Logged out successfully!', 'info');
       navigate('/');
-    } catch (error) {
-      console.error("Logout error:", error);
-      showNotification('Failed to log out.', 'error');
-    }
+    });
   }, [signOutUser, showNotification, navigate]);
 
-  const adminNavItems = [
-    { id: 'user-management', label: 'User Management', icon: FaUsers },
-    { id: 'create-content', label: 'Create Content', icon: FaPlusCircle },
-    { id: 'global-settings', label: 'Global Settings', icon: FaCog },
-    { id: 'analytics', label: 'Analytics', icon: FaChartLine },
-  ];
-
+  // Function to render the correct tab based on the active section
   const renderSectionContent = () => {
     switch (activeSection) {
-      case 'user-management':
-        return <UserManagementTab currentUser={currentUser} showNotification={showNotification} />;
-      case 'create-content':
-        return <CreateContentTab currentUser={currentUser} showNotification={showNotification} />;
-      case 'global-settings':
-        return <GlobalSettingsTab currentUser={currentUser} showNotification={showNotification} />;
-      case 'analytics':
-        return <AnalyticsTab currentUser={currentUser} showNotification={showNotification} />;
-      default:
-        return <UserManagementTab currentUser={currentUser} showNotification={showNotification} />;
+      case 'overview': return <OverviewTab />;
+      case 'content': return <ContentTab />; // <-- NEW UNIFIED TAB
+      case 'user-management': return <UserManagementTab />;
+      case 'create-content': return <CreateContentTab />;
+      case 'link-creator': return <ShortlinkCreatorTab />;
+      case 'ad-performance': return <AdPerformanceTab />;
+      case 'global-settings': return <GlobalSettingsTab />;
+      case 'analytics': return <AnalyticsTab />;
+      case 'security-audit': return <SecurityAuditTab />;
+      default: return <OverviewTab />;
     }
   };
 
-  if (authLoading || !isAuthenticated || userRole !== 'admin') {
+  // Titles for the top bar corresponding to each section
+  const sectionTitles = {
+    overview: 'Admin Overview',
+    content: 'Content & Moderation', // <-- NEW UNIFIED TITLE
+    'user-management': 'User Management',
+    'create-content': 'Create Content',
+    'link-creator': 'Shortlink Creator',
+    'ad-performance': 'Ad Performance',
+    'global-settings': 'Global Settings',
+    analytics: 'Analytics & Reports',
+    'security-audit': 'Security & Audit Log',
+  };
+
+  // Loading state while checking auth
+  if (authLoading) {
     return (
-      <div className={styles.adminDashboardContainer} style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <FaSpinner className="spinner" style={{ fontSize: '3rem', color: 'var(--naks-primary)' }} />
-        <p style={{ marginLeft: '15px', color: 'var(--naks-text-primary)' }}>Loading Admin Dashboard...</p>
+      <div className={styles.loadingContainer}>
+        <FaSpinner className={styles.spinner} /> <p>Verifying Permissions...</p>
       </div>
     );
   }
 
+  // Access control check
+  if (userRole === 'admin' && adminLevel < 1) {
+    return <PermissionDenied />;
+  }
+
   return (
-    <div className={styles.adminDashboardContainer}>
-      {/* Admin Dashboard Sidebar */}
-      <aside className={`${styles.sidebar} ${isSidebarCollapsed ? styles.collapsed : ''}`}>
-        <div className={styles.sidebarHeader}>
-          <h3>Admin Panel</h3>
-          <button className={styles.sidebarToggleBtn} onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
-            <FaBars />
-          </button>
-        </div>
-        <nav className={styles.sidebarNav}>
-          <ul>
-            {adminNavItems.map(item => (
-              <li key={item.id}>
-                <button
-                  onClick={() => setActiveSection(item.id)}
-                  className={`${activeSection === item.id ? styles.active : ''}`}
-                >
-                  {item.icon && <item.icon />} <span>{item.label}</span>
-                </button>
-              </li>
-            ))}
-            <li>
-              <button onClick={handleLogout} className={styles.logoutButton}>
-                <FaSignOutAlt /> <span>Logout</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-        {/* Dark Mode Toggle */}
-        <div className={styles.themeToggle} onClick={toggleTheme}>
-          <div className={styles.toggleThumb}>
-            <div className={`${styles.toggleIcon} ${styles.sunIcon} ${theme === 'dark' ? styles.opacity0 : ''}`}><FaSun /></div>
-            <div className={`${styles.toggleIcon} ${styles.moonIcon} ${theme === 'dark' ? styles.opacity1 : ''}`}><FaMoon /></div>
-            <div className={styles.stars}></div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Admin Dashboard Main Content */}
-      <main className={styles.mainContent} style={{ marginLeft: isSidebarCollapsed ? '80px' : '250px' }}>
-        <header className={styles.topBar}>
-          <h2 id="current-section-title">
-            {adminNavItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
-          </h2>
-          <div className={styles.topBarActions}>
-            {/* Notification Bell Icon */}
-            {isAuthenticated && currentUser && (
-              <button className={styles.iconBtn} onClick={() => setShowNotificationsModal(true)}>
-                <FaBell />
-                {unreadNotifications.length > 0 && (
-                  <span className={styles.notificationBadge}>{unreadNotifications.length}</span>
-                )}
-              </button>
-            )}
-            <div className={styles.userProfile}>
-              <img src={currentUser?.photoURL || "https://placehold.co/40x40/FF4500/FFFFFF?text=A"} alt="Admin Avatar" className={styles.userAvatar} />
-              <span className={styles.userName}>{currentUser?.displayName || currentUser?.email}</span>
-            </div>
-          </div>
-        </header>
-
-        <section id="dashboard-sections" className={styles.dashboardSections}>
+    <div className={`${styles.dashboardContainer} ${isMobile && isSidebarOpen ? styles.mobileSidebarActive : ''}`}>
+      <div className={`${styles.mobileOverlay} ${isMobile && isSidebarOpen ? styles.visible : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
+      <AdminSidebar
+        isCollapsed={!isSidebarOpen && !isMobile}
+        isMobileOpen={isSidebarOpen && isMobile}
+        activeSection={activeSection}
+        setActiveSection={(section) => {
+            setActiveSection(section);
+            if (isMobile) setIsSidebarOpen(false);
+        }}
+        onLogout={handleLogout}
+        onToggleCollapse={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+      <main className={`${styles.mainContent} ${!isSidebarOpen && !isMobile ? styles.collapsed : ''}`}>
+        <TopBar
+          sectionTitle={sectionTitles[activeSection]}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          isMobile={isMobile}
+          onMobileMenuClick={() => setIsSidebarOpen(true)}
+        />
+        <section className={styles.dashboardSections}>
           {renderSectionContent()}
         </section>
       </main>
-
-      {/* Notifications Modal (Placeholder) */}
-      <Modal isOpen={showNotificationsModal} onClose={() => setShowNotificationsModal(false)} title="Admin Notifications">
-        <div style={{ padding: '20px', textAlign: 'center' }}>
-          <p>Notifications will appear here.</p>
-          <Button onClick={() => setShowNotificationsModal(false)}>Close</Button>
-        </div>
-      </Modal>
     </div>
   );
 };

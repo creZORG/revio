@@ -1,9 +1,8 @@
-// src/contexts/AuthContext.jsx
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'; // Import useCallback
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { auth, db } from '../utils/firebaseConfig.js';
-import { onAuthStateChanged, signOut } from 'firebase/auth'; // Import signOut
-import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore'; // Import setDoc, Timestamp for profile creation
-import GlobalLoadingScreen from '../components/Common/GlobalLoadingScreen.jsx'; // NEW: Import GlobalLoadingScreen
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
+import GlobalLoadingScreen from '../components/Common/GlobalLoadingScreen.jsx';
 
 export const AuthContext = createContext(null);
 
@@ -14,76 +13,72 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [adminLevel, setAdminLevel] = useState(0); // <-- NEW: State for adminLevel
 
-  // NEW: signOutUser function
   const signOutUser = useCallback(async () => {
     try {
       await signOut(auth);
-      // State will be updated by onAuthStateChanged listener
+      // State is cleared by the onAuthStateChanged listener below
     } catch (error) {
       console.error("Error signing out:", error);
-      // You might want to use a global notification here if needed
-      // (Note: useNotification context is not available directly here without importing it)
     }
   }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user);
+        // User is signed in, fetch their full profile
         setIsAuthenticated(true);
-        console.log("Firebase Auth State Changed: User logged in", user.email);
+        try {
+          // Using the correct, nested path you provided
+          const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, user.uid);
+          const userDocSnap = await getDoc(userDocRef);
 
-        if (db) {
-          try {
-            const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, user.uid);
-            const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            const profileData = userDocSnap.data();
+            
+            // Combine auth data with Firestore profile data
+            const fullUserData = {
+              ...user, // from auth (uid, email, emailVerified, etc.)
+              ...profileData, // from firestore (role, adminLevel, status, etc.)
+              createdAt: profileData.createdAt?.toDate ? profileData.createdAt.toDate() : null,
+            };
 
-            if (userDocSnap.exists()) {
-              const profileData = userDocSnap.data();
-              // Update currentUser with profile data
-              setCurrentUser({
-                ...user,
-                role: profileData.role,
-                emailVerified: user.emailVerified, // Ensure this is always from auth object directly
-                createdAt: profileData.createdAt?.toDate ? profileData.createdAt.toDate() : null, // Convert Timestamp to Date
-              });
-              setUserRole(profileData.role || 'user');
-              console.log("User role fetched from Firestore:", profileData.role);
-            } else {
-              // If no profile, create a basic one and set default role
-              const newProfileData = {
-                  uid: user.uid,
-                  email: user.email,
-                  displayName: user.displayName || user.email.split('@')[0],
-                  role: 'user',
-                  createdAt: Timestamp.now(),
-                  emailVerified: user.emailVerified,
-                  status: 'active'
-              };
-              await setDoc(userDocRef, newProfileData, { merge: true });
-              setCurrentUser({
-                ...user,
-                ...newProfileData, // Add new profile data to currentUser
-                createdAt: newProfileData.createdAt.toDate(), // Convert Timestamp to Date
-              });
-              setUserRole('user');
-              console.warn("User profile not found in Firestore for UID:", user.uid, "Assigning default 'user' role and creating profile.");
-            }
-          } catch (error) {
-            console.error("Error fetching/setting user role from Firestore:", error.message);
+            setCurrentUser(fullUserData);
+            setUserRole(profileData.role || 'user');
+            setAdminLevel(profileData.adminLevel || 0); // <-- NEW: Set adminLevel from profile
+            
+          } else {
+            // This case handles a user who is authenticated but has no profile document yet
+            console.warn("User profile not found in Firestore for UID:", user.uid, "Creating default profile.");
+            const newProfileData = {
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName || user.email.split('@')[0],
+              role: 'user',
+              status: 'active',
+              adminLevel: 0, // <-- NEW: Set default adminLevel
+              createdAt: Timestamp.now(),
+            };
+            await setDoc(userDocRef, newProfileData, { merge: true });
+
+            setCurrentUser({ ...user, ...newProfileData, createdAt: newProfileData.createdAt.toDate() });
             setUserRole('user');
+            setAdminLevel(0); // <-- NEW: Set adminLevel state
           }
-        } else {
-          console.warn("Firestore DB instance not available yet, cannot fetch user role.");
+        } catch (error) {
+          console.error("Error fetching user profile from Firestore:", error.message);
+          // Fallback for safety
+          setCurrentUser(user);
           setUserRole('user');
+          setAdminLevel(0);
         }
-
       } else {
+        // User is signed out, clear all states
         setCurrentUser(null);
         setIsAuthenticated(false);
         setUserRole(null);
-        console.log("Firebase Auth State Changed: User logged out");
+        setAdminLevel(0); // <-- NEW: Reset adminLevel on logout
       }
       setLoading(false);
     });
@@ -96,11 +91,12 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated,
     loading,
     userRole,
-    signOutUser, // NEW: Add signOutUser to context value
+    adminLevel, // <-- NEW: Expose adminLevel to the rest of the app
+    signOutUser,
   };
 
+  // Render a loading screen until the initial auth check is complete
   if (loading) {
-    // FIX: Render GlobalLoadingScreen instead of basic text
     return <GlobalLoadingScreen />;
   }
 

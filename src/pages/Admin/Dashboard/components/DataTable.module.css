@@ -1,0 +1,107 @@
+.tableContainer {
+    overflow-x: auto;
+    border-radius: 15px;
+    border: 1px solid var(--naks-border-light);
+    box-shadow: var(--shadow-md);
+    background-color: var(--naks-surface);
+}
+
+.dataTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.dataTable th,
+.dataTable td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--naks-border-light);
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.dataTable th {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dataTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.dataTable tbody tr:hover {
+    background-color: var(--naks-gray-100);
+    transition: background-color 0.2s ease;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.actionIconBtn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.actionIconBtn.view { color: var(--naks-info); }
+.actionIconBtn.edit { color: var(--naks-primary); }
+.actionIconBtn.delete { color: var(--naks-error); }
+
+.actionIconBtn:hover {
+    background-color: var(--naks-gray-200);
+}
+
+.loading, .noDataMessage {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--naks-text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+    .dataTable thead {
+        display: none; /* Hide table headers on mobile */
+    }
+
+    .dataTable tr {
+        display: block;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        border: 1px solid var(--naks-border-light);
+        box-shadow: var(--shadow-sm);
+        padding: 15px;
+    }
+    
+    .dataTable td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--naks-border-light);
+    }
+
+    .dataTable td:last-child {
+        border-bottom: none;
+    }
+
+    .dataTable td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-align: left;
+        color: var(--naks-text-primary);
+        margin-right: 15px;
+    }
+}

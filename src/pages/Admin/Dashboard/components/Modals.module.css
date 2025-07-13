@@ -1,0 +1,175 @@
+/* General Modal Styles */
+.modalContent {
+    padding: 10px 0;
+}
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--naks-border-light);
+}
+.formGroup {
+    margin-bottom: 20px;
+}
+.formGroup label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--naks-text-secondary);
+}
+.currentValue {
+    font-weight: 600;
+    text-transform: capitalize;
+    color: var(--naks-primary);
+}
+.selectInput, .textInput {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.radioGroup {
+    display: flex;
+    gap: 20px;
+}
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: normal !important;
+}
+.warningText {
+    color: var(--naks-warning);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* User Profile Modal Styles */
+.profileContent {
+    line-height: 1.6;
+}
+.profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+.profileAvatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--naks-primary);
+}
+.profileName {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+.profileUsername {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    margin: 0;
+}
+.profileDetailsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.roleBadge, .statusBadge {
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+/* Redacted Profile Styles */
+.redacted {
+    text-align: center;
+}
+.redactedHeader {
+    margin-bottom: 20px;
+}
+.redactedIcon {
+    font-size: 3rem;
+    color: var(--naks-primary);
+    margin-bottom: 10px;
+}
+.profileInfo {
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.badge {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.redactedMessage {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--naks-gray-100);
+    border-radius: 8px;
+    font-style: italic;
+    color: var(--naks-text-secondary);
+}
+
+@media (max-width: 600px) {
+    .profileDetailsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ... (keep all existing styles) ... */
+
+/* --- Event Preview Modal Styles --- */
+.previewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.statGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.statBox {
+    background-color: var(--naks-gray-100);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.statIcon {
+    font-size: 2rem;
+    color: var(--naks-primary);
+}
+.statValue {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+}
+.statLabel {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+}
+.detailsSection {
+    border-top: 1px solid var(--naks-border-light);
+    padding-top: 20px;
+}
+.detailsSection h4 {
+    margin-bottom: 15px;
+}
+.statusBadge {
+    text-transform: capitalize;
+    font-weight: 600;
+}

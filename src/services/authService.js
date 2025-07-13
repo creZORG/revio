@@ -8,7 +8,7 @@ import {
   updateProfile
 } from 'firebase/auth';
 import { db } from '../utils/firebaseConfig.js'; // Import Firestore instance
-import { doc, setDoc } from 'firebase/firestore'; // Import Firestore functions
+import { doc, setDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Import Firestore functions
 
 // Define the global __app_id variable as per Canvas guidelines
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -20,25 +20,41 @@ const createUserProfileDocument = async (user, displayName, email) => {
     return;
   }
 
-  // Path for private user data: /artifacts/{appId}/users/{userId}/profiles/{userId}
-  const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, user.uid);
+  // Use a more standard and simplified path for user profiles
+  const userDocRef = doc(db, "users", user.uid);
 
   const userProfile = {
     uid: user.uid,
     email: email,
     displayName: displayName || email.split('@')[0], // Default display name
     role: 'user', // Default role for new signups
-    createdAt: new Date(),
-    // Add any other default profile fields here
+    createdAt: serverTimestamp(), // Use server timestamp for consistency
+    photoURL: user.photoURL || `https://i.pravatar.cc/150?u=${user.uid}` // Add a default avatar
   };
 
   try {
-    await setDoc(userDocRef, userProfile, { merge: true }); // Use merge to avoid overwriting existing fields
+    await setDoc(userDocRef, userProfile, { merge: true });
     console.log("User profile created/updated in Firestore for UID:", user.uid);
   } catch (error) {
     console.error("Error creating user profile in Firestore:", error.message);
-    throw new Error("Failed to create user profile in database."); // Re-throw for calling component
+    throw new Error("Failed to create user profile in database.");
   }
+};
+
+// --- NEW --- Function to log platform activity
+const logPlatformActivity = async (type, text) => {
+    try {
+        const activitiesRef = collection(db, 'platform_activities');
+        await addDoc(activitiesRef, {
+            type,
+            text,
+            timestamp: serverTimestamp()
+        });
+        console.log("Platform activity logged:", text);
+    } catch (error) {
+        console.error("Error logging platform activity:", error);
+        // We don't re-throw here as logging is a non-critical background task
+    }
 };
 
 
@@ -48,13 +64,16 @@ export const signupUser = async (email, password, displayName = null) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Optional: Update user profile (e.g., display name) in Firebase Auth
-    if (displayName) {
-      await updateProfile(user, { displayName: displayName });
-    }
+    const finalDisplayName = displayName || email.split('@')[0];
 
+    // Update user profile in Firebase Auth
+    await updateProfile(user, { displayName: finalDisplayName });
+    
     // Create user profile document in Firestore
-    await createUserProfileDocument(user, displayName, email);
+    await createUserProfileDocument(user, finalDisplayName, email);
+    
+    // --- NEW --- Log this activity for the admin dashboard
+    await logPlatformActivity('user', `New user <strong>${finalDisplayName}</strong> registered.`);
 
     // Send email verification
     await sendEmailVerification(user);
@@ -62,7 +81,7 @@ export const signupUser = async (email, password, displayName = null) => {
     return user;
   } catch (error) {
     console.error("Signup error:", error.message);
-    throw error; // Re-throw to be caught by the calling component
+    throw error;
   }
 };
 
@@ -75,7 +94,7 @@ export const loginUser = async (email, password) => {
     return user;
   } catch (error) {
     console.error("Login error:", error.message);
-    throw error; // Re-throw to be caught by the calling component
+    throw error;
   }
 };
 

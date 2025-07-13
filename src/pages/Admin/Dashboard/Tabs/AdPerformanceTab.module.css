@@ -1,0 +1,55 @@
+.performanceSection {
+    background-color: var(--naks-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+.analyticsContainer {
+    display: flex;
+    flex-direction: column;
+}
+.statBox {
+    background-color: var(--naks-primary-light);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.statValue {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+}
+.statLabel {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+}
+.recentClicksTitle {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 10px;
+}
+.clickList {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.clickList li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    border-bottom: 1px dashed var(--naks-border-light);
+}
+.userAgent {
+    font-size: 0.8rem;
+    color: var(--naks-text-light);
+    max-width: 50%;
+}

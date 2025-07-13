@@ -1,48 +1,52 @@
 import React, { useState } from 'react';
-import { useNotification } from '../../../../contexts/NotificationContext.jsx';
-import PosterCreatorForm from '../Forms/PosterCreatorForm.jsx';
-import CarouselManagerForm from '../Forms/CarouselManagerForm.jsx';
+import styles from './CreateContentTab.module.css';
+import { FaCalendarPlus, FaBullhorn, FaPenSquare } from 'react-icons/fa';
 
-import styles from '../../AdminDashboardPage.module.css'; // Re-use main admin dashboard styles
-import createContentTabStyles from './CreateContentTab.module.css'; // NEW: Dedicated CSS for CreateContentTab
+// Import the form components we will create next
+import CreateEventPosterForm from '../Forms/CreateEventPosterForm';
+import CreateAdForm from '../Forms/CreateAdForm';
+import CreateBlogForm from '../Forms/CreateBlogForm';
 
-import { FaImage, FaFilm } from 'react-icons/fa'; // Icons for sub-tabs
+const CreateContentTab = () => {
+  const [activeForm, setActiveForm] = useState('event'); // 'event', 'ad', or 'blog'
 
-const CreateContentTab = ({ currentUser, showNotification }) => {
-  const [activeSubTab, setActiveSubTab] = useState('poster-creator');
-
-  const renderSubTabContent = () => {
-    switch (activeSubTab) {
-      case 'poster-creator':
-        return <PosterCreatorForm currentUser={currentUser} showNotification={showNotification} />;
-      case 'carousel-manager':
-        return <CarouselManagerForm currentUser={currentUser} showNotification={showNotification} />;
+  const renderActiveForm = () => {
+    switch (activeForm) {
+      case 'event':
+        return <CreateEventPosterForm />;
+      case 'ad':
+        return <CreateAdForm />;
+      case 'blog':
+        return <CreateBlogForm />;
       default:
-        return <PosterCreatorForm currentUser={currentUser} showNotification={showNotification} />;
+        return <CreateEventPosterForm />;
     }
   };
 
   return (
-    <div className={styles.tabContainer}>
-      <h2 className={styles.sectionTitle}>Create & Manage Content</h2>
-
-      <div className={createContentTabStyles.subTabNav}> {/* Use dedicated CSS for sub-tabs */}
+    <div className={styles.createContentContainer}>
+      <div className={styles.subNavBar}>
         <button
-          onClick={() => setActiveSubTab('poster-creator')}
-          className={`${createContentTabStyles.subTabButton} ${activeSubTab === 'poster-creator' ? createContentTabStyles.active : ''}`}
+          onClick={() => setActiveForm('event')}
+          className={activeForm === 'event' ? styles.active : ''}
         >
-          <FaImage /> Create Poster
+          <FaCalendarPlus /> Create Event Poster
         </button>
         <button
-          onClick={() => setActiveSubTab('carousel-manager')}
-          className={`${createContentTabStyles.subTabButton} ${activeSubTab === 'carousel-manager' ? createContentTabStyles.active : ''}`}
+          onClick={() => setActiveForm('ad')}
+          className={activeForm === 'ad' ? styles.active : ''}
         >
-          <FaFilm /> Manage Carousel
+          <FaBullhorn /> Create Ad
+        </button>
+        <button
+          onClick={() => setActiveForm('blog')}
+          className={activeForm === 'blog' ? styles.active : ''}
+        >
+          <FaPenSquare /> Create Blog Post
         </button>
       </div>
-
-      <div className={createContentTabStyles.subTabContent}>
-        {renderSubTabContent()}
+      <div className={styles.formContent}>
+        {renderActiveForm()}
       </div>
     </div>
   );

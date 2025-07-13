@@ -1,0 +1,98 @@
+.creatorContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.formSection, .listSection {
+    background-color: var(--naks-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 500;
+    color: var(--naks-text-secondary);
+    margin-bottom: 8px;
+}
+
+.formGroup input[type="text"],
+.formGroup textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.customPathInput {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 8px;
+    padding-left: 15px;
+}
+
+.customPathInput span {
+    color: var(--naks-text-light);
+}
+
+.customPathInput input {
+    border: none;
+    flex-grow: 1;
+    padding: 12px 10px;
+}
+.customPathInput input:focus {
+    outline: none;
+}
+
+.customPathInput button {
+    background: none;
+    border: none;
+    border-left: 1px solid var(--naks-border-medium);
+    padding: 12px 15px;
+    cursor: pointer;
+    color: var(--naks-text-secondary);
+}
+
+.copyButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--naks-info);
+}
+/* ... (keep all existing styles) ... */
+
+/* --- NEW STYLES --- */
+.destinationInput {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 8px;
+    padding-left: 15px;
+}
+.destinationInput span {
+    color: var(--naks-text-light);
+    font-weight: 500;
+}
+.destinationInput input {
+    border: none;
+    flex-grow: 1;
+    padding: 12px 10px;
+}
+.destinationInput input:focus {
+    outline: none;
+}

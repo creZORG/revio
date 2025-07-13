@@ -1,69 +1,45 @@
-/* src/pages/Admin/Dashboard/Tabs/CreateContentTab.module.css */
-
-.subTabNav {
+.createContentContainer {
     display: flex;
-    justify-content: center;
-    border-bottom: 1px solid var(--naks-border-medium);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    flex-direction: column;
     gap: 20px;
+}
+
+.subNavBar {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--naks-gray-100);
+    border-radius: 12px;
     flex-wrap: wrap;
 }
 
-.subTabButton {
-    background: none;
+.subNavBar button {
+    flex-grow: 1;
+    padding: 12px 20px;
     border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
+    background-color: transparent;
+    border-radius: 8px;
     font-weight: 600;
-    color: var(--naks-text-secondary);
+    font-size: 1rem;
     cursor: pointer;
-    transition: color 0.2s ease, border-bottom-color 0.2s ease, background-color 0.2s ease;
-    border-bottom: 3px solid transparent;
     display: flex;
     align-items: center;
-    gap: 8px;
-    border-radius: 8px;
+    justify-content: center;
+    gap: 10px;
+    color: var(--naks-text-secondary);
+    transition: all 0.2s ease;
 }
-.subTabButton:hover {
-    color: var(--naks-text-primary);
-    background-color: var(--naks-gray-100);
-}
-.subTabButton.active {
+
+.subNavBar button.active {
+    background-color: var(--naks-surface);
     color: var(--naks-primary);
-    border-bottom-color: var(--naks-primary);
-    background-color: var(--naks-primary-light);
-}
-.subTabButton svg {
-    font-size: 1.1rem;
+    box-shadow: var(--shadow-sm);
 }
 
-.subTabContent {
-    /* Styles for the content area of the sub-tabs */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .subTabNav {
-        gap: 10px;
-        margin-bottom: 15px;
-        padding-bottom: 8px;
-    }
-    .subTabButton {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-        gap: 6px;
-    }
-}
-
-@media (max-width: 480px) {
-    .subTabNav {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .subTabButton {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-        justify-content: center;
-    }
+.formContent {
+    background-color: var(--naks-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
 }
