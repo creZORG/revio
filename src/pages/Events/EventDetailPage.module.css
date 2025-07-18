@@ -1,277 +1,79 @@
-/* src/pages/Events/EventDetailPage.module.css */
+/* /src/pages/Events/EventDetailPage.module.css */
 
-/* --- Event Details Page Container (Overall Page Width) --- */
 .eventDetailPageContainer {
     display: flex;
     flex-direction: column;
-    max-width: 1200px; /* FIX: Overall max width for the page content */
-    width: 80%; /* FIX: Occupy 80% of the full website width */
-    margin: 30px auto; /* Center the page content */
-    box-sizing: border-box; /* Include padding/border in width */
+    max-width: 1200px; 
+    width: 90%; 
+    margin: 30px auto; 
+    box-sizing: border-box; 
+    font-family: 'Inter', sans-serif;
+    color: var(--naks-text-primary); 
+    background-color: var(--naks-bg-light); 
+    transition: background-color var(--transition-speed, 0.3s) ease, color var(--transition-speed, 0.3s) ease;
 }
 
-/* --- Event Hero Section (Always Portrait-like Layout for PC) --- */
-.eventHeroSection {
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: 550px;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    padding: 0;
-    background-color: var(--naks-dark-bg);
-    box-shadow: var(--shadow-lg);
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 30px;
-}
+/* --- Event Hero Section Container (for image only) --- */
+/* The actual styles for .heroSection, .heroImage, .heroOverlay, and content within them are in EventHeroSection.module.css */
 
-.eventHeroImageWrapper {
-    width: 40%; /* FIX: Image wrapper takes 40% of hero width */
-    flex-shrink: 0;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    overflow: hidden;
-    padding: 0;
-}
-:global(body.dark-mode) .eventHeroImageWrapper {
-    background-color: #121212;
-}
 
-.eventHeroImage {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-.eventHeroContentWrapper {
-    width: 60%; /* FIX: Content takes 60% */
-    height: auto;
-    background: var(--naks-dark-bg);
+/* --- NEW: Event Summary Card (Below Hero Image) --- */
+.eventSummaryCard {
+    background-color: var(--naks-surface);
+    border-radius: var(--border-radius-lg); 
+    box-shadow: var(--shadow-lg); 
+    padding: 20px; 
+    margin-top: -80px; /* Pulls the card up over the hero image */
+    position: relative; 
+    z-index: 100; 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 30px;
-    color: var(--naks-white-surface);
-    text-align: left;
-    box-shadow: inset 5px 0 10px rgba(0,0,0,0.3);
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    gap: 8px; 
+    border: 1px solid var(--naks-border-light);
+    transition: background-color var(--transition-speed, 0.3s) ease;
 }
-:global(body.dark-mode) .eventHeroContentWrapper {
-    background-color: #121212;
+:global(body.dark-mode) .eventSummaryCard {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
 }
 
-.eventHeroContent {
-    max-width: 100%;
-    padding: 0;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 8px; /* Slightly more relaxed gap for readability */
-    margin-bottom: 20px;
-}
-
-.eventHeroTitle {
-    font-size: 1.1rem;
+.eventSummaryTitle {
+    font-size: 1.8rem; 
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 5px; 
     line-height: 1.2;
-    color: var(--naks-primary);
+    color: var(--naks-text-primary);
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
 }
 
-.eventHeroMeta {
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin-bottom: 2px;
+.eventSummaryMeta {
+    font-size: 0.95rem; 
+    color: var(--naks-text-secondary);
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    color: var(--naks-text-light);
-    line-height: 1.3;
-    flex-wrap: wrap;
+    gap: 8px; 
+    margin-bottom: 5px; 
 }
-.eventHeroMeta svg {
-    font-size: 0.95rem;
-    color: var(--naks-text-light);
+.eventSummaryMeta svg {
+    font-size: 1.1rem;
+    color: var(--naks-gray-400);
     flex-shrink: 0;
 }
 
-.naksYetuBranding {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--naks-white-surface);
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-.naksYetuBranding img {
-    height: 30px;
-    width: 30px;
-    border-radius: var(--border-radius-full);
-}
 
-.couponMessage {
-    background-color: var(--naks-info-light);
-    color: var(--naks-info);
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 15px;
-    border: 1px solid var(--naks-info);
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-.couponMessage svg {
-    font-size: 1.2rem;
-}
-
-/* FIX: Countdown Styling within Hero Section */
-.countdownContainer {
-    margin-top: 20px; /* Space from content above */
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: var(--naks-white-surface);
-    font-size: 1rem; /* Base font size for countdown section */
-    font-weight: 600;
-    background-color: rgba(0, 0, 0, 0.3); /* Subtle background for contrast */
-    padding: 15px 20px; /* Generous padding */
-    border-radius: 12px; /* Rounded corners */
-    width: fit-content; /* Shrink to content width */
-}
-.countdownDisplay { /* Wrapper for segments */
-    display: flex;
-    gap: 10px; /* Space between segments */
-    justify-content: flex-start;
-    align-items: baseline;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
-.countdownSegment {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.1;
-    background-color: rgba(255,255,255,0.1); /* Slightly lighter background for each segment */
-    padding: 8px 12px; /* Padding for each segment */
-    border-radius: 8px;
-}
-.countdownValue {
-    font-size: 2rem; /* Larger value font */
-    font-weight: 800;
-    color: var(--naks-primary); /* Primary color for values */
-    line-height: 1;
-}
-.countdownUnit {
-    font-size: 0.75rem; /* Smaller unit label */
-    text-transform: uppercase;
-    color: var(--naks-text-light);
-}
-.countdownSeparator {
-    font-size: 2rem; /* Matches value font size */
-    font-weight: 700;
-    color: var(--naks-white-surface);
-    margin: 0 5px; /* Spacing for separators */
-    line-height: 1;
-}
-.countdownEnded {
-    color: var(--naks-error);
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: center;
-    width: 100%;
-}
-
-/* NEW: Container for Action Component within Hero */
-.heroActionComponentContainer {
-    margin-top: auto; /* Push to bottom of content wrapper */
-    width: 100%;
-    /* The TicketPurchaseSection (or other action components) will be placed here */
-}
-/* Styles for elements inside TicketPurchaseSection when in hero */
-.heroActionComponentContainer .sectionContent { /* Override padding/shadow of TicketPurchaseSection */
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-}
-.heroActionComponentContainer .sidebarHeading { /* Style for action heading in hero */
-    font-size: 1.5rem;
-    color: var(--naks-white-surface);
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 10px;
-    text-align: left;
-}
-
-.heroActionComponentContainer .ticketTypeItem {
-    background-color: rgba(255,255,255,0.15); /* Lighter background for tickets in hero */
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: none;
-}
-.heroActionComponentContainer .ticketName,
-.heroActionComponentContainer .ticketPrice,
-.heroActionComponentContainer .ticketSalesInfo,
-.heroActionComponentContainer .ticketAvailability,
-.heroActionComponentContainer .ticketQty,
-.heroActionComponentContainer .quantityBtn {
-    color: var(--naks-white-surface);
-}
-.heroActionComponentContainer .ticketPrice {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    color: var(--naks-primary);
-}
-.heroActionComponentContainer .ticketSalesInfo svg {
-    color: rgba(255,255,255,0.6);
-}
-.heroActionComponentContainer .quantityBtn {
-    background-color: rgba(255,255,255,0.2);
-}
-.heroActionComponentContainer .quantityBtn:hover {
-    background-color: rgba(255,255,255,0.35);
-}
-.heroActionComponentContainer .totalSummary {
-    border-color: rgba(255,255,255,0.3);
-}
-.heroActionComponentContainer .totalSummary p,
-.heroActionComponentContainer .totalSummary span {
-    color: var(--naks-white-surface);
-}
-.heroActionComponentContainer .checkoutBtn {
-    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
-    color: var(--naks-white-surface);
-    /* Keep animation from global styles */
-}
-.heroActionComponentContainer .checkoutBtn:hover {
-    background-position: 100% 50%; /* Apply hover animation */
-}
-
-
-/* --- Share Icons & Save/Calendar (Below Hero) --- */
+/* --- Share Icons & Save/Calendar (Below Event Summary Card) --- */
 .shareIconsBelowHero {
     display: flex;
-    justify-content: flex-end; /* Align to right on PC */
-    gap: 15px;
-    padding: 0 30px;
-    max-width: 1400px;
-    margin: -15px auto 30px auto;
+    justify-content: center; 
+    gap: 15px; 
+    padding: 0 20px; 
+    margin: 20px auto; 
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap; 
 }
 
 .shareSmallButton {
@@ -279,28 +81,34 @@
     color: var(--naks-text-primary);
     border: 1px solid var(--naks-border-medium);
     border-radius: 8px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
+    padding: 10px 18px; 
+    font-size: 0.95rem; 
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    text-decoration: none; 
+    box-shadow: var(--shadow-sm); 
 }
 .shareSmallButton svg {
-    font-size: 1.1rem;
+    font-size: 1.2rem; 
 }
 .shareSmallButton:hover {
     background-color: var(--naks-gray-200);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md); 
 }
-.shareSmallButton.saved {
-    background-color: var(--naks-primary-light);
-    color: var(--naks-primary);
+.shareSmallButton.saved { 
+    background-color: var(--naks-primary); 
+    color: var(--naks-white-surface);
     border-color: var(--naks-primary);
 }
+.shareSmallButton.saved svg {
+    color: var(--naks-white-surface);
+}
+/* Dark mode overrides for share buttons */
 :global(body.dark-mode) .shareSmallButton {
     background-color: var(--naks-gray-300);
     border-color: var(--naks-border-medium);
@@ -310,98 +118,205 @@
     background-color: var(--naks-gray-400);
 }
 
-/* --- Main Content Area (PC - No Tabs, Mobile - Tabs) --- */
+
+/* --- Tab Navigation Container --- */
+.tabNavContainer {
+    width: 100%; 
+    background-color: var(--naks-surface);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 60px; /* Stick below navbar */
+    z-index: 100; 
+    border-bottom: 1px solid var(--naks-border-light);
+    transition: background-color var(--transition-speed, 0.3s) ease, border-color var(--transition-speed, 0.3s) ease, box-shadow var(--transition-speed, 0.3s) ease;
+}
+:global(body.dark-mode) .tabNavContainer {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.tabNav {
+    display: flex;
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    -ms-overflow-style: none;  
+    justify-content: flex-start; 
+    padding: 0 15px; 
+    white-space: nowrap; 
+    max-width: 100%; 
+    margin: 0 auto; 
+}
+.tabNav::-webkit-scrollbar {
+    display: none;
+}
+
+.tabNavItem {
+    background: none;
+    border: none;
+    padding: 14px 18px; 
+    font-size: 0.95rem; 
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0; 
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex; 
+    align-items: center;
+    gap: 8px; 
+}
+.tabNavItem:hover {
+    color: var(--naks-text-primary);
+    transform: translateY(-1px); 
+}
+.tabNavItem.active {
+    color: var(--naks-primary); 
+    font-weight: 700; 
+}
+.tabNavItem.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary)); 
+    border-radius: 2px 2px 0 0;
+}
+.tabIcon { 
+    font-size: 1.1rem;
+    color: var(--naks-text-secondary); 
+    transition: color 0.3s ease;
+}
+.tabNavItem.active .tabIcon {
+    color: var(--naks-primary); 
+}
+
+
+/* --- Main Content Area (for tab content and sidebar) --- */
 .mainWrapper {
     display: flex;
-    flex-direction: column;
-    padding: 30px;
-    gap: 30px;
+    flex-direction: column; 
+    padding: 20px; 
+    gap: 25px; 
     box-sizing: border-box;
-    max-width: 1400px;
+    max-width: 100%; 
     margin: 0 auto;
     width: 100%;
 }
 
-/* PC Specific Layout for Main Content */
-@media (min-width: 1025px) {
-    .mainWrapper.pcLayout {
-        display: grid;
-        grid-template-columns: 2fr 1fr; /* Two columns: main content (70%) and sidebar (30%) */
-        grid-template-rows: auto;
-        gap: 30px;
-        align-items: start;
-    }
+.mainContentColumn {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
 
-    .mainContentColumn {
-        grid-column: 1 / 2;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .sidebarColumn {
-        grid-column: 2 / 3;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        position: sticky;
-        top: 80px;
-        align-self: start;
-        height: fit-content;
-    }
+.sidebarColumn {
+    flex-shrink: 0; 
+    padding: 25px; 
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    position: sticky; 
+    top: 120px; 
+    align-self: flex-start; 
+    height: fit-content; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 5;
+    background-color: var(--naks-surface);
+    border: 1px solid var(--naks-border-light);
+}
+:global(body.dark-mode) .sidebarColumn {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+.sidebarHeading {
+    font-size: 1.4rem; 
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-light);
+}
+.ticketSummaryDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    margin-bottom: 20px;
+}
+.ticketSummaryItem {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem; 
+    color: var(--naks-text-secondary);
+}
+.ticketSummaryItem span:first-child {
+    font-weight: 600;
+    color: var(--naks-text-primary);
+}
+.ticketSummaryItem span:last-child {
+    font-weight: 700;
+    color: var(--naks-primary);
+}
+/* Checkout button uses commonStyles.btnPrimary */
+.checkoutButton {
+    width: 100%;
+    padding: 15px; 
+    font-size: 1.1rem; 
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg); 
 }
 
 
-/* Sections (reused by mobile tabs) */
+/* --- Common Section Content Styling (Used by tab components) --- */
 .sectionContent {
-    background-color: var(--naks-white-surface);
-    padding: 30px;
+    background-color: var(--naks-surface);
+    padding: 25px; 
     border-radius: 15px;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--naks-border-light);
 }
-
+:global(body.dark-mode) .sectionContent {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
 .sectionTitle {
-    font-size: 2rem;
+    font-size: 1.8rem; 
     font-weight: 700;
-    margin-bottom: 20px;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--naks-border-light);
-    color: var(--naks-text-primary);
 }
-
-.gradientText {
-    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
 .textContent p {
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 15px;
+    font-size: 0.95rem; 
+    line-height: 1.6;
+    margin-bottom: 10px;
     color: var(--naks-text-secondary);
 }
 .textContent p:last-child {
     margin-bottom: 0;
 }
-.textContent a {
-    color: var(--naks-secondary);
-    font-weight: 600;
-    text-decoration: underline;
-}
+/* Link styles for text content (defined in common Button.module.css now) */
 
-/* --- Gallery Section --- */
+
+/* --- Gallery Section Specific --- */
+.gallerySection {
+    /* Inherits sectionContent and sectionTitle */
+}
 .galleryGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+    gap: 10px;
 }
-
 .galleryItem {
     width: 100%;
-    height: 150px;
+    height: 100px; 
     object-fit: cover;
     border-radius: 10px;
     box-shadow: var(--shadow-sm);
@@ -409,29 +324,38 @@
     cursor: pointer;
 }
 .galleryItem:hover {
-    transform: scale(1.03);
+    transform: scale(1.05); 
     box-shadow: var(--shadow-md);
+}
+.noGalleryMessage {
+    text-align: center;
+    color: var(--naks-text-secondary);
+    padding: 20px;
+    font-size: 1rem;
 }
 
-/* --- Organizer Info Section --- */
+
+/* --- Organizer Section Specific --- */
 .organizerInfoSection {
-    background-color: var(--naks-white-surface);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--naks-border-light);
-    margin-top: 0;
+    display: flex;
+    flex-direction: column; 
+    gap: 15px;
+    align-items: center; 
+    text-align: center;
 }
+
 .organizerInfo {
     display: flex;
-    align-items: flex-start;
-    gap: 25px;
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px;
+    width: 100%;
 }
 
 .organizerLogo {
-    width: 100px;
-    height: 100px;
-    border-radius: var(--border-radius-full);
+    width: 90px; 
+    height: 90px;
+    border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--naks-primary);
     box-shadow: 0 0 0 3px var(--naks-primary-light);
@@ -440,376 +364,360 @@
 
 .organizerDetails {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
 }
 
 .organizerName {
-    font-size: 1.5rem;
+    font-size: 1.4rem; 
     font-weight: 700;
     color: var(--naks-text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .organizerBio {
-    font-size: 0.95rem;
+    font-size: 0.9rem; 
     line-height: 1.6;
     color: var(--naks-text-secondary);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+}
+
+.organizerContact p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+}
+.organizerContact p svg {
+    color: var(--naks-primary);
 }
 
 .organizerSocialLinks {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-top: 10px;
+    justify-content: center; 
 }
+
 .organizerSocialLink {
     color: var(--naks-text-secondary);
-    font-size: 1.5rem;
+    font-size: 1.4rem; 
     transition: color 0.2s ease, transform 0.2s ease;
 }
 .organizerSocialLink:hover {
     color: var(--naks-primary);
     transform: translateY(-2px);
 }
-.viewOtherEventsBtn {
+/* Buttons use commonStyles.btnPrimary/btnSecondary */
+.contactOrganizerBtn, .viewOtherEventsBtn { 
+    width: 100%; 
     margin-top: 15px;
 }
 
 
-/* --- Coupon Availability Message --- */
-.couponMessage {
-    background-color: var(--naks-info-light);
-    color: var(--naks-info);
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: 600;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    border: 1px solid var(--naks-info);
-}
-.couponMessage svg {
-    font-size: 1.5rem;
-}
+/* --- Ticket Purchase Section Specific (MOVED TO ITS OWN MODULE) --- */
+/* These styles are now in TicketPurchaseSection.module.css */
 
-/* --- Sponsors Section --- */
-.sponsorsSection {
-    background-color: var(--naks-white-surface);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--naks-border-light);
-    margin-top: 0;
-}
 
-.sponsorsGrid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.sponsorLogoContainer {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--naks-gray-100);
-    border: 1px solid var(--naks-border-light);
-}
-.sponsorLogoContainer:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
-
-.sponsorLogo {
-    max-width: 80%;
-    max-height: 80%;
-    object-fit: contain;
-}
-
-.sponsorNameTooltip {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: var(--naks-white-surface);
-    font-size: 0.8rem;
-    padding: 5px;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-}
-.sponsorLogoContainer:hover .sponsorNameTooltip {
-    opacity: 1;
-}
-
-/* --- Mobile Fixed Action Button (Purchase/Register/Attend) --- */
+/* --- Mobile Fixed Action Button --- */
 .mobileFixedActionButtonContainer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px 20px; 
     background-color: var(--naks-surface);
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    z-index: 900;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 900; 
     display: flex;
     justify-content: center;
     align-items: center;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    box-sizing: border-box;
+    transition: background-color var(--transition-speed, 0.3s) ease;
 }
-.mobileFixedActionButton {
+:global(body.dark-mode) .mobileFixedActionButtonContainer {
+    background-color: var(--naks-surface);
+}
+
+.mobileFixedActionButton { /* Reuses commonStyles.btnPrimary */
     width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    border-radius: 12px;
+    max-width: 400px; 
+    font-size: 1.15rem; 
+    padding: 15px 0; 
+    border-radius: 15px; 
+    box-shadow: var(--shadow-md); 
 }
 
 
-/* --- Mobile Layout (Tabs & Stacked Sections) --- */
-@media (max-width: 1024px) {
-    /* Event Hero Section Mobile */
-    .eventHeroSection {
-        height: auto;
-        min-height: 400px;
-        padding-bottom: 20px;
-        flex-direction: column;
-        border-radius: 0;
-        box-shadow: none;
-        margin-bottom: 20px;
-    }
-    .eventHeroSection.portraitLayout {
-        flex-direction: column;
-        height: auto;
-        min-height: 400px;
-        margin-bottom: 20px;
-        border-radius: 0;
-        box-shadow: none;
-    }
-    .eventHeroSection .eventHeroImageWrapper {
-        width: 100%;
-        height: 250px;
-        border-radius: 0;
-    }
-    .eventHeroSection .eventHeroImage {
-        border-radius: 0;
-    }
-    .eventHeroSection .eventHeroContentWrapper {
-        width: 100%;
-        padding: 20px;
-        align-items: center;
-        text-align: center;
-        border-radius: 0;
-        box-shadow: none;
-    }
-    .eventHeroSection .eventHeroContent {
-        align-items: center;
-        text-align: center;
-    }
-    .eventHeroSection .eventHeroTitle {
-        font-size: 2.5rem;
-    }
-    .eventHeroSection .eventHeroMeta {
-        font-size: 1rem;
-        flex-direction: column;
-        gap: 5px;
-    }
-    .eventHeroSection .countdownContainer {
-        text-align: center;
-        align-items: center;
-        margin-top: 15px;
-    }
-
-    /* Share Icons Below Hero (Mobile) */
-    .shareIconsBelowHero {
-        justify-content: center;
-        margin-top: -10px;
-        margin-bottom: 20px;
-        padding: 0 20px;
-        flex-wrap: wrap;
-    }
-    .shareMainButton, .shareActionButton {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-        gap: 6px;
-    }
-    .shareMainButton svg, .shareActionButton svg {
-        font-size: 1rem;
-    }
-
-
-    /* Main Content Layout Mobile */
-    .mainWrapper {
-        flex-direction: column;
-        padding: 20px;
-        gap: 20px;
-    }
-
-    /* Tabs Container for Mobile */
-    .tabsContainer {
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-    }
-    .tabNav {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-    .tabButton {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-    }
-
-    /* Sections within tabs on mobile (re-using .sectionContent) */
-    .sectionContent {
-        padding: 20px;
-    }
-    .sectionTitle {
-        font-size: 1.6rem;
-        margin-bottom: 15px;
-    }
-    .textContent p {
-        font-size: 0.9rem;
-    }
-
-    /* Gallery Mobile */
-    .galleryGrid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
-    }
-    .galleryItem {
-        height: 100px;
-    }
-
-    /* Organizer Info Mobile */
-    .organizerInfo {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 15px;
-    }
-    .organizerName {
-        font-size: 1.3rem;
-    }
-    .organizerBio {
-        font-size: 0.85rem;
-    }
-
-    /* Event Sidebar Actions (becomes a content block on mobile) */
-    .eventSidebarActions {
-        position: relative;
-        top: auto;
-        align-self: auto;
-        padding: 20px;
-    }
-
-    .sidebarHeading {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-
-    .ticketTypeItem {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .ticketQuantityControl {
-        width: 100%;
-        justify-content: center;
-    }
-    .totalSummary {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .totalSummary p {
-        width: 100%;
-        text-align: left;
-    }
-    .checkoutBtn, .contactOrganizerBtn {
-        padding: 12px;
-        font-size: 1rem;
-    }
-    .socialShareIcons {
-        justify-content: center;
-    }
-
-    /* Sponsors Section Mobile */
-    .sponsorsGrid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 10px;
-    }
-    .sponsorItem {
-        padding: 8px;
-        min-height: 160px;
-    }
-    .sponsorLogoContainer {
-        width: 70px;
-        height: 70px;
-    }
-    .sponsorInput {
-        font-size: 0.7rem;
-        padding: 4px 6px;
-    }
-    .removeSponsorBtn {
-        width: 18px;
-        height: 18px;
-        font-size: 0.6rem;
-    }
-    .addSponsorArea {
-        width: 100px;
-        height: 160px;
-    }
-    .addSponsorArea .fileUploadIcon {
-        font-size: 1.8rem;
-    }
-    .addSponsorArea .fileUploadText {
-        font-size: 0.7rem;
-    }
-}
+/* --- Responsive Design (Mobile-First) --- */
+/* Mobile is default styles (max-width: 767px) */
 
 @media (max-width: 480px) {
-    .eventHeroTitle {
-        font-size: 2rem;
+    .eventDetailPageContainer {
+        width: 95%; 
+        margin: 20px auto;
     }
-    .eventHeroMeta {
-        font-size: 0.9rem;
+    .eventSummaryCard {
+        padding: 15px;
+        margin-top: -60px; 
+        gap: 5px;
+    }
+    .eventSummaryTitle {
+        font-size: 1.6rem;
+    }
+    .eventSummaryMeta {
+        font-size: 0.85rem;
+        gap: 5px;
+    }
+    .shareIconsBelowHero {
+        gap: 10px;
+        padding: 0 10px;
+        margin: 15px auto;
+    }
+    .shareSmallButton {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .tabNav {
+        padding: 0 5px; 
+    }
+    .tabNavItem {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        gap: 5px;
+    }
+    .tabIcon {
+        font-size: 1rem;
+    }
+    .mainWrapper {
+        padding: 15px;
+        gap: 15px;
+    }
+    .sidebarColumn {
+        padding: 15px;
+    }
+    .sectionContent {
+        padding: 15px;
+    }
+    .sectionTitle {
+        font-size: 1.4rem;
+    }
+    .textContent p {
+        font-size: 0.8rem;
     }
     .galleryGrid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); 
+        gap: 5px;
     }
-    .sponsorsGrid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 8px;
+    .galleryItem {
+        height: 70px;
     }
-    .sponsorItem {
-        padding: 5px;
-        min-height: 140px;
-    }
-    .sponsorLogoContainer {
+    .organizerLogo {
         width: 60px;
         height: 60px;
     }
-    .sponsorInput {
-        font-size: 0.65rem;
-        padding: 3px 5px;
+    .organizerName {
+        font-size: 1.1rem;
     }
-    .addSponsorArea {
-        width: 80px;
+    .organizerBio {
+        font-size: 0.75rem;
+    }
+    .organizerSocialLink {
+        font-size: 1.1rem;
+    }
+    .contactOrganizerBtn, .viewOtherEventsBtn {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+    .mobileFixedActionButtonContainer {
+        padding: 10px 15px;
+    }
+    .mobileFixedActionButton {
+        padding: 10px 0;
+        font-size: 1rem;
+    }
+}
+
+
+/* --- Tablet / Small Desktop (min-width: 768px) Adjustments --- */
+@media (min-width: 768px) {
+    .eventDetailPageContainer {
+        width: 90%; 
+        margin: 40px auto; 
+    }
+
+    .eventSummaryCard {
+        padding: 25px;
+        margin-top: -100px; 
+        gap: 10px;
+    }
+    .eventSummaryTitle {
+        font-size: 2.5rem;
+    }
+    .eventSummaryMeta {
+        font-size: 1.1rem;
+        gap: 10px;
+    }
+    .shareIconsBelowHero {
+        justify-content: flex-end; 
+        margin-top: -30px; 
+        margin-bottom: 30px;
+        padding: 0; 
+    }
+    .shareSmallButton {
+        padding: 10px 20px;
+        font-size: 1rem;
+        max-width: 150px;
+    }
+
+    .tabNavContainer {
+        padding: 0; 
+    }
+    .tabNav {
+        justify-content: center; 
+        max-width: 900px; 
+        margin: 0 auto;
+        padding: 0;
+    }
+    .tabNavItem {
+        padding: 15px 25px;
+        font-size: 1rem;
+    }
+
+    .mainWrapper {
+        flex-direction: row; 
+        padding: 0; 
+        gap: 30px; 
+        align-items: flex-start; 
+        width: 100%; 
+    }
+
+    .mainContentColumn {
+        flex-basis: 65%; 
+        gap: 25px;
+        padding: 0 20px; 
+    }
+
+    .sidebarColumn {
+        flex-basis: 35%; 
+        padding: 25px;
+        top: 100px; 
+        height: fit-content;
+    }
+    .sidebarHeading {
+        font-size: 1.5rem;
+    }
+    .ticketSummaryDetails {
+        gap: 12px;
+    }
+    .ticketSummaryItem {
+        font-size: 1.05rem;
+    }
+    .checkoutButton {
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+
+    .sectionContent {
+        padding: 30px; 
+    }
+    .sectionTitle {
+        font-size: 2rem;
+    }
+    .textContent p {
+        font-size: 1rem;
+    }
+    
+    .galleryGrid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    .galleryItem {
         height: 140px;
+    }
+
+    .organizerInfo {
+        flex-direction: row; 
+        align-items: flex-start;
+        text-align: left;
+    }
+    .organizerName {
+        font-size: 1.5rem;
+    }
+    .organizerBio {
+        font-size: 0.95rem;
+    }
+    .organizerSocialLinks {
+        justify-content: flex-start; 
+    }
+    .contactOrganizerBtn, .viewOtherEventsBtn {
+        width: auto;
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+
+    .mobileFixedActionButtonContainer {
+        display: none; 
+    }
+}
+
+/* --- Desktop (min-width: 1025px) Adjustments --- */
+@media (min-width: 1025px) {
+    .eventDetailPageContainer {
+        max-width: 1400px;
+        width: 75%; 
+        margin: 50px auto; 
+    }
+
+    .eventHeroSection {
+        height: 600px; 
+        padding-bottom: 30px;
+    }
+    .eventHeroTitle {
+        font-size: 4rem;
+    }
+    .heroMeta {
+        font-size: 1.3rem;
+    }
+    .shareIconsBelowHero {
+        margin-top: -40px; 
+        margin-bottom: 50px;
+    }
+
+    .mainWrapper {
+        padding: 0;
+        gap: 50px; 
+    }
+    .mainContentColumn {
+        gap: 30px;
+        padding: 0 30px; 
+    }
+    .sidebarColumn {
+        padding: 40px;
+        top: 150px; 
+    }
+    .sectionTitle {
+        font-size: 2.5rem;
+    }
+    .galleryGrid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    .galleryItem {
+        height: 160px;
+    }
+}
+
+/* --- Very Large Desktop (min-width: 1440px) --- */
+@media (min-width: 1440px) {
+    .eventDetailPageContainer {
+        max-width: 1600px;
+        width: 70%;
     }
 }

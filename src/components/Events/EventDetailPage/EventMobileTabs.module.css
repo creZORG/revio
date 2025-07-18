@@ -1,0 +1,286 @@
+/* /src/components/Events/EventDetailPage/EventMobileTabs.module.css */
+
+.tabsContainer {
+    display: none; /* Hidden by default (mobile-first), shown by parent EventDetailPage */
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tabNav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--naks-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 10px;
+    margin-bottom: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+}
+
+.tabButton {
+    flex: 1;
+    min-width: 80px;
+    background: none;
+    border: none;
+    padding: 10px 12px;
+    border-radius: var(--border-radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column; /* Stack icon and text */
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.tabButton:hover {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+}
+
+.tabButton.active {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.tabButton svg {
+    font-size: 1.2rem;
+    color: var(--naks-text-secondary);
+    transition: color 0.2s ease;
+}
+.tabButton.active svg {
+    color: var(--naks-white-surface);
+}
+.tabButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.tabContent {
+    /* This section will contain the actual content of the active tab */
+}
+
+
+/* Reused styles from other sections (for content rendered by renderTabContent) */
+.gradientText {
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.textContent p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    color: var(--naks-text-secondary);
+}
+.textContent p:last-child {
+    margin-bottom: 0;
+}
+.textLink {
+    color: var(--naks-secondary);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Gallery styles (from EventMainContent.module.css) */
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+.galleryItem {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Organizer Info styles (from EventMainContent.module.css) */
+.organizerInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+.organizerLogo {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--border-radius-full);
+    object-fit: cover;
+    border: 3px solid var(--naks-primary);
+    box-shadow: 0 0 0 3px var(--naks-primary-light);
+}
+.organizerDetails {
+    flex-grow: 1;
+}
+.organizerName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+}
+.organizerBio {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--naks-text-secondary);
+}
+.organizerSocialLinks {
+    display: flex;
+    gap: 15px;
+}
+.organizerSocialLink {
+    color: var(--naks-text-secondary);
+    font-size: 1.5rem;
+}
+
+/* Action section (reused by placeholder action components) */
+.actionSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+.sidebarHeading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-medium);
+    width: 100%;
+}
+.helperText {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+}
+.actionButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+}
+
+
+/* --- PC View Tabs (Vertical Navigation in Left Column) --- */
+@media (min-width: 1025px) {
+    .tabsContainer.pcViewTabs {
+        display: flex; /* Show on PC */
+        flex-direction: column; /* Stack tabs vertically */
+        gap: 0; /* No gap between tab nav and content */
+        background-color: transparent; /* Card styling is handled by .pcTabsContainer in parent */
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        margin-bottom: 0; /* No margin here */
+        height: 100%; /* Fill height of its parent (pcTabsContainer) */
+    }
+
+    .pcViewTabs .tabNav {
+        flex-direction: column; /* Stack tab buttons vertically */
+        justify-content: flex-start;
+        align-items: flex-start; /* Align tabs to left */
+        border-bottom: none; /* No horizontal border */
+        border-right: 1px solid var(--naks-border-light); /* Vertical separator */
+        padding: 0; /* Remove padding */
+        gap: 0; /* No gap between nav items */
+        margin-bottom: 0; /* No margin-bottom */
+        width: 100%; /* Fill width of its container */
+    }
+    .pcViewTabs .tabButton {
+        width: 100%; /* Full width within the sidebar */
+        min-width: unset; /* Remove min-width */
+        padding: 18px 25px; /* NEW: Bigger padding for PC tabs */
+        font-size: 1.1rem; /* NEW: Larger font size */
+        flex-direction: row; /* Icon and text side-by-side */
+        justify-content: flex-start; /* Align left */
+        gap: 15px; /* NEW: More space between icon and text */
+        border-radius: 0; /* No border-radius for vertical stack */
+        border-left: 5px solid transparent; /* Highlight border on left */
+    }
+    .pcViewTabs .tabButton:hover {
+        background-color: var(--naks-gray-100);
+        color: var(--naks-text-primary);
+    }
+    .pcViewTabs .tabButton.active {
+        background: var(--naks-primary-light);
+        color: var(--naks-primary);
+        border-left-color: var(--naks-primary);
+        box-shadow: none;
+    }
+    .pcViewTabs .tabButton svg {
+        font-size: 1.5rem; /* NEW: Larger icons */
+        color: var(--naks-text-secondary);
+    }
+    .pcViewTabs .tabButton.active svg {
+        color: var(--naks-primary);
+    }
+    /* Hide scrollbar for tabNav if content overflows (optional, if you have many tabs) */
+    .pcViewTabs .tabNav::-webkit-scrollbar {
+        display: none;
+    }
+    .pcViewTabs .tabNav {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .pcViewTabs .tabContent {
+        flex-grow: 1; /* Allow content to fill remaining space */
+        padding: 30px; /* Padding for the content of the active tab */
+        border-top: 1px solid var(--naks-border-light); /* Separator from tab nav */
+        border-radius: 15px; /* Match section content border radius */
+        background-color: var(--naks-surface); /* Match section content background */
+        box-shadow: var(--shadow-md); /* Match section content shadow */
+        border: 1px solid var(--naks-border-light); /* Match section content border */
+    }
+    /* Styles for content sections rendered inside tabContent */
+    .pcViewTabs .sectionContent {
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+    }
+    .pcViewTabs .sectionTitle {
+        font-size: 1.8rem; /* Consistent with other section titles on PC */
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--naks-border-light);
+    }
+}
+
+
+/* --- Responsive Adjustments (Mobile) --- */
+@media (max-width: 1024px) {
+    .tabsContainer { /* Show on mobile */
+        display: flex;
+    }
+    .pcViewTabs { /* Hide PC view tabs on mobile */
+        display: none;
+    }
+}
+
+@media (max-width: 767px) { /* Smaller mobile */
+    .tabButton {
+        font-size: 0.75rem;
+        padding: 6px 8px;
+    }
+    .tabButton svg {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) { /* Very small mobile */
+    .tabButton {
+        font-size: 0.7rem;
+        padding: 5px 6px;
+    }
+    .tabButton svg {
+        font-size: 0.8rem;
+    }
+}

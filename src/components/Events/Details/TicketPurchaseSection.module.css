@@ -1,0 +1,201 @@
+/* /src/components/Events/Details/TicketPurchaseSection.module.css */
+
+/* --- Ticket Purchase Section Specific --- */
+/* This section will inherit sectionContent and sectionTitle from EventDetailPage.module.css */
+
+.ticketTypesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Base gap */
+    margin-top: 15px;
+}
+.ticketItem {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    padding: 15px; /* Standard padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease; /* Smooth transition for hover/active */
+}
+.ticketItem:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md); /* Lift effect on hover */
+}
+/* Dark mode for ticket item background */
+:global(body.dark-mode) .ticketItem {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-gray-300);
+}
+
+.ticketItem.disabled {
+    opacity: 0.6;
+    pointer-events: none; /* Disable interactions */
+    filter: grayscale(80%); /* Visually indicate disabled */
+}
+
+.ticketInfo {
+    flex-grow: 1; /* Allows info to take available space */
+    padding-right: 10px; /* Space before quantity control */
+}
+.ticketName {
+    font-size: 1.1rem; 
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin-bottom: 3px;
+}
+.ticketPrice {
+    font-size: 1.2rem; 
+    font-weight: 700;
+    color: var(--naks-primary); /* Primary color for price */
+    margin-bottom: 5px;
+}
+.ticketSalesInfo {
+    font-size: 0.85rem; 
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.ticketSalesInfo svg {
+    font-size: 0.9rem;
+    color: var(--naks-gray-400);
+}
+/* Status colors for sales info text */
+.ticketSalesInfo.statusActive { color: var(--naks-success); }
+.ticketSalesInfo.statusUpcoming { color: var(--naks-info); }
+.ticketSalesInfo.statusEnded { color: var(--naks-error); }
+
+.ticketDescription {
+    font-size: 0.85rem;
+    color: var(--naks-text-light);
+    margin-top: 5px;
+    line-height: 1.4;
+}
+.ticketAvailability {
+    font-size: 0.85rem;
+    color: var(--naks-text-secondary);
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.ticketQuantityControl {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons and quantity */
+    flex-shrink: 0; /* Prevent control from shrinking */
+}
+.quantityBtn {
+    width: 36px; /* Slightly larger buttons for better touch */
+    height: 36px;
+    font-size: 1.1rem;
+    border-radius: var(--border-radius-full);
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm); /* Subtle shadow on buttons */
+}
+.quantityBtn:hover { 
+    background-color: var(--naks-gray-300); 
+    transform: scale(1.05); 
+    box-shadow: var(--shadow-md);
+}
+.quantityBtn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+    box-shadow: none;
+    background-color: var(--naks-gray-200); /* Ensure disabled state background */
+}
+/* Dark mode for quantity buttons */
+:global(body.dark-mode) .quantityBtn {
+    background-color: var(--naks-gray-300);
+    color: var(--naks-text-primary);
+}
+:global(body.dark-mode) .quantityBtn:hover {
+    background-color: var(--naks-gray-400);
+}
+
+
+.ticketQty {
+    font-size: 1.2rem; /* Larger font for quantity */
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    min-width: 25px; /* Ensure space for 2-digit quantities */
+    text-align: center;
+}
+.noTicketsMessage {
+    text-align: center;
+    color: var(--naks-text-secondary);
+    padding: 20px;
+    font-size: 1rem;
+    background-color: var(--naks-gray-100);
+    border-radius: 10px;
+}
+
+/* --- Responsive Adjustments for Ticket Section --- */
+@media (max-width: 767px) { /* Mobile */
+    .ticketTypesList {
+        gap: 10px;
+    }
+    .ticketItem {
+        flex-direction: column; /* Stack info and quantity control */
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+    }
+    .ticketInfo {
+        width: 100%; /* Full width for info when stacked */
+        padding-right: 0;
+        margin-bottom: 10px; /* Space before quantity control */
+    }
+    .ticketQuantityControl {
+        width: 100%; /* Full width for controls */
+        justify-content: center; /* Center buttons */
+        gap: 15px; /* More space for buttons */
+    }
+    .quantityBtn {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    .ticketQty {
+        font-size: 1.1rem;
+    }
+    .ticketName {
+        font-size: 1rem;
+    }
+    .ticketPrice {
+        font-size: 1.1rem;
+    }
+    .ticketSalesInfo, .ticketDescription, .ticketAvailability {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) { /* Small Mobile */
+    .ticketItem {
+        padding: 10px;
+    }
+    .ticketName {
+        font-size: 0.95rem;
+    }
+    .ticketPrice {
+        font-size: 1rem;
+    }
+    .quantityBtn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+    .ticketQty {
+        font-size: 1rem;
+    }
+}

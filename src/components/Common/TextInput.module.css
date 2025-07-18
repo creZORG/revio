@@ -1,0 +1,54 @@
+/* /src/components/Common/TextInput.module.css */
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 15px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--naks-text-secondary); /* Icon color */
+    font-size: 1rem;
+    z-index: 1; /* Ensure icon is above input */
+}
+
+.hasIcon .inputWithPadding {
+    padding-left: 45px; /* Add padding to input when an icon is present */
+}
+
+.inputError {
+    border-color: var(--naks-error) !important;
+    box-shadow: 0 0 0 3px rgba(var(--sys-error-rgb), 0.2) !important;
+}
+
+.helperText {
+    font-size: 0.85rem;
+    color: var(--naks-text-light); /* Lighter text color */
+    font-style: italic;
+    margin-top: 5px; /* Space below input */
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments for icon padding */
+@media (max-width: 768px) {
+    .hasIcon .inputWithPadding {
+        padding-left: 40px; /* Adjust padding for smaller screens */
+    }
+    .inputIcon {
+        left: 12px;
+        font-size: 0.95rem;
+    }
+}
+@media (max-width: 480px) {
+    .hasIcon .inputWithPadding {
+        padding-left: 35px;
+    }
+    .inputIcon {
+        left: 10px;
+        font-size: 0.9rem;
+    }
+}

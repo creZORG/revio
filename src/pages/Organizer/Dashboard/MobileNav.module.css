@@ -1,0 +1,240 @@
+/* src/pages/Organizer/Dashboard/MobileNav.module.css */
+
+/* --- Top Bar Styles --- */
+.topBar {
+  width: 100%;
+  /* NEW: Use a subtle background, not fixed */
+  background-color: var(--naks-white-surface); 
+  color: var(--naks-text-primary); /* Default text color for TopBar */
+  padding: 0.8rem 1rem; /* Adjust padding as needed */
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute items */
+
+  /* NEW: Centering the TopBar content on larger screens */
+  max-width: 1200px; /* Example max width, adjust as per your design */
+  margin: 0 auto; /* Center the top bar itself */
+  border-radius: var(--border-radius-lg); /* Rounded corners */
+  margin-top: 1rem; /* Space below global Navbar */
+  margin-bottom: 1rem; /* Space above content */
+}
+
+/* Hide menu button on desktop */
+@media (min-width: 768px) {
+  .menuButton {
+    display: none;
+  }
+}
+
+/* --- Sidebar Styles --- */
+.sidebar {
+  position: fixed; /* Always fixed on the left */
+  top: 0; /* Starts at the very top of the viewport */
+  height: 100%;
+  /* NEW: Background for glasmorphism - slightly more opaque for better text contrast */
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent */
+  backdrop-filter: blur(10px); /* Glasmorphism blur effect */
+  border-right: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass effect */
+  color: var(--naks-white-surface); /* White text for sidebar content */
+  padding: 1.5rem 0.5rem; /* Adjusted padding to accommodate icons */
+  box-shadow: var(--shadow-md);
+  transition: width var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out; /* Use transform for smooth slide */
+  z-index: 1001; /* Ensure it's above other content */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Hide horizontal scrollbar when collapsed */
+  
+  /* Mobile: Completely hidden by default */
+  width: var(--sidebar-width-desktop); /* Keep full width for transition */
+  transform: translateX(-100%); /* Start completely off-screen to the left */
+}
+
+/* Mobile: Open state - triggered by toggle */
+.sidebarOpen {
+  transform: translateX(0); /* Slide fully into view */
+}
+
+/* Overlay for mobile sidebar when open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none; /* Hidden by default */
+}
+
+/* Show overlay only when sidebar is open */
+.sidebarOpen + .overlay { 
+    display: block;
+}
+
+.sidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-left: 0.5rem; 
+}
+
+.sidebarHeader h2 {
+  white-space: nowrap;
+  opacity: 0; /* Hidden by default when collapsed */
+  transition: opacity var(--transition-speed) ease-in-out;
+  /* Apply Naks Yetu gradient to title */
+  background: linear-gradient(to right, var(--naks-secondary), var(--naks-primary)); /* Pink to Orange */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent; /* Fallback for browsers */
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.sidebarOpen .sidebarHeader h2 {
+  opacity: 1; /* Visible when open */
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--naks-white-surface);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: none; /* Hide by default */
+}
+
+.sidebarOpen .closeButton {
+  display: block; /* Show close button when sidebar is open */
+}
+
+/* Hide close button on desktop (even if sidebar is open) */
+@media (min-width: 768px) {
+  .closeButton {
+    display: none !important; /* Force hide on desktop */
+  }
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.navItem {
+  display: flex; /* Use flex for icon and text */
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--naks-white-surface); /* Default white for sidebar content */
+  padding: 0.8rem 1rem; /* Padding for the nav item itself */
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: var(--border-radius-md);
+  transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
+}
+
+.navItem:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle white hover background */
+  color: var(--naks-white-surface);
+}
+
+/* Active tab with gradient background */
+.activeNavItem {
+  background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary)); /* Pink to Orange Gradient */
+  color: var(--naks-white-surface);
+  font-weight: bold;
+}
+
+.disabledNavItem {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navItemIcon {
+  margin-right: 0; /* No margin-right when collapsed mobile */
+  min-width: 24px; /* Ensure icon has consistent space */
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  transition: margin-right var(--transition-speed) ease-in-out; 
+  width: 24px;
+  height: 24px;
+}
+
+.sidebarOpen .navItemIcon {
+  margin-right: 1rem; /* Add margin when sidebar opens */
+}
+
+.navItemText {
+  white-space: nowrap; /* Prevent text wrapping */
+  opacity: 0; /* Hidden by default on mobile (collapsed) */
+  pointer-events: none; /* Prevent interaction when hidden */
+  transition: opacity var(--transition-speed) ease-in-out;
+  flex-grow: 1; /* Allows text to take remaining space */
+}
+
+.sidebarOpen .navItemText {
+  opacity: 1; /* Visible when sidebar is open on mobile */
+  pointer-events: auto; /* Allow interaction when visible */
+}
+
+/* Desktop Sidebar Styles (Always open, full text) */
+@media (min-width: 768px) {
+  .sidebar {
+    width: var(--sidebar-width-desktop); /* Full width on desktop */
+    left: 0; /* Always visible */
+    padding-top: 1rem; /* Adjust padding for desktop */
+    box-shadow: none; /* No shadow needed as it's part of the main layout */
+    z-index: auto; /* Reset z-index */
+    background-color: rgba(0, 0, 0, 0.7); /* Maintain dark glasmorphism */
+    transform: translateX(0); /* Always visible on desktop */
+  }
+
+  .overlay {
+    display: none !important;
+  }
+
+  .sidebarHeader {
+    justify-content: center; /* Center title on desktop */
+    padding-left: 0;
+  }
+
+  .sidebarHeader h2 {
+      opacity: 1; /* Always visible on desktop */
+  }
+
+  .navItem {
+    padding: 0.8rem 1.5rem; /* Adjust padding for desktop */
+    color: var(--naks-white-surface); /* White text on dark translucent background */
+  }
+
+  .navItem:hover:not(:disabled) {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--naks-white-surface);
+  }
+
+  .activeNavItem {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+  }
+
+  .navItemIcon {
+    margin-right: 1rem; /* Always has margin on desktop */
+    width: 20px;
+    height: 20px;
+  }
+  .navItemIcon svg {
+    width: 20px;
+    height: 20px;
+    color: var(--naks-white-surface);
+  }
+
+  .navItemText {
+    opacity: 1; /* Always visible on desktop */
+    pointer-events: auto;
+  }
+}

@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getFunctions } from 'firebase/functions';
+import { getFunctions } from 'firebase/functions'; // Removed connectFunctionsEmulator import as it's no longer used
 
 const firebaseConfig = {
   apiKey: "AIzaSyAwP2YVy_Z2y4fJ52tWyZsvnyya2HAMnHk",
@@ -16,7 +16,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig); // FIX: Export 'app' here
+export const app = initializeApp(firebaseConfig); 
 
 // Initialize services that your frontend will interact with
 export const auth = getAuth(app);
@@ -24,13 +24,5 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
-// --- Firebase Emulator Setup (for local development) ---
-/*
-if (import.meta.env.MODE === 'development') {
-  console.log('Connecting to Firebase Emulators...');
-  // connectAuthEmulator(auth, 'http://localhost:9099');
-  // connectFirestoreEmulator(db, 'localhost', 8080);
-  // connectStorageEmulator(storage, 'localhost', 9199');
-  // connectFunctionsEmulator(functions, 'localhost', 5001');
-}
-*/
+// REMOVED: The entire if (import.meta.env.DEV) block.
+// This ensures your app always connects to the live Firebase project.

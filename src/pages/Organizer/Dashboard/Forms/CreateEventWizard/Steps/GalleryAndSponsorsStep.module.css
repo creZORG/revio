@@ -1,0 +1,118 @@
+/* src/pages/Organizer/Dashboard/Tabs/CreateEventWizard.module.css */
+
+/* General Step Container */
+.gallerySponsorsStepContainer {
+    @apply p-6 bg-white rounded-lg shadow-md;
+    /* Tailwind classes for padding, background, rounded corners, and shadow */
+}
+
+/* Section Card - used for both Gallery and Sponsors sections */
+.sectionCard {
+    @apply bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6;
+    /* Light background, padding, rounded corners, border, and bottom margin */
+}
+
+/* Section Header - for titles within each card */
+.sectionHeader {
+    @apply flex items-center gap-3 mb-4 text-gray-800;
+    /* Flex layout, spacing, bottom margin, and text color */
+}
+
+.sectionTitle {
+    @apply text-lg font-semibold;
+    /* Font size and weight for section titles */
+}
+
+/* Gallery Upload Area */
+.galleryUploadAreaContainer {
+    @apply mb-6;
+    /* Bottom margin */
+}
+
+/* Gallery Preview Grid */
+.galleryPreviewGrid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6;
+    /* Responsive grid for image previews with spacing and top margin */
+}
+
+.galleryPreviewItem {
+    @apply relative border border-gray-300 rounded-lg overflow-hidden shadow-sm;
+    /* Relative positioning for button, border, rounded corners, overflow hidden, and shadow */
+    padding-top: 75%; /* 4:3 Aspect Ratio (height / width * 100%) */
+}
+
+.galleryPreviewImage {
+    @apply absolute inset-0 w-full h-full object-cover;
+    /* Cover the entire item, maintain aspect ratio */
+}
+
+.removeGalleryImageButton {
+    @apply absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 transition-colors duration-200;
+    @apply flex items-center justify-center; /* Center icon */
+    /* Absolute positioning, background, text color, padding, rounded, hover effect, transition */
+    z-index: 10; /* Ensure button is above image */
+}
+
+/* Sponsors Container */
+.sponsorsContainer {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+    /* Responsive grid for sponsor items with spacing */
+}
+
+/* Sponsor Item Card */
+.sponsorItemCard {
+    @apply bg-white p-5 rounded-lg border border-gray-200 shadow-sm;
+    /* Background, padding, rounded corners, border, and shadow */
+}
+
+.removeSponsorButton {
+    @apply bg-red-100 text-red-600 p-1.5 rounded-full hover:bg-red-200 transition-colors duration-200;
+    @apply flex items-center justify-center; /* Center icon */
+    /* Background, text color, padding, rounded, hover effect, transition */
+}
+
+/* Common Form Styles (used by commonFormStyles import) */
+.formGroup {
+    @apply mb-4;
+    /* Bottom margin for form groups */
+}
+
+.formLabel {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+    /* Display block, font size, weight, color, and bottom margin */
+}
+
+/* Button Group for navigation */
+.buttonGroup {
+    @apply flex justify-between mt-8;
+    /* Flex layout, space between, top margin */
+}
+
+/* Base button styles for primary/secondary actions */
+.prevButton,
+.nextButton,
+.secondaryButton {
+    @apply px-6 py-3 rounded-md font-semibold transition-colors duration-200 flex items-center gap-2 justify-center;
+    /* Padding, rounded, font weight, transition, flex, gap, center content */
+}
+
+.prevButton {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+    /* Background, text color, hover effect */
+}
+
+.nextButton {
+    @apply bg-indigo-600 text-white hover:bg-indigo-700;
+    /* Background, text color, hover effect */
+}
+
+.secondaryButton {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+    /* Background, text color, hover effect */
+}
+
+.disabledButton {
+    @apply opacity-50 cursor-not-allowed;
+    /* Reduced opacity and no-allowed cursor for disabled state */
+}
+

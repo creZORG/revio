@@ -1,0 +1,198 @@
+/* src/pages/Organizer/Dashboard/TopBar.module.css */
+
+.topBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Default for desktop */
+  width: 100%;
+  padding: 0 1rem; /* Padding for desktop, and also applies to mobile via inheritance */
+  position: relative; /* For positioning mobileRightContentAbsolute */
+}
+
+/* --- Desktop Layout Container --- */
+.desktopLayout {
+  display: flex; /* Flex container for desktop sections */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Take full width of topBarInner */
+}
+
+.desktopLeftSection,
+.desktopCenterSection,
+.desktopRightSection {
+  display: flex; /* Make these sections flex containers */
+  align-items: center;
+}
+
+.desktopLeftSection {
+  gap: 1rem;
+  flex-basis: 30%; /* Allocate space */
+}
+
+.desktopToggleButton {
+    background: none;
+    border: none;
+    color: var(--naks-text-primary); /* Black icon for light background */
+    cursor: pointer;
+    padding: 0.5rem;
+    display: block; /* Always display on desktop */
+}
+
+.desktopToggleButton svg {
+    width: 24px; /* Standard size for desktop toggle */
+    height: 24px;
+}
+
+
+.tabTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--naks-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desktopCenterSection {
+  gap: 0.5rem;
+  flex-grow: 1;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.organizerName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--naks-secondary), var(--naks-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.batteryIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--naks-text-secondary);
+}
+
+.profilePicture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--naks-border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--naks-gray-100);
+}
+
+.profilePicture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profilePicture svg { /* Style for UserCircleIcon if used */
+    width: 100%;
+    height: 100%;
+}
+
+
+.notificationButton {
+  background: none;
+  border: none;
+  color: var(--naks-text-primary);
+  cursor: pointer;
+  position: relative;
+  padding: 0.25rem;
+}
+
+.notificationButton:hover {
+    color: var(--naks-secondary);
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--sys-error);
+  color: white;
+  border-radius: 50%;
+  padding: 0.2em 0.5em;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/* --- Mobile Layout Container --- */
+@media (max-width: 767px) {
+  .desktopLayout {
+    display: none; /* Hide desktop layout on mobile */
+  }
+
+  .mobileLayout {
+    display: flex; /* Show mobile layout on mobile */
+    align-items: center;
+    justify-content: center; /* Center the toggle button */
+    width: 100%; /* Take full width */
+    height: var(--navbar-height-mobile); /* Give it a defined height */
+  }
+
+  .mobileToggleButton {
+    background: none;
+    border: none;
+    color: var(--naks-text-primary); /* Black icon for light background */
+    cursor: pointer;
+    padding: 0.5rem;
+    display: block !important; /* FORCE DISPLAY */
+    z-index: 9999 !important; /* FORCE ON TOP */
+  }
+  .mobileToggleButton svg {
+      width: 32px !important; /* Even larger icon for extreme visibility */
+      height: 32px !important;
+      color: var(--naks-text-primary); /* Explicit black color for contrast */
+  }
+
+  .mobileRightContentAbsolute { /* Style for content on the right of mobile TopBar */
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: absolute; /* Position absolutely relative to topBarInner */
+    right: 0rem; /* NEW: Set right to 0 to align with edge of topBarInner */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    /* NEW: Add some padding to prevent content from touching the very edge */
+    padding-right: 1rem; 
+  }
+
+  /* Adjustments for elements within mobileRightContentAbsolute */
+  .profilePicture {
+    width: 32px;
+    height: 32px;
+  }
+  .profilePicture svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .notificationButton {
+    padding: 0.1rem;
+  }
+  .notificationButton svg {
+    width: 20px;
+    height: 20px;
+  }
+  .notificationBadge {
+    font-size: 0.6rem;
+    top: -3px;
+    right: -3px;
+    min-width: 1.2em;
+  }
+}

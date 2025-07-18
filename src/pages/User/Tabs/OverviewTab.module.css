@@ -1,0 +1,165 @@
+/* /src/pages/User/Tabs/OverviewTab.module.css */
+
+/* --- Stat Cards --- */
+.statCardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.statCard {
+    padding: 25px;
+    border-radius: 15px; /* Consistent with new design */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--naks-border-light);
+    background-color: var(--naks-surface); /* Ensure background is set */
+}
+
+.statCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.statCard svg { /* Use svg for react-icons */
+    font-size: 36px;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Gradient icon */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.statCard h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+}
+
+.statCard p {
+    font-size: 16px;
+    color: var(--naks-text-secondary);
+}
+
+/* --- Recent Activity Feed (Optional, if added later) --- */
+.activityFeed {
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--naks-border-light);
+    background-color: var(--naks-surface);
+}
+
+.activityItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--naks-border-light);
+}
+
+.activityItem:last-child {
+    border-bottom: none;
+}
+
+.activityIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    box-shadow: var(--shadow-sm);
+    /* Specific background/color will be inline or based on activity type */
+}
+
+.activityText {
+    flex-grow: 1;
+    font-size: 15px;
+    color: var(--naks-text-primary);
+}
+
+.activityText strong {
+    font-weight: 600;
+    color: var(--naks-primary);
+}
+
+.activityTime {
+    font-size: 13px;
+    color: var(--naks-text-light);
+}
+
+.noActivityMessage {
+    text-align: center;
+    padding: 20px;
+    color: var(--naks-text-secondary);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .statCardsGrid {
+        grid-template-columns: 1fr; /* Stack stat cards on mobile */
+    }
+    .statCard h3 {
+        font-size: 28px;
+    }
+    .statCard svg {
+        font-size: 30px;
+    }
+    .statCard p {
+        font-size: 15px;
+    }
+
+    .activityItem {
+        padding: 10px 0;
+        gap: 10px;
+    }
+    .activityIcon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    .activityText {
+        font-size: 14px;
+    }
+    .activityTime {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .statCard {
+        padding: 20px;
+    }
+    .statCard h3 {
+        font-size: 24px;
+    }
+    .statCard svg {
+        font-size: 28px;
+    }
+    .statCard p {
+        font-size: 14px;
+    }
+    .activityFeed {
+        padding: 15px;
+    }
+    .activityItem {
+        gap: 8px;
+    }
+    .activityIcon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+    .activityText {
+        font-size: 13px;
+    }
+    .activityTime {
+        font-size: 11px;
+    }
+}

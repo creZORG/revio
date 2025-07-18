@@ -1,230 +1,108 @@
-import React, { useState, useEffect } from 'react';
-import { db } from '../../utils/firebaseConfig.js';
-import { collection, query, where, getDocs, orderBy, Timestamp } from 'firebase/firestore';
+// /src/components/Events/EventList.jsx
+import React, { useEffect, useState } from 'react';
 import EventCard from './EventCard.jsx';
-import LoadingSkeleton from '../Common/LoadingSkeleton.jsx';
-import { FaArrowRight } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
+import LoadingSkeleton from '../Common/LoadingSkeleton.jsx'; // Assuming this path is correct
+import { useNotification } from '../../contexts/NotificationContext.jsx'; // Assuming this path is correct
 
-import styles from './Events.module.css'; // Import the CSS module
+import { db } from '../../utils/firebaseConfig.js'; // Import db
+import { collection, query, where, getDocs } from 'firebase/firestore'; // Import Firestore functions
 
-const appId = "1:147113503727:web:1d9d351c30399b2970241a";
+import styles from './Events.module.css'; // Assuming common styles for EventList wrapper
 
-// Universal Date Conversion Helper
-const toJSDate = (firestoreTimestampOrDateValue) => {
-  if (!firestoreTimestampOrDateValue) return null;
-  if (firestoreTimestampOrDateValue instanceof Date) return firestoreTimestampOrDateValue;
-  if (typeof firestoreTimestampOrDateValue.toDate === 'function') {
-    return firestoreTimestampOrDateValue.toDate();
-  }
-  if (typeof firestoreTimestampOrDateValue === 'object' && firestoreTimestampOrDateValue.seconds !== undefined && firestoreTimestampOrDateValue.nanoseconds !== undefined) {
-    return new Date(firestoreTimestampOrDateValue.seconds * 1000 + firestoreTimestampOrDateValue.nanoseconds / 1000000);
-  }
-  if (typeof firestoreTimestampOrDateValue === 'string' || typeof firestoreTimestampOrDateValue === 'number') {
-    const date = new Date(firestoreTimestampOrDateValue);
-    return isNaN(date.getTime()) ? null : date;
-  }
-  return null;
-};
+const appId = "1:147113503727:web:1d9d351c30399b2970241a"; // Your Firebase App ID
 
-
+// This component now fetches its own events based on props
 const EventList = ({ category, timeFilter, ageFilter, searchQuery, locationFilter }) => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const location = useLocation();
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { showNotification } = useNotification();
 
-  useEffect(() => {
-    console.log("DEBUG: EventList using appId:", appId);
-  }, []);
+    useEffect(() => {
+        const fetchEvents = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                let eventsRef = collection(db, `artifacts/${appId}/public/data_for_app/events`);
+                let q = query(eventsRef, where("status", "==", "active")); // CORRECTED: Filter for active events
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let eventsRef = collection(db, `artifacts/${appId}/public/data_for_app/events`);
-        
-        let q = query(eventsRef, orderBy("createdAt", "desc"));
+                // Apply other filters from props
+                if (category && category !== 'all') {
+                    q = query(q, where("category", "==", category));
+                }
+                if (locationFilter && locationFilter !== 'All') {
+                    q = query(q, where("location", "==", locationFilter));
+                }
+                // Implement timeFilter, ageFilter, searchQuery client-side if not supported by simple Firestore queries
+                // For simplicity, client-side filtering below for search.
 
-        const snapshot = await getDocs(q);
-        let fetchedEvents = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-            startDate: toJSDate(data.startDate),
-            endDate: toJSDate(data.endDate),
-            ticketTypes: data.ticketTypes?.map(ticket => ({
-              ...ticket,
-              bookingStartDate: toJSDate(ticket.bookingStartDate),
-              bookingEndDate: toJSDate(ticket.bookingEndDate),
-            })) ?? [],
-            rsvpConfig: data.rsvpConfig ? {
-              ...data.rsvpConfig,
-              rsvpStartDate: toJSDate(data.rsvpConfig.rsvpStartDate),
-              rsvpEndDate: toJSDate(data.rsvpConfig.rsvpEndDate),
-            } : {},
-          };
-        });
+                const querySnapshot = await getDocs(q);
+                let fetchedEvents = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    // Convert Firestore Timestamps to Date objects if necessary
+                    startDate: doc.data().startDate?.toDate ? doc.data().startDate.toDate() : doc.data().startDate,
+                    endDate: doc.data().endDate?.toDate ? doc.data().endDate.toDate() : doc.data().endDate,
+                }));
 
-        console.log("DEBUG: All fetched events (after Timestamp conversion and before client-side filtering):", fetchedEvents);
+                // Client-side filtering for searchQuery (if not done by Firestore query)
+                if (searchQuery) {
+                    const lowerCaseSearchQuery = searchQuery.toLowerCase();
+                    fetchedEvents = fetchedEvents.filter(event => 
+                        event.eventName.toLowerCase().includes(lowerCaseSearchQuery) ||
+                        event.description?.toLowerCase().includes(lowerCaseSearchQuery) ||
+                        event.organizerName?.toLowerCase().includes(lowerCaseSearchQuery)
+                    );
+                }
 
-        let filteredEvents = fetchedEvents;
+                // Client-side filtering for timeFilter and ageFilter (if not done by Firestore query)
+                // Add more complex filtering logic here if needed.
+                
+                setEvents(fetchedEvents);
 
-        if (location.pathname === '/nightlife') {
-            filteredEvents = filteredEvents.filter(event => event.category === 'Nightlife');
-        } else {
-            filteredEvents = filteredEvents.filter(event => event.category !== 'Nightlife');
-        }
+            } catch (err) {
+                console.error("Error fetching events:", err);
+                setError(err);
+                showNotification('Failed to load events. Please check your internet connection or Firebase rules.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        if (category && category !== 'all' && category !== 'Nightlife') {
-          filteredEvents = filteredEvents.filter(event => event.category === category);
-        }
+        fetchEvents();
+    }, [category, locationFilter, searchQuery, timeFilter, ageFilter, showNotification]); // Re-fetch on filter changes
 
-        if (locationFilter) {
-          filteredEvents = filteredEvents.filter(event => event.mainLocation === locationFilter);
-        }
-
-        if (searchQuery) {
-          filteredEvents = filteredEvents.filter(event =>
-            event.eventName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            event.description.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-
-        if (ageFilter && ageFilter !== 'all') {
-            filteredEvents = filteredEvents.filter(event =>
-                event.selectedAgeCategories && event.selectedAgeCategories.includes(ageFilter)
-            );
-        }
-
-        const now = new Date();
-        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-
-        if (timeFilter === 'today') {
-            filteredEvents = filteredEvents.filter(event => {
-                const eventDate = event.startDate;
-                return eventDate && eventDate instanceof Date && eventDate >= todayStart && eventDate < todayEnd;
-            });
-        }
-
-        filteredEvents.sort((a, b) => {
-            const priorityA = a.adminPriority || 0;
-            const priorityB = b.adminPriority || 0;
-            if (priorityA !== priorityB) { return priorityB - priorityA; }
-            return Math.random() - 0.5;
-        });
-
-        setEvents(filteredEvents);
-      } catch (err) {
-        console.error("Error fetching events:", err);
-        setError("Failed to load events. Please try again.");
-        setEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, [category, timeFilter, ageFilter, searchQuery, locationFilter, location.pathname]);
-
-
-  if (loading) {
-    return (
-      <div className={styles.eventCardsGrid}>
-        {Array(8).fill(0).map((_, i) => (
-          <div key={i} className={styles.eventCard}>
-            <LoadingSkeleton width="100%" height="200px" className="mb-2" />
-            <div style={{padding: '12px'}}>
-              <LoadingSkeleton width="80%" height="20px" className="mb-1" />
-              <LoadingSkeleton width="60%" height="16px" className="mb-1" />
-              <LoadingSkeleton width="90%" height="16px" className="mb-1" />
-              <LoadingSkeleton width="50%" height="16px" className="mb-4" />
-              <LoadingSkeleton width="100%" height="30px" />
+    if (loading) {
+        return (
+            <div className={styles.eventListGrid}>
+                {[...Array(6)].map((_, i) => ( 
+                    <LoadingSkeleton key={i} width="100%" height="250px" style={{ borderRadius: '15px' }} />
+                ))}
             </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+        );
+    }
 
-  if (error) {
+    if (error) {
+        return (
+            <div className={styles.errorMessage}>
+                <p>Error loading events: {error.message || 'Please check your internet connection or Firebase rules.'}</p>
+            </div>
+        );
+    }
+
+    if (events.length === 0) {
+        return (
+            <p className={styles.noResultsMessage}>No active events found matching your criteria.</p>
+        );
+    }
+
     return (
-      <div className="error-message-box">
-        <p>{error}</p>
-      </div>
+        <div className={styles.eventListGrid}>
+            {events.map(event => (
+                <EventCard key={event.id} event={event} />
+            ))}
+        </div>
     );
-  }
-
-  if (events.length === 0) {
-    return (
-      <div className="profile-section-card" style={{textAlign: 'center', padding: '20px'}}>
-        <p className="text-naks-text-secondary">No events found matching your criteria.</p>
-        <p className="text-naks-text-secondary">Try adjusting your filters.</p>
-      </div>
-    );
-  }
-
-  // FIX: Separate events into Naks Yetu Ticketed and Other Events
-  const naksYetuTicketedEvents = events.filter(e => e.eventType === 'ticketed' && (e.isNaksYetuTicketed || true)); // Assuming isNaksYetuTicketed is true for created ticketed events
-  const otherExcitingEvents = events.filter(e => e.eventType !== 'ticketed' || !e.isNaksYetuTicketed); // All others
-
-  // FIX: Ad card only for Other Exciting Events
-  const finalOtherExcitingEvents = [...otherExcitingEvents];
-  if (finalOtherExcitingEvents.length > 0) {
-    // Insert ad card at a reasonable position, e.g., after the first few events
-    finalOtherExcitingEvents.splice(1, 0, { // Insert after the first event
-      id: 'ad-promo', type: 'ad', eventName: 'Promote Your Event!', description: 'Reach thousands of Naks Yetu users.', bannerImageUrl: "https://placehold.co/300x400/A0522D/FFFFFF?text=Your+Ad+Here",
-      meta: 'Reach thousands of Naks Yetu users.', buttonText: 'Learn More', buttonClass: 'btn-primary'
-    });
-  }
-
-
-  return (
-    <>
-      {/* Naks Yetu Ticketed Events Section */}
-      <section className={styles.eventsSection}>
-          <div className={styles.sectionHeader}>
-              <h2 className={`${styles.sectionTitle} ${styles.gradientText}`}>Naks Yetu Ticketed Events</h2>
-              <p className={styles.sectionDescription}>Exclusive events requiring tickets, handpicked for you.</p>
-              <Link to="/events/ticketed" className={styles.viewAllLink}>View All <FaArrowRight /></Link>
-          </div>
-          <div className={styles.eventCardsGrid}>
-              {naksYetuTicketedEvents.length === 0 ? (
-                <div className="profile-section-card" style={{ textAlign: 'center', padding: '20px', gridColumn: '1 / -1' }}>
-                  <p className="text-naks-text-secondary">No Naks Yetu Ticketed Events found.</p>
-                </div>
-              ) : (
-                naksYetuTicketedEvents.map((event, index) => (
-                    <EventCard key={event.id || index} event={event} />
-                ))
-              )}
-          </div>
-      </section>
-
-      {/* Other Exciting Events in Nakuru Section */}
-      <section className={styles.eventsSection}>
-          <div className={styles.sectionHeader}>
-              <h2 className={`${styles.sectionTitle} ${styles.gradientText}`}>Other Exciting Events in Nakuru</h2>
-              <p className={styles.sectionDescription}>Free, RSVP, and community events happening soon.</p>
-              <Link to="/events/other" className={styles.viewAllLink}>View All <FaArrowRight /></Link>
-          </div>
-          <div className={styles.eventCardsGrid}>
-              {finalOtherExcitingEvents.length === 0 ? (
-                <div className="profile-section-card" style={{ textAlign: 'center', padding: '20px', gridColumn: '1 / -1' }}>
-                  <p className="text-naks-text-secondary">No other exciting events found.</p>
-                </div>
-              ) : (
-                finalOtherExcitingEvents.map((event, index) => (
-                    <EventCard key={event.id || index} event={event} />
-                ))
-              )}
-          </div>
-      </section>
-    </>
-  );
 };
 
 export default EventList;

@@ -1,0 +1,69 @@
+/* /src/pages/Checkout/Steps/CouponStep.module.css */
+
+.couponSection {
+    /* Inherits commonStyles.section and related text/title styles */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* Center content */
+    text-align: center;
+}
+
+.couponButton {
+    width: 100%;
+    max-width: 300px; /* Limit button width */
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.couponAppliedInfo {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--naks-success-light);
+    border: 1px solid var(--naks-success);
+    color: var(--naks-success);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+.couponAppliedMessage {
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--naks-text-primary); /* Ensure readability */
+}
+.couponAppliedMessage svg {
+    color: var(--naks-success);
+    font-size: 1.2rem;
+}
+
+.newTotalMessage {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--naks-primary); /* Highlight new total */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .couponButton {
+        padding: 10px;
+        font-size: 1rem;
+    }
+    .couponAppliedInfo {
+        padding: 15px;
+    }
+    .couponAppliedMessage {
+        font-size: 0.9rem;
+    }
+    .newTotalMessage {
+        font-size: 1.1rem;
+    }
+}

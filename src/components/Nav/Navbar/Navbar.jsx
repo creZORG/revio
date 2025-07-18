@@ -34,7 +34,13 @@ const Navbar = () => {
     <nav className={`${styles.navbar} glassmorphism`}>
       <div className={styles.navbarLeft}>
         <div className={styles.logoContainer}>
-          <img src="https://platform.naksyetu.co.ke/uploads/asset_68716d04cf3b77.16292801.png" alt="Naks Yetu Logo" className={styles.logo} />
+          <Link to="/events">
+  <img
+    src="https://platform.naksyetu.co.ke/uploads/asset_68716d04cf3b77.16292801.png"
+    alt="Naks Yetu Logo"
+    className={styles.logo}
+  />
+</Link>
           
         </div>
         {/* Mobile Hamburger Menu Toggle */}
@@ -46,9 +52,7 @@ const Navbar = () => {
       {/* Nav Links (Desktop & Mobile Overlay) */}
       <div className={`${styles.navLinks} ${isMobileMenuOpen ? styles.active : ''}`}>
         <div className={styles.navItem}>
-          <Link to="/" className={styles.navLink} onClick={() => setIsMobileMenuOpen(false)}>
-            <FaHome /> <span className={styles.navText}>Home</span>
-          </Link>
+      
         </div>
         <div className={styles.navItem}>
           <Link to="/events" className={styles.navLink} onClick={() => setIsMobileMenuOpen(false)}>
@@ -56,9 +60,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className={styles.navItem}>
-          <Link to="/nightlife" className={styles.navLink} onClick={() => setIsMobileMenuOpen(false)}>
-            <FaMoon /> <span className={styles.navText}>Nightlife</span>
-          </Link>
+        
         </div>
 
         {/* Conditional Dashboard Links based on role */}
@@ -106,7 +108,7 @@ const Navbar = () => {
         ) : (
           <div className={styles.navItem}>
             <Link to="/auth" className={styles.navLink} onClick={() => setIsMobileMenuOpen(false)}> {/* Link to unified auth page */}
-              <FaUserCircle /> <span className={styles.navText}>Login/Sign Up</span>
+              <FaUserCircle /> <span className={styles.navText}>Login</span>
             </Link>
           </div>
         )}

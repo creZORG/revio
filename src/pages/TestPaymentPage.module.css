@@ -1,0 +1,137 @@
+/* /src/pages/TestPaymentPage.module.css */
+
+.pageContainer {
+    min-height: calc(100vh - 60px); /* Adjust for potential navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--naks-bg-light); /* Assuming these vars are global */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: var(--naks-text-primary);
+}
+
+.testCard {
+    background-color: var(--naks-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 30px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    border: 1px solid var(--naks-border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.testCard h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+    margin-bottom: 10px;
+}
+.testCard p {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    margin-bottom: 15px;
+}
+
+.formGroup { /* Re-using styling from global form-group */
+    margin-bottom: 20px;
+    text-align: left;
+}
+.formLabel { /* Re-using styling from global form-label */
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--naks-text-secondary);
+    margin-bottom: 8px;
+}
+/* .input-field is a global class */
+
+.payButton { /* Re-using styling from global btn-primary */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white; /* Default text color for status messages */
+}
+.message.initial {
+    background-color: var(--naks-gray-300);
+}
+.message.processing {
+    background-color: var(--naks-info);
+}
+.message.success {
+    background-color: var(--naks-success);
+}
+.message.failed {
+    background-color: var(--naks-error);
+}
+.message .icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+.message .spinner {
+    color: white;
+}
+.transactionIdText {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    word-break: break-all;
+    margin-top: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .testCard {
+        padding: 25px;
+    }
+    .testCard h1 {
+        font-size: 1.8rem;
+    }
+    .testCard p {
+        font-size: 0.9rem;
+    }
+    .payButton {
+        padding: 12px;
+        font-size: 1.05rem;
+    }
+    .message {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testCard {
+        padding: 20px;
+        gap: 15px;
+    }
+    .testCard h1 {
+        font-size: 1.5rem;
+    }
+    .testCard p {
+        font-size: 0.85rem;
+    }
+    .payButton {
+        padding: 10px;
+        font-size: 1rem;
+    }
+    .message {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+}

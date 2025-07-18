@@ -1,0 +1,157 @@
+/* General Section Styling */
+.eventsSection {
+  padding: 2rem 1rem;
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+.sectionHeader {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gradientText {
+  background: linear-gradient(90deg, #A0522D, #FF8C00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionDescription {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* View All Link */
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #A0522D;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.viewAllLink:hover {
+  color: #FF8C00;
+}
+
+/* Event Cards Grid */
+.eventCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+/* Skeleton Loader Styling */
+.eventCard {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.eventCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Empty / Error States */
+.errorMessage,
+.noEventsFound {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #A0522D;
+  background: #fff9f4;
+  border: 1px dashed #ffccaa;
+  border-radius: 0.75rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.errorMessage p,
+.noEventsFound p {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Ad Promo Card (if applicable via EventCard styling) */
+.adCard {
+  background-color: #fff2e6;
+  border: 2px dashed #ff9933;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.adCard h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.adCard p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.adCard button {
+  background-color: #A0522D;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.adCard button:hover {
+  background-color: #FF8C00;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .eventCardsGrid {
+    gap: 1rem;
+  }
+
+  .sectionDescription {
+    font-size: 0.9rem;
+  }
+
+  .viewAllLink {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .eventsSection {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .sectionHeader {
+    margin-bottom: 1rem;
+  }
+
+  .eventCard {
+    border-radius: 0.5rem;
+  }
+}

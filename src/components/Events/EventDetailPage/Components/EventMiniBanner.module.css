@@ -1,0 +1,67 @@
+/* /src/components/Events/EventDetailPage/Components/EventMiniBanner.module.css */
+
+.miniBannerContainer {
+    background-color: var(--naks-surface); /* Card background */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Fill left column */
+    border: 1px solid var(--naks-border-light);
+}
+:global(body.dark-mode) .miniBannerContainer {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+}
+
+.miniBannerImageWrapper {
+    width: 100%;
+    height: 200px; /* Fixed height for small banner image */
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: #000; /* Black background for letterboxing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+:global(body.dark-mode) .miniBannerImageWrapper {
+    background-color: var(--naks-gray-300);
+}
+
+.miniBannerImage {
+    width: 100%; /* Fill wrapper width */
+    height: 100%; /* Fill wrapper height */
+    object-fit: contain; /* CRITICAL: Ensure full image is visible */
+    display: block;
+}
+
+.miniBannerInfo {
+    padding: 15px; /* Padding inside the info block */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 5px; /* Space between text elements */
+}
+
+.miniBannerTitle {
+    font-size: 1.1rem; /* Smaller title for compact view */
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.miniBannerMeta {
+    font-size: 0.85rem; /* Small meta text */
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.2;
+}
+.miniBannerMeta svg {
+    font-size: 0.9rem;
+    color: var(--naks-gray-400);
+}

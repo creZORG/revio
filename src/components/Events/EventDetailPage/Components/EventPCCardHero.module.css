@@ -1,0 +1,151 @@
+/* /src/components/Events/EventDetailPage/Components/EventPCCardHero.module.css */
+
+.pcCardHeroContainer {
+    /* Inherits commonStyles.sectionContent: background, padding, border-radius, shadow, border */
+    display: flex;
+    flex-direction: column; /* Stack image and info */
+    width: 100%; /* Fill left column width */
+    height: fit-content; /* Adjust height to content */
+    padding: 0; /* Remove padding from sectionContent */
+}
+
+.pcCardHeroImageWrapper {
+    width: 100%;
+    height: 250px; /* Fixed height for the banner image in this compact view */
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: #000; /* Black background for letterboxing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: var(--border-radius-lg); /* Match parent card corners */
+    border-top-right-radius: var(--border-radius-lg);
+    border-bottom-left-radius: 0; /* No rounding at bottom to connect with info */
+    border-bottom-right-radius: 0;
+}
+:global(body.dark-mode) .pcCardHeroImageWrapper {
+    background-color: var(--naks-gray-300);
+}
+
+.pcCardHeroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure full image is visible */
+    display: block;
+}
+
+.pcCardHeroInfo {
+    padding: 20px; /* Padding for text content */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 5px; /* Space between text lines */
+    flex-grow: 1; /* Allow info to grow */
+}
+
+.pcCardHeroTitle {
+    font-size: 1.3rem; /* Prominent title */
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.pcCardHeroMeta {
+    font-size: 0.9rem; /* Smaller meta text */
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.2;
+}
+.pcCardHeroMeta svg {
+    font-size: 1rem;
+    color: var(--naks-gray-400);
+}
+
+.pcCardOrganizerLink {
+    font-size: 0.9rem;
+    color: var(--naks-primary);
+    font-weight: 500;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.pcCardOrganizerLink svg {
+    font-size: 0.8rem;
+}
+
+.pcCardHeroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px; /* Space above action buttons */
+    padding: 0 20px 20px; /* Padding for actions within the card */
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.pcCardActionButton {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    color: var(--naks-text-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+.pcCardActionButton:hover {
+    background-color: var(--naks-gray-200);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+.pcCardActionButton svg {
+    font-size: 1rem;
+    color: var(--naks-primary);
+}
+.pcCardActionButton .savedIcon {
+    color: var(--naks-secondary);
+}
+
+/* Share Dropdown (similar to mobile, but for PC context) */
+.shareDropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+.shareDropdownContent {
+    position: absolute;
+    top: calc(100% + 5px); /* Below the button */
+    left: 0;
+    background-color: var(--naks-surface);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    white-space: nowrap;
+}
+.shareDropdownContent a {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+    color: var(--naks-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.shareDropdownContent a:hover {
+    background-color: var(--naks-gray-100);
+}
+.shareDropdownContent a svg {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+}

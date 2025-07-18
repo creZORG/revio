@@ -1,0 +1,131 @@
+/* /src/pages/User/Dashboard/components/UserDashboardTopBar.module.css */
+
+/* --- Top Bar --- */
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px; /* Increased padding */
+    border-radius: 15px; /* Larger border-radius */
+    box-shadow: var(--shadow-sm);
+    z-index: 999;
+    background-color: var(--naks-surface); /* Used --naks-surface */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+}
+
+.topBar h2 {
+    font-size: 1.8rem; /* Larger font size */
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topBarActions {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Increased gap */
+}
+
+.iconBtn {
+    background: none;
+    border: none;
+    color: var(--naks-text-secondary);
+    font-size: 20px; /* Larger icon */
+    cursor: pointer;
+    padding: 8px; /* Larger padding for click area */
+    border-radius: var(--border-radius-full);
+    transition: background-color 0.3s, color 0.3s;
+    position: relative; /* For notification badge */
+}
+
+.iconBtn:hover {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+}
+
+.notificationBadge { /* Styling for notification count */
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--naks-error);
+    color: var(--naks-white-surface);
+    border-radius: var(--border-radius-full);
+    padding: 2px 7px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Increased gap */
+    cursor: pointer;
+}
+
+.userAvatar {
+    width: 40px; /* Larger avatar */
+    height: 40px;
+    border-radius: var(--border-radius-full);
+    object-fit: cover;
+    border: 2px solid var(--naks-primary);
+    box-shadow: 0 0 0 2px var(--naks-primary-light);
+}
+
+.userName {
+    font-weight: 600;
+    font-size: 16px; /* Larger font size */
+    color: var(--naks-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .topBar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .topBar h2 {
+        font-size: 1.5rem;
+    }
+
+    .topBarActions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .topBar {
+        padding: 10px 15px;
+    }
+    .topBar h2 {
+        font-size: 1.3rem;
+    }
+    .userAvatar {
+        width: 35px;
+        height: 35px;
+    }
+    .userName {
+        font-size: 0.85rem;
+    }
+    .iconBtn {
+        font-size: 18px;
+        padding: 5px;
+    }
+    .notificationBadge {
+        padding: 1px 6px;
+        font-size: 0.65rem;
+        min-width: 16px;
+    }
+}

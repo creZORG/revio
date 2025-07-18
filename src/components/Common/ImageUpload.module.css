@@ -1,0 +1,111 @@
+/* src/components/Common/ImageUpload.module.css */
+
+.imageUploadGroup {
+  margin-bottom: 1.5rem; /* Consistent spacing with form groups */
+}
+
+.imageUploadLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--naks-text-primary); /* Dark text for labels */
+  font-size: 0.95rem;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadArea {
+  border: 2px dashed var(--naks-border-medium); /* Use Naks Yetu border color */
+  border-radius: var(--border-radius-lg); /* Rounded corners */
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--naks-gray-100); /* Light gray background */
+  transition: background-color var(--transition-speed) ease;
+  display: flex; /* Flexbox for centering content */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px; /* Minimum height for better click area */
+  pointer-events: auto; /* Explicitly ensure pointer events are enabled */
+}
+
+.uploadArea:hover {
+  background-color: var(--naks-gray-200); /* Slightly darker on hover */
+}
+
+.uploadAreaError {
+  border-color: var(--sys-error); /* Red border for errors */
+  background-color: rgba(var(--sys-error-rgb), 0.1); /* Light red background */
+}
+
+.uploadArea.dragOver {
+  background-color: var(--naks-gray-200); /* Darker background on drag over */
+}
+
+.uploadText {
+  margin: 0;
+  color: var(--naks-text-secondary); /* Secondary text color */
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.uploadInfo {
+  font-size: 0.8em;
+  color: var(--naks-gray-300); /* Lighter gray for info text */
+  margin-top: 5px;
+}
+
+.previewContainer {
+  margin-top: 1.5rem; /* Space above previews */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.previewItem {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--naks-border-light); /* Light border */
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm); /* Subtle shadow for preview items */
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(var(--sys-error-rgb), 0.7); /* Red with transparency */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.removeButton:hover {
+  background-color: var(--sys-error); /* Solid red on hover */
+}
+
+.errorMessage {
+  color: var(--sys-error);
+  font-size: 0.85em;
+  margin-top: 5px;
+}

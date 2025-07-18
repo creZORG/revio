@@ -1,0 +1,138 @@
+/* /src/components/Common/CheckboxGroupInput.module.css */
+
+.checkboxGroupContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between checkbox pills */
+}
+
+.checkboxLabel {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px; /* Padding for the pill */
+    border: 1px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-lg); /* More rounded pills */
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    user-select: none; /* Prevent text selection */
+}
+
+.checkboxLabel:hover {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-primary);
+    color: var(--naks-text-primary);
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.checkboxLabel.checked {
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Gradient for checked state */
+    color: var(--naks-white-surface); /* White text on gradient */
+    border-color: var(--naks-secondary); /* Primary border when checked */
+    box-shadow: var(--shadow-sm);
+}
+
+.checkboxLabel.checked:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Keep gradient on hover */
+    background-size: 150% 150%; /* Subtle animation on hover */
+    animation: gradient-shift 3s ease infinite;
+}
+
+.checkboxInput {
+    display: none; /* Hide native checkbox */
+}
+
+.customCheckbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-sm); /* Small radius for inner box */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    background-color: var(--naks-white-surface);
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.checkboxLabel.checked .customCheckbox {
+    background-color: var(--naks-white-surface); /* White background when checked */
+    border-color: var(--naks-white-surface); /* White border when checked */
+}
+
+.customCheckbox svg {
+    color: var(--naks-primary); /* Icon color inside box */
+    font-size: 1rem;
+    opacity: 0; /* Hidden by default */
+    transform: scale(0.5); /* Smaller by default */
+    transition: all 0.3s ease;
+}
+
+.checkboxLabel.checked .customCheckbox svg {
+    opacity: 1; /* Show icon when checked */
+    transform: scale(1); /* Scale up to normal size */
+}
+
+/* Dark Mode specific styles for checkbox pills */
+:global(body.dark-mode) .checkboxLabel {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-gray-300);
+    color: var(--naks-text-secondary);
+}
+
+:global(body.dark-mode) .checkboxLabel:hover {
+    background-color: var(--naks-gray-300);
+    border-color: var(--naks-primary);
+    color: var(--naks-text-primary);
+}
+
+:global(body.dark-mode) .checkboxLabel.checked {
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary));
+    color: var(--naks-white-surface);
+    border-color: var(--naks-secondary);
+}
+:global(body.dark-mode) .checkboxLabel.checked .customCheckbox {
+    background-color: var(--naks-white-surface);
+    border-color: var(--naks-white-surface);
+}
+
+/* Animations defined in index.css (gradient-shift) will be used */
+/* @keyframes gradient-shift { ... } */
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkboxLabel {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        border-radius: 14px;
+    }
+    .customCheckbox {
+        width: 18px;
+        height: 18px;
+    }
+    .customCheckbox svg {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkboxLabel {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        border-radius: 12px;
+    }
+    .customCheckbox {
+        width: 16px;
+        height: 16px;
+    }
+    .customCheckbox svg {
+        font-size: 0.8rem;
+    }
+}

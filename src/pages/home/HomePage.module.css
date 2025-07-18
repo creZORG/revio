@@ -1,0 +1,362 @@
+/* src/pages/home/HomePage.module.css */
+
+.homePageContainer {
+  display: flex;
+  flex-direction: column; /* Stack vertically on mobile */
+  padding: 1rem; /* Mobile-first padding */
+  max-width: 1280px; /* Overall max width for desktop content */
+  margin: 0 auto; /* Center content horizontally */
+  background-color: var(--naks-bg-light); /* Light background from Naks Yetu variables */
+  color: var(--naks-text-primary); /* Default text color */
+  min-height: calc(100vh - var(--navbar-height-mobile) - 4rem); /* Adjust based on your actual Navbar/Footer heights */
+  position: relative; /* For sidebar positioning */
+}
+
+/* --- Hero Section (Search & Top Filters) --- */
+.heroSection {
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-bottom: 2.5rem;
+}
+
+.mainTitle {
+  font-size: 2.2rem; /* Mobile-first title size */
+  font-weight: 800; /* Extra bold */
+  color: var(--naks-text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.searchFilterContainer {
+  background-color: var(--naks-white-surface);
+  border-radius: var(--border-radius-xl); /* Large border radius for the whole search/filter card */
+  box-shadow: var(--shadow-md);
+  padding: 1rem; /* Padding inside the card */
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--naks-border-medium);
+  border-radius: var(--border-radius-xl);
+  overflow: hidden; /* Ensures contents stay within rounded borders */
+  margin-bottom: 1rem; /* Space before age filters/mobile toggle */
+}
+
+.searchIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--naks-text-secondary);
+  margin-left: 1rem;
+}
+
+.searchInput {
+  flex-grow: 1; /* Takes up available space */
+  padding: 0.75rem 0.5rem;
+  border: none; /* Remove default input border */
+  outline: none; /* Remove outline on focus */
+  font-size: 1rem;
+  color: var(--naks-text-primary);
+  background: transparent; /* Match parent background */
+}
+
+.searchInput::placeholder {
+  color: var(--naks-gray-300);
+}
+
+.locationDropdown { /* Style for the new location dropdown */
+  padding: 0.75rem 0.5rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--naks-text-primary);
+  background: transparent;
+  cursor: pointer;
+  border-left: 1px solid var(--naks-border-light); /* Separator */
+  margin-left: 0.5rem;
+  appearance: none; /* Remove default dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E"); /* Custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em;
+  padding-right: 2.5rem; /* Space for custom arrow */
+}
+
+.filterToggleButton { /* Mobile filter toggle */
+  background-color: var(--naks-primary);
+  color: var(--naks-white-surface);
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-xl); /* Match search bar radius */
+  margin-left: 0.5rem; /* Space from location dropdown */
+}
+
+.filterToggleButton:hover {
+  background-color: var(--naks-secondary);
+}
+
+.ageFilterPills { /* Age filter pills (top row) */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--naks-border-light);
+}
+
+.ageFilterPill {
+  background-color: var(--naks-gray-100);
+  color: var(--naks-text-primary);
+  padding: 0.6rem 1rem;
+  border-radius: var(--border-radius-xl);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease, transform 0.1s ease;
+  display: flex;
+  flex-direction: column; /* Stack icon and text */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.25rem;
+  border: 1px solid transparent; /* For active state border */
+}
+
+.ageFilterPill:hover {
+  background-color: var(--naks-gray-200);
+  transform: translateY(-2px);
+}
+
+.activeAgeFilterPill {
+  background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Naks Yetu Gradient */
+  color: var(--naks-white-surface);
+  font-weight: bold;
+  border-color: var(--naks-primary);
+}
+
+.ageFilterIcon {
+  width: 18px;
+  height: 18px;
+  color: inherit; /* Inherit color */
+}
+
+/* --- Sidebar Filters (Mobile: Slide-in, Desktop: Fixed left) --- */
+.sidebarFilters {
+  position: fixed; /* Fixed position */
+  top: 0; /* Will be adjusted by AppContent to clear Navbar */
+  left: -280px; /* Hidden by default on mobile */
+  width: 280px; /* Sidebar width */
+  height: 100%; /* Full height */
+  background-color: var(--naks-white-surface); /* White background for sidebar */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transition-speed) ease-in-out;
+  z-index: 100; /* Above main content */
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between filter sections */
+  overflow-y: auto; /* Enable scrolling for long filter lists */
+}
+
+.sidebarFiltersOpen {
+  transform: translateX(280px); /* Slide into view */
+}
+
+.sidebarTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--naks-text-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.closeSidebarButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--naks-text-secondary);
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 101; /* Ensure close button is clickable */
+}
+
+.filterSection {
+  margin-bottom: 0; /* Controlled by gap in sidebarFilters */
+}
+
+.filterSectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--naks-text-primary);
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--naks-border-light);
+  padding-bottom: 0.5rem;
+  text-align: left;
+}
+
+.categoriesGrid { /* Grid for sidebar categories */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Tighter grid for sidebar */
+  gap: 0;
+}
+
+.categoryPill { /* Inherits from top, but overrides for sidebar */
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  flex-direction: column; /* Stack icon and text */
+}
+
+.categoryIcon { /* Inherits from top, but overrides for sidebar */
+    width: 20px;
+    height: 20px;
+}
+
+.timeFilterList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timeFilterItem {
+  background-color: var(--naks-gray-100);
+  color: var(--naks-text-primary);
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius-md);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.timeFilterItem:hover {
+  background-color: var(--naks-gray-200);
+  transform: translateX(3px); /* Subtle slide effect */
+}
+
+.activeTimeFilterItem {
+  background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+  color: var(--naks-white-surface);
+  font-weight: bold;
+  border-color: var(--naks-primary);
+}
+
+.timeFilterIcon {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+}
+
+
+/* --- Events Listing Area --- */
+.eventsListingArea {
+  flex-grow: 1; /* Takes remaining horizontal space */
+  padding: 1.5rem 0; /* Vertical padding */
+}
+
+.sectionHeading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--naks-text-primary);
+  margin-bottom:0;
+  text-align: center;
+}
+
+.noEventsMessage {
+  text-align: center;
+  color: var(--naks-text-secondary);
+  font-size: 1.1rem;
+  padding: 2rem;
+  border: 1px dashed var(--naks-border-medium);
+  border-radius: var(--border-radius-lg);
+  margin-top: 2rem;
+}
+
+.errorMessage {
+  color: var(--sys-error);
+  text-align: center;
+  padding: 1rem;
+}
+
+
+/* --- Desktop Adjustments --- */
+@media (min-width: 768px) {
+  .homePageContainer {
+    flex-direction: row; /* Sidebar and main content side-by-side */
+    padding: 3rem 2rem; /* Increased padding */
+    gap: 2rem; /* Space between sidebar and events area */
+  }
+
+  .heroSection {
+    flex-basis: 100%; /* Hero section spans full width on desktop */
+    order: 1; /* Place hero section first */
+    text-align: left; /* Align search/title to left */
+  }
+  .mainTitle {
+    font-size: 3.5rem;
+  }
+  .searchFilterContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    flex-wrap: nowrap; /* Prevent wrapping search and location dropdown */
+    gap: 1rem;
+  }
+  .searchBar {
+    flex-grow: 1; /* Search bar takes more space */
+    margin-bottom: 0; /* Remove bottom margin */
+    max-width: none; /* Remove max width */
+  }
+  .locationDropdown {
+    margin-left: 1rem; /* Space from search bar */
+  }
+  .filterToggleButton {
+    display: none; /* Hide mobile filter toggle on desktop */
+  }
+  .ageFilterPills {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    flex-grow: 1; /* Allow pills to spread */
+    justify-content: flex-end; /* Push to right */
+    gap: 1rem;
+  }
+  .ageFilterPill {
+    padding: 0.75rem 1.25rem;
+  }
+
+
+  .sidebarFilters {
+    position: sticky; /* Sticky on desktop so it scrolls with viewport but stays visible */
+    top: calc(var(--navbar-height-mobile) + 1rem); /* Stick below Navbar and some margin */
+    left: 0; /* Align to left */
+    height: auto; /* Auto height based on content */
+    transform: translateX(0); /* Always visible */
+    box-shadow: var(--shadow-sm); /* Subtle shadow for desktop sidebar */
+    flex-shrink: 0; /* Don't shrink */
+    width: 280px; /* Fixed width on desktop */
+    order: 2; /* Place after hero section in row */
+  }
+  .closeSidebarButton {
+    display: none; /* Hide close button on desktop */
+  }
+
+  .eventsListingArea {
+    flex-grow: 1; /* Events list takes remaining space */
+    order: 3; /* Place after sidebar */
+    padding: 2.5rem 0; /* Vertical padding */
+  }
+  .sectionHeading {
+    font-size: 2.5rem;
+  }
+}

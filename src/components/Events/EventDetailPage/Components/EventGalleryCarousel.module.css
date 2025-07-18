@@ -1,0 +1,154 @@
+/* /src/components/Events/EventDetailPage/Components/EventGalleryCarousel.module.css */
+
+.galleryCarouselSection {
+    /* Inherits commonStyles.sectionContent, sectionTitle, gradientText */
+}
+
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Default height for carousel display */
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    background-color: var(--naks-gray-100);
+    display: flex; /* For loading state centering */
+    justify-content: center;
+    align-items: center;
+}
+
+.carouselTrack {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carouselImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* CRITICAL: Show full image, prevent cropping */
+    background-color: #000; /* Black background for letterboxing */
+    flex-shrink: 0; /* Ensure images don't shrink */
+}
+body.dark-mode .carouselImage {
+    background-color: var(--naks-gray-800); /* Darker background for image */
+}
+
+
+.carouselArrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--naks-white-surface);
+    border: none;
+    padding: 10px; /* Smaller padding for arrows */
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: var(--border-radius-full);
+    z-index: 10;
+    transition: background-color 0.3s;
+}
+
+.carouselArrow:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.leftArrow {
+    left: 10px;
+}
+
+.rightArrow {
+    right: 10px;
+}
+
+.carouselPagination {
+    position: absolute;
+    bottom: 15px; /* Adjust pagination position */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.paginationDot {
+    width: 8px; /* Smaller dots */
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius-full);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.paginationDot.active {
+    background-color: var(--naks-white-surface);
+    transform: scale(1.2);
+}
+
+.loadingOverlay { /* For loading state within carousel */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--naks-gray-100);
+    border-radius: var(--border-radius-lg);
+    color: var(--naks-text-primary);
+}
+.loadingOverlay svg {
+    color: var(--naks-primary);
+}
+
+
+.noGalleryMessage {
+    text-align: center;
+    padding: 30px;
+    color: var(--naks-text-secondary);
+    font-style: italic;
+    font-size: 1rem;
+    width: 100%;
+    background-color: var(--naks-gray-100);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--naks-border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) { /* Tablet and mobile */
+    .carouselContainer {
+        height: 250px; /* Shorter on tablet */
+    }
+    .carouselArrow {
+        padding: 8px;
+        font-size: 1rem;
+    }
+    .paginationDot {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+@media (max-width: 767px) { /* Smaller mobile */
+    .carouselContainer {
+        height: 200px; /* Shorter on mobile */
+    }
+    .carouselArrow {
+        padding: 6px;
+        font-size: 0.9rem;
+    }
+    .carouselPagination {
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) { /* Very small mobile */
+    .carouselContainer {
+        height: 150px;
+    }
+    .carouselArrow {
+        padding: 4px;
+        font-size: 0.8rem;
+    }
+}

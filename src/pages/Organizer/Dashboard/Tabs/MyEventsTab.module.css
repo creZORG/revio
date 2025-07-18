@@ -1,0 +1,188 @@
+/* src/pages/Organizer/Dashboard/Tabs/MyEventsTab.module.css */
+
+.myEventsTabContainer {
+  background-color: var(--naks-white-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem; /* Consistent padding with other tabs/wizards */
+  max-width: 900px; /* Limit width for better readability on large screens */
+  margin: 0 auto; /* Center the container */
+  min-height: calc(100vh - var(--navbar-height-mobile) - 4rem); /* Ensure it fills space */
+  display: flex;
+  flex-direction: column;
+}
+
+.tabHeader {
+  font-size: 2rem; /* h2 size */
+  font-weight: 700; /* font-bold */
+  color: var(--naks-text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.tabDescription {
+  color: var(--naks-text-secondary); /* Subtler text color */
+  margin-bottom: 2rem;
+}
+
+.noEventsMessage {
+  background-color: var(--naks-gray-100); /* Light yellow/gray background */
+  border-left: 4px solid var(--sys-warning); /* Warning stripe */
+  padding: 1rem;
+  color: var(--naks-text-primary);
+  border-radius: var(--border-radius-md);
+  margin-top: 1.5rem;
+}
+
+.noEventsTitle {
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 0.5rem;
+}
+
+.noEventsText {
+  font-size: 0.9em;
+}
+
+.eventsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid for event cards */
+  gap: 1.5rem; /* Space between event cards */
+  margin-top: 2rem;
+}
+
+.eventCard {
+  background-color: var(--naks-white-surface);
+  padding: 1.25rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--naks-border-medium); /* Subtle border */
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.eventCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.eventCardTakenDown {
+  opacity: 0.6; /* Dim effect for taken down events */
+  border-color: var(--sys-error); /* Red border for taken down */
+  filter: grayscale(80%); /* Visually dim it */
+}
+
+.eventCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align title and buttons to top */
+  margin-bottom: 0.75rem;
+}
+
+.eventTitle {
+  font-size: 1.25rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: var(--naks-text-primary);
+  word-break: break-word; /* Allow long titles to wrap */
+  margin-right: 1rem; /* Space before name and buttons */
+}
+
+.eventActions {
+  display: flex;
+  gap: 0.5rem; /* Space between icons */
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%; /* Circular buttons */
+  cursor: pointer;
+  display: flex; /* Center icon */
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.actionButton:hover {
+  background-color: var(--naks-gray-100);
+}
+
+.actionButton svg { /* Explicit style for heroicons within actionButton */
+    width: 20px; /* Explicit size for icons */
+    height: 20px;
+    color: currentColor; /* Inherit color from parent .actionButton */
+}
+
+.editIcon {
+    color: var(--sys-info); /* Blue for edit */
+}
+
+.deleteIcon {
+    color: var(--sys-error); /* Red for delete */
+}
+
+.eventMeta {
+  font-size: 0.95rem;
+  color: var(--naks-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.eventPerformance {
+  display: flex;
+  flex-wrap: wrap; /* Allow metrics to wrap on smaller cards */
+  align-items: center;
+  gap: 1rem; /* Space between metric items */
+  font-size: 0.875rem; /* text-sm */
+  color: var(--naks-text-secondary);
+  margin-top: auto; /* Push to bottom of card */
+  padding-top: 1rem; /* Space from meta info */
+  border-top: 1px solid var(--naks-border-light); /* Separator */
+}
+
+.performanceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.metricValue {
+  font-weight: 600;
+  color: var(--naks-text-primary);
+}
+
+.statusText {
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.statusActive { color: var(--sys-success); }
+.statusPending { color: var(--sys-warning); }
+.statusTakenDown { color: var(--sys-error); }
+.statusOther { color: var(--naks-text-secondary); }
+
+/* Modal specific styles - ensuring common modal takes our colors */
+.modalButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .myEventsContainer {
+    padding: 1rem;
+  }
+  .tabHeader {
+    font-size: 1.75rem;
+  }
+  .eventsGrid {
+    grid-template-columns: 1fr; /* Single column on small screens */
+  }
+  .eventCard {
+    padding: 1rem;
+  }
+  .eventTitle {
+    font-size: 1.125rem;
+  }
+}

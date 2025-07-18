@@ -1,0 +1,116 @@
+/* /src/components/Auth/PostLoginWelcomeModal.module.css */
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.userAvatarDisplay {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius-full); /* Assuming this variable is defined globally */
+    background-color: var(--naks-primary); /* Assuming naks-primary is defined */
+    color: var(--naks-white-surface); /* Assuming naks-white-surface is defined */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-md); /* Assuming shadow-md is defined */
+}
+
+.welcomeText {
+    font-size: 1.1rem;
+    color: var(--naks-text-secondary); /* Assuming naks-text-secondary is defined */
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px; /* Limit button width */
+    margin: 0 auto;
+}
+
+.actionButton {
+    /* Inherits general button styles from common CSS */
+    padding: 12px 20px;
+    font-size: 1rem;
+}
+
+.logoutOption {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+    margin-top: 20px;
+}
+
+.logoutLink {
+    color: var(--naks-primary); /* Assuming naks-primary is defined */
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.logoutLink:hover {
+    color: var(--naks-secondary); /* Assuming naks-secondary is defined */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modalContent {
+        padding: 15px;
+        gap: 15px;
+    }
+    .userAvatarDisplay {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+    .welcomeText {
+        font-size: 1rem;
+    }
+    .actionButtons {
+        gap: 10px;
+        max-width: 250px;
+    }
+    .actionButton {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    .logoutOption {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalContent {
+        padding: 10px;
+        gap: 10px;
+    }
+    .userAvatarDisplay {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+    .welcomeText {
+        font-size: 0.9rem;
+    }
+    .actionButtons {
+        gap: 8px;
+        max-width: 200px;
+    }
+    .actionButton {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    .logoutOption {
+        font-size: 0.8rem;
+    }
+}

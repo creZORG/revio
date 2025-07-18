@@ -1,0 +1,182 @@
+/* /src/pages/Checkout/Steps/PaymentDetailsStep.module.css */
+
+.paymentDetailsSection {
+    /* Inherits commonStyles.section and related text/title styles */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.paymentOptionsToggle {
+    display: flex;
+    flex-direction: column; /* Stack radio options */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.paymentOptionRadio {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.paymentOptionRadio:hover {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-primary);
+}
+.paymentOptionRadio input[type="radio"] {
+    accent-color: var(--naks-primary);
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+.paymentLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    flex-grow: 1; /* Make label take remaining space */
+}
+.mpesaLogo {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+}
+
+.paymentDetailsContainer { /* Container for STK Push or Manual details */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px; /* Space from radio buttons */
+    padding-top: 15px;
+    border-top: 1px dashed var(--naks-border-light); /* Separator */
+}
+
+.manualPayDetails {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.manualPayDetails p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+}
+.manualPayDetails p strong {
+    color: var(--naks-text-primary);
+}
+.manualPayDetails .copyBtn {
+    background: none;
+    border: none;
+    color: var(--naks-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.manualPayDetails .copyBtn:hover {
+    color: var(--naks-secondary);
+}
+.manualPayInstructions {
+    font-size: 0.85rem;
+    color: var(--naks-info);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+.manualPayInstructions svg {
+    font-size: 1rem;
+}
+
+.payButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    border: none;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.payButton:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+.payButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--naks-gray-300);
+    box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .paymentOptionRadio {
+        padding: 12px;
+    }
+    .paymentLabel {
+        font-size: 1rem;
+    }
+    .mpesaLogo {
+        height: 25px;
+    }
+    .paymentDetailsContainer {
+        gap: 10px;
+    }
+    .manualPayDetails {
+        padding: 12px;
+    }
+    .manualPayDetails p {
+        font-size: 0.9rem;
+    }
+    .manualPayInstructions {
+        font-size: 0.8rem;
+    }
+    .payButton {
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .paymentOptionRadio {
+        padding: 10px;
+    }
+    .paymentLabel {
+        font-size: 0.9rem;
+    }
+    .mpesaLogo {
+        height: 20px;
+    }
+    .paymentDetailsContainer {
+        gap: 8px;
+    }
+    .manualPayDetails {
+        padding: 10px;
+    }
+    .manualPayDetails p {
+        font-size: 0.85rem;
+    }
+    .manualPayInstructions {
+        font-size: 0.75rem;
+    }
+    .payButton {
+        padding: 10px;
+        font-size: 1rem;
+    }
+}

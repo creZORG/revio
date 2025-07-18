@@ -1,0 +1,227 @@
+/* /src/pages/TestPaymentPage.module.css */
+
+.pageContainer {
+    min-height: calc(100vh - 60px); /* Adjust for potential navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--naks-bg-light); /* Assuming these vars are global */
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: var(--naks-text-primary);
+}
+
+.testCard {
+    background-color: var(--naks-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 30px;
+    text-align: center;
+    max-width: 600px; /* Slightly wider for logs */
+    width: 100%;
+    border: 1px solid var(--naks-border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.testCard h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naks-primary);
+    margin-bottom: 10px;
+}
+.testCard p {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    margin-bottom: 15px;
+}
+
+.formGroup { /* Re-using styling from global form-group */
+    margin-bottom: 20px;
+    text-align: left;
+}
+.formLabel { /* Re-using styling from global form-label */
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--naks-text-secondary);
+    margin-bottom: 8px;
+}
+/* .input-field is a global class */
+
+.initiateButton { /* Re-using styling from global btn-primary */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* NEW: Live Log Area */
+.logArea {
+    margin-top: 20px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-md);
+    background-color: var(--naks-gray-100);
+    padding: 15px;
+    max-height: 300px; /* Fixed height for scrollable log */
+    overflow-y: auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.logTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed var(--naks-border-medium);
+}
+
+.logMessages {
+    font-family: monospace; /* Monospaced font for logs */
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.logMessage {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+.logTime {
+    color: var(--naks-text-light);
+    flex-shrink: 0;
+}
+.logIcon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px; /* Align icon better with text */
+}
+
+/* Log types for color coding */
+.logMessage.info { color: var(--naks-info); }
+.logMessage.success { color: var(--naks-success); }
+.logMessage.error { color: var(--naks-error); }
+.logMessage.stk_sent { color: var(--naks-primary); } /* For STK push sent */
+.logMessage.confirming { color: var(--naks-warning); } /* For waiting status */
+
+
+/* Final Status Display */
+.finalStatus {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white; /* Default text color for final status */
+}
+.finalStatus.success { background-color: var(--naks-success); }
+.finalStatus.failed { background-color: var(--naks-error); }
+.finalStatus.confirming { background-color: var(--naks-info); }
+
+.finalStatusIcon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: white;
+}
+.finalStatus h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: white;
+}
+.finalStatus p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+}
+.transactionIdText {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    word-break: break-all;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .testCard {
+        padding: 25px;
+        gap: 15px;
+    }
+    .testCard h1 {
+        font-size: 1.8rem;
+    }
+    .payButton {
+        padding: 12px;
+        font-size: 1.05rem;
+    }
+    .logArea {
+        max-height: 250px;
+        padding: 10px;
+        gap: 3px;
+    }
+    .logTitle {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    .logMessages {
+        font-size: 0.8rem;
+    }
+    .finalStatus {
+        padding: 15px;
+        font-size: 1rem;
+    }
+    .finalStatusIcon {
+        font-size: 2.5rem;
+    }
+    .finalStatus h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testCard {
+        padding: 20px;
+        gap: 10px;
+    }
+    .testCard h1 {
+        font-size: 1.5rem;
+    }
+    .testCard p {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    .payButton {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+    .logArea {
+        max-height: 200px;
+        padding: 8px;
+    }
+    .logTitle {
+        font-size: 0.9rem;
+    }
+    .logMessages {
+        font-size: 0.75rem;
+    }
+    .message .icon {
+        font-size: 1.2rem;
+    }
+    .finalStatus {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    .finalStatusIcon {
+        font-size: 2rem;
+    }
+    .finalStatus h3 {
+        font-size: 1.1rem;
+    }
+}

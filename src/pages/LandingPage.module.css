@@ -1,83 +1,493 @@
-/* src/pages/LandingPage.module.css */
+/* /src/pages/LandingPage.module.css */
 
 .landingPageContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 120px); /* Adjust for navbar and footer */
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, var(--naks-bg-light) 0%, var(--naks-gray-100) 100%);
-    transition: background-color 0.3s ease;
-}
-:global(body.dark-mode) .landingPageContainer {
-    background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+    min-height: calc(100vh - 60px); /* Adjust for fixed Navbar height */
+    background-color: var(--naks-bg-light); /* Light background for the whole page */
+    color: var(--naks-text-primary); /* Default text color */
+    font-family: 'Inter', sans-serif;
+    padding: 0; /* No global padding, sections handle their own */
+    box-sizing: border-box;
+    transition: background-color var(--transition-speed, 0.3s) ease;
 }
 
-.landingTitle {
-    font-size: 3.5rem;
+/* --- Hero Section (Carousel/Dynamic Content) --- */
+.heroSection {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Mobile height for hero section */
+    overflow: hidden;
+    background-color: var(--naks-black-logo); /* Dark background behind image */
+    margin-bottom: 50px; /* Space below hero before next section */
+}
+
+.carouselTrack {
+    display: flex;
+    height: 100%;
+    transition: transform 1s ease-in-out; /* Slower transition for hero carousel */
+}
+
+.carouselItem {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carouselBgImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    padding: 20px;
+}
+
+.heroContent {
+    max-width: 600px;
+    color: var(--naks-white-surface);
+    text-align: center;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between elements */
+}
+
+.heroTitle {
+    font-size: 3rem; /* Mobile title size */
     font-weight: 800;
-    margin-bottom: 20px;
+    line-height: 1.2;
+    margin-bottom: 0; /* Handled by gap */
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+}
+
+.heroSubtitle {
+    font-size: 1.1rem; /* Mobile subtitle size */
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0; /* Handled by gap */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.heroCtaButton { /* Inherits from .btn .btn-primary */
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg); /* Prominent shadow */
+    margin-top: 10px; /* Space above button */
+}
+
+.carouselPagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 4;
+}
+
+.paginationDot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius-full);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.paginationDot.active {
+    background-color: var(--naks-primary); /* Primary color when active */
+    transform: scale(1.2);
+    border-color: var(--naks-primary);
+}
+
+
+/* --- Value Proposition Section --- */
+.valuePropSection {
+    max-width: 1200px;
+    margin: 0 auto 50px auto; /* Space below this section */
+    padding: 0 20px; /* Page padding */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.sectionTitle { /* Reused for multiple sections */
+    font-size: 2.5rem; /* Mobile section title size */
+    font-weight: 800;
+    margin-bottom: 30px;
     background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    line-height: 1.1;
+    line-height: 1.2;
 }
 
-.landingSubtitle {
-    font-size: 1.5rem;
-    color: var(--naks-text-secondary);
-    margin-bottom: 40px;
-    max-width: 600px;
-}
-
-.landingActions {
-    display: flex;
+.valuePropGrid {
+    display: grid;
+    grid-template-columns: 1fr; /* Stack cards on mobile */
     gap: 20px;
-    margin-bottom: 50px;
+}
+
+.valuePropCard {
+    background-color: var(--naks-surface);
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    padding: 30px;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--naks-border-light);
+    min-height: 200px; /* Ensure cards have some height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.valuePropCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+/* Specific card backgrounds */
+.builtInNakuru { background-color: var(--naks-primary-light); border-color: var(--naks-primary); }
+.builtForReliability { background-color: var(--naks-info-light); border-color: var(--naks-info); }
+.builtForYou { background-color: var(--naks-secondary-light); border-color: var(--naks-secondary); }
+
+.cardHeading {
+    font-size: 1.5rem; /* Mobile card heading size */
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--naks-text-primary);
+}
+.builtInNakuru .cardHeading { color: var(--naks-primary); }
+.builtForReliability .cardHeading { color: var(--naks-info); }
+.builtForYou .cardHeading { color: var(--naks-secondary); }
+
+.cardText {
+    font-size: 0.95rem; /* Mobile card text size */
+    color: var(--naks-text-secondary);
+    line-height: 1.6;
+}
+
+/* --- Features Section --- */
+.featuresSection {
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    padding: 0 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid for features */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.featureCard {
+    background-color: var(--naks-surface);
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    border: 1px solid var(--naks-border-light);
+}
+.featureIcon {
+    font-size: 2.5rem;
+    color: var(--naks-primary);
+}
+.featureTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+}
+.featureDescription {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+    line-height: 1.5;
+}
+.marketingFeature {
+    background: linear-gradient(90deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+.marketingIcon {
+    font-size: 3rem;
+    color: var(--naks-white-surface);
+}
+.marketingTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--naks-white-surface);
+}
+.marketingDescription {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- Partners Section --- */
+.partnersSection {
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    padding: 0 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+.partnersGrid {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
 }
-.landingActions .btn {
+.partnerLogoContainer {
+    width: 120px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--naks-surface);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--naks-border-light);
+    padding: 10px;
+}
+.partnerLogo {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+.partnerName {
+    font-size: 0.8rem;
+    color: var(--naks-text-secondary);
+    margin-top: 5px;
+}
+
+
+/* --- Final Call to Action Section --- */
+.finalCtaSection {
+    background-color: var(--naks-primary);
+    color: var(--naks-white-surface);
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    margin: 0 auto 50px auto;
+    max-width: 1000px;
+    width: 90%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+.finalCtaTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0;
+}
+.finalCtaSubtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+.finalCtaButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+.finalCtaBtn { /* Inherits .btn .btn-primary/.btn-secondary */
     padding: 15px 30px;
     font-size: 1.1rem;
     border-radius: 12px;
 }
 
-.landingFooter {
-    font-size: 0.9rem;
-    color: var(--naks-text-light);
-    margin-top: auto; /* Push to bottom */
-}
 
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-    .landingTitle {
+    .heroSection {
+        height: 500px;
+        margin-bottom: 30px;
+    }
+    .heroTitle {
         font-size: 2.5rem;
     }
-    .landingSubtitle {
-        font-size: 1.2rem;
+    .heroSubtitle {
+        font-size: 1rem;
     }
-    .landingActions {
+    .heroCtaButton {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    .valuePropSection, .featuresSection, .partnersSection, .finalCtaSection {
+        padding: 0 15px;
+        margin-bottom: 30px;
+    }
+    .sectionTitle {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+    .valuePropGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .valuePropCard {
+        padding: 20px;
+        min-height: 180px;
+    }
+    .cardHeading {
+        font-size: 1.3rem;
+    }
+    .cardText {
+        font-size: 0.9rem;
+    }
+    .featuresGrid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    .featureCard {
+        padding: 20px;
+        gap: 10px;
+    }
+    .featureIcon {
+        font-size: 2rem;
+    }
+    .featureTitle {
+        font-size: 1.1rem;
+    }
+    .featureDescription {
+        font-size: 0.85rem;
+    }
+    .marketingTitle {
+        font-size: 1.5rem;
+    }
+    .marketingDescription {
+        font-size: 0.9rem;
+    }
+    .partnersGrid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 15px;
+    }
+    .partnerLogoContainer {
+        width: 100px;
+        height: 70px;
+    }
+    .finalCtaSection {
+        padding: 40px 20px;
+        gap: 20px;
+    }
+    .finalCtaTitle {
+        font-size: 2rem;
+    }
+    .finalCtaSubtitle {
+        font-size: 1rem;
+    }
+    .finalCtaButtons {
         flex-direction: column;
         width: 80%;
     }
-    .landingActions .btn {
+    .finalCtaBtn {
         width: 100%;
-        padding: 12px 20px;
+        padding: 12px 25px;
         font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-    .landingTitle {
+    .heroSection {
+        height: 400px;
+    }
+    .heroTitle {
         font-size: 2rem;
     }
-    .landingSubtitle {
+    .heroSubtitle {
+        font-size: 0.9rem;
+    }
+    .heroCtaButton {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .sectionTitle {
+        font-size: 1.8rem;
+    }
+    .valuePropCard {
+        padding: 15px;
+        min-height: 150px;
+    }
+    .cardHeading {
+        font-size: 1.2rem;
+    }
+    .cardText {
+        font-size: 0.85rem;
+    }
+    .featuresGrid {
+        grid-template-columns: 1fr;
+    }
+    .featureCard {
+        padding: 15px;
+    }
+    .featureIcon {
+        font-size: 2rem;
+    }
+    .featureTitle {
         font-size: 1rem;
     }
-    .landingActions {
-        width: 90%;
+    .featureDescription {
+        font-size: 0.8rem;
+    }
+    .marketingTitle {
+        font-size: 1.3rem;
+    }
+    .marketingDescription {
+        font-size: 0.8rem;
+    }
+    .partnersGrid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
+    }
+    .partnerLogoContainer {
+        width: 80px;
+        height: 60px;
+    }
+    .finalCtaSection {
+        padding: 30px 15px;
+    }
+    .finalCtaTitle {
+        font-size: 1.8rem;
+    }
+    .finalCtaSubtitle {
+        font-size: 0.9rem;
     }
 }

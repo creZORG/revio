@@ -1,0 +1,407 @@
+/* /src/components/Events/EventCard.module.css */
+
+.eventCard {
+    background-color: var(--naks-surface);
+    border-radius: 10px; /* Smaller radius for max compactness */
+    box-shadow: var(--shadow-sm); 
+    overflow: hidden;
+    text-decoration: none; 
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s ease, box-shadow 0.1s ease; /* Even faster transitions */
+    height: 100%; 
+    color: inherit; 
+    border: 1px solid var(--naks-border-light); 
+}
+
+.eventCard:hover {
+    transform: translateY(-2px); 
+    box-shadow: var(--shadow-md); 
+}
+/* Dark mode for the card background */
+:global(body.dark-mode) .eventCard {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.cardImageContainer { 
+    position: relative;
+    width: 100%;
+    height: 130px; /* Reduced fixed height for image (more compact) */
+    overflow: hidden;
+}
+
+.cardImage { 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease; 
+}
+.eventCard:hover .cardImage {
+    transform: scale(1.02); /* Minimal zoom effect */
+}
+
+/* Status badges (compacted) */
+.statusActive, .statusUpcoming, .statusCompleted, .statusCancelled, .statusPending {
+    position: absolute;
+    top: 5px; 
+    right: 5px; 
+    padding: 3px 6px; 
+    border-radius: 3px; 
+    font-size: 0.65rem; 
+    font-weight: 600;
+    z-index: 5;
+    white-space: nowrap; 
+}
+.statusActive { background-color: var(--naks-success); color: var(--naks-white-surface); }
+.statusUpcoming { background-color: var(--naks-info); color: var(--naks-white-surface); }
+.statusCompleted { background-color: var(--naks-gray-400); color: var(--naks-white-surface); }
+.statusCancelled { background-color: var(--naks-error); color: var(--naks-white-surface); }
+.statusPending { background-color: var(--naks-warning); color: var(--naks-text-primary); }
+
+
+.eventCardContent { 
+    padding: 8px; 
+    display: flex;
+    flex-direction: column;
+    gap: 2px; 
+    flex-grow: 1; 
+    justify-content: space-between; 
+}
+
+.eventName { 
+    font-size: 0.9rem; 
+    font-weight: 700;
+    color: var(--naks-text-primary); 
+    margin-bottom: 2px; 
+    line-height: 1.2; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+}
+
+.eventCardMeta { 
+    font-size: 0.75rem; 
+    color: var(--naks-text-secondary); 
+    display: flex;
+    align-items: center;
+    gap: 3px; 
+    margin-bottom: 0px; 
+    flex-wrap: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.eventCardMeta svg {
+    color: var(--naks-gray-400);
+    font-size: 0.8rem; 
+    flex-shrink: 0; 
+}
+.eventCardMeta span:nth-child(even) { 
+    margin: 0 1px; 
+    color: var(--naks-text-light); 
+}
+
+
+/* Price and Tickets Left Row */
+.eventCardFooterDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px; 
+    border-top: 1px solid var(--naks-border-light); 
+    margin-top: 5px; 
+    flex-shrink: 0; 
+    gap: 5px; 
+}
+
+.ticketPriceBottom { 
+    font-size: 1rem; 
+    font-weight: 700;
+    color: var(--naks-primary); 
+    background: linear-gradient(90deg, var(--naks-primary), var(--naks-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
+    flex-shrink: 0; 
+    white-space: nowrap;
+}
+
+.ticketsLeft { 
+    font-size: 0.85rem; 
+    font-weight: 600;
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 3px; 
+    text-align: right; 
+    flex-grow: 1; 
+    justify-content: flex-end; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ticketsLeft svg {
+    color: var(--naks-gray-400);
+    font-size: 0.85rem; 
+}
+
+/* Floating Calendar Card */
+.calendarCard {
+    position: absolute;
+    top: 5px; 
+    left: 5px; 
+    background-color: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(8px) saturate(180%); 
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    border-radius: 6px; 
+    padding: 3px 6px; 
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    z-index: 10;
+    line-height: normal;
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    color: var(--naks-white-surface); 
+}
+:global(body.dark-mode) .calendarCard {
+    background-color: rgba(0, 0, 0, 0.25); 
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.calendarCard .dayOfWeek, .calendarCard .month {
+    font-size: 0.6rem; 
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--naks-white-surface); 
+    line-height: 1; 
+    margin-bottom: 0px; 
+}
+.calendarCard .date {
+    font-size: 1.1rem; 
+    font-weight: 800;
+    color: var(--naks-primary); 
+    line-height: 1;
+    margin-bottom: 0px; 
+}
+
+/* Floating Save Button (Heart) */
+.saveButton {
+    position: absolute;
+    top: 5px; 
+    right: 5px; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    border: none;
+    border-radius: 50%;
+    width: 28px; 
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+.saveButton:hover {
+    transform: scale(1.08); 
+    box-shadow: var(--shadow-md);
+}
+.saveButton svg {
+    font-size: 0.9rem; 
+    color: var(--naks-text-secondary); 
+}
+.saveButton svg.saved {
+    color: var(--naks-secondary); 
+}
+:global(body.dark-mode) .saveButton {
+    background-color: var(--naks-gray-200);
+}
+
+
+/* Ad Card Specific Styling */
+.eventCard.adCard {
+    background-color: var(--naks-brown); 
+    color: var(--naks-white-surface);
+    border-color: var(--naks-brown);
+    box-shadow: 0 8px 15px rgba(160, 82, 45, 0.3); 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+    text-align: center;
+}
+.adCard .adLabel {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background-color: rgba(0, 0, 0, 0.4); 
+    color: var(--naks-white-surface);
+    padding: 2px 5px; 
+    border-radius: 4px; 
+    font-size: 0.6rem; 
+    font-weight: 600;
+    z-index: 10;
+}
+.adCard .eventCardImage {
+    width: 100%;
+    height: auto; 
+    object-fit: contain; 
+    filter: brightness(0.7); 
+}
+.adCard .eventCardContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; 
+    background-color: rgba(0, 0, 0, 0.3); 
+    color: var(--naks-white-surface);
+    gap: 5px; 
+}
+.adCard .eventCardTitle {
+    color: var(--naks-white-surface);
+    font-size: 1rem; 
+    margin-bottom: 5px;
+}
+.adCard .eventCardMeta {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.7rem; 
+    margin-bottom: 8px;
+}
+.adCard .calendarCard, .adCard .saveButton {
+    display: none; 
+}
+
+
+/* --- Responsive Adjustments (Mobile-First) --- */
+/* Mobile is default styles (max-width: 479px) */
+@media (max-width: 479px) { /* Extra small mobile */
+    .eventCardContent {
+        padding: 8px;
+        gap: 3px;
+    }
+    .eventName {
+        font-size: 0.9rem;
+    }
+    .eventCardMeta {
+        font-size: 0.75rem;
+        gap: 3px;
+    }
+    .ticketPriceBottom {
+        font-size: 0.9rem;
+    }
+    .ticketsLeft {
+        font-size: 0.75rem;
+        gap: 3px;
+    }
+}
+
+
+/* Small Mobile (min-width: 480px) */
+@media (min-width: 480px) {
+    .eventCardContent {
+        padding: 10px;
+        gap: 5px;
+    }
+    .eventName {
+        font-size: 1rem;
+    }
+    .eventCardMeta {
+        font-size: 0.8rem;
+    }
+    .ticketPriceBottom {
+        font-size: 1rem;
+    }
+    .ticketsLeft {
+        font-size: 0.8rem;
+    }
+}
+
+/* Tablet / Small Desktop (min-width: 768px) */
+@media (min-width: 768px) {
+    .eventCardsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Min 2 columns on tablet */
+        gap: 20px;
+    }
+    .cardImageContainer {
+        height: 160px; /* Taller image container */
+    }
+    .eventCardContent {
+        padding: 12px;
+        gap: 6px;
+    }
+    .eventName {
+        font-size: 1.1rem;
+    }
+    .eventCardMeta {
+        font-size: 0.9rem;
+    }
+    .ticketPriceBottom {
+        font-size: 1.1rem;
+    }
+    .ticketsLeft {
+        font-size: 0.95rem;
+    }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .eventCardsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* Adjusted to fit ~5-6 cards */
+        gap: 20px;
+    }
+    .cardImageContainer {
+        height: 170px;
+    }
+    .eventName {
+        font-size: 1.15rem;
+    }
+    .eventCardMeta {
+        font-size: 0.9rem;
+    }
+    .ticketPriceBottom {
+        font-size: 1.2rem;
+    }
+    .ticketsLeft {
+        font-size: 0.95rem;
+    }
+}
+
+/* Larger Desktop (min-width: 1200px) */
+@media (min-width: 1200px) {
+    .eventCardsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjusted for even larger screens */
+        gap: 25px;
+    }
+    .cardImageContainer {
+        height: 180px;
+    }
+    .eventName {
+        font-size: 1.2rem;
+    }
+    .eventCardMeta {
+        font-size: 0.95rem;
+    }
+    .ticketPriceBottom {
+        font-size: 1.3rem;
+    }
+    .ticketsLeft {
+        font-size: 1rem;
+    }
+}
+/* Very Large Desktop (min-width: 1440px) - Aim for 6+ columns */
+@media (min-width: 1440px) {
+    .eventCardsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+        gap: 30px;
+    }
+    .cardImageContainer {
+        height: 190px; 
+    }
+}

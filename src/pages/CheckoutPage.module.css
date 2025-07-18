@@ -1,0 +1,496 @@
+/* /src/pages/CheckoutPage.module.css */
+
+.checkoutPageContainer {
+    max-width: 900px;
+    margin: 60px auto 30px auto; 
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: var(--naks-surface); 
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
+}
+
+.checkoutHeader {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.checkoutTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
+}
+.checkoutSubtitle {
+    font-size: 1.1rem;
+    color: var(--naks-text-secondary);
+}
+
+.checkoutContent {
+    min-height: auto; 
+    padding: 0; 
+    background-color: transparent; 
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+}
+
+.stepOneContent, .stepTwoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+/* --- Common Section Styling --- */
+.sectionContent {
+    background-color: var(--naks-surface);
+    padding: 20px; 
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--naks-border-light);
+}
+.sectionTitle {
+    font-size: 1.5rem; 
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-light);
+    color: var(--naks-text-primary);
+}
+
+/* --- Order Summary Section --- */
+.orderSummarySection {
+    /* Inherits section-content */
+}
+.summaryDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px; 
+}
+.summaryItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0; 
+    border-bottom: 1px dashed var(--naks-border-light);
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+}
+.summaryItem p {
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.summaryItem p svg {
+    color: var(--naks-gray-400);
+}
+.summaryItem span {
+    font-weight: 700;
+    color: var(--naks-primary);
+}
+.selectedTicketsList {
+    margin-top: 8px; 
+    padding-top: 8px; 
+    border-top: 1px solid var(--naks-border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 5px; 
+}
+.selectedTicketItem {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+}
+.selectedTicketItem span:first-child {
+    font-weight: 500;
+}
+.selectedTicketItem span:last-child {
+    font-weight: 600;
+    color: var(--naks-text-primary);
+}
+.totalPriceItem {
+    border-top: 2px solid var(--naks-border-medium);
+    padding-top: 12px; 
+    margin-top: 8px; 
+}
+.totalPriceItem h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin: 0;
+}
+.totalPriceItem span {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--naks-secondary);
+}
+
+/* --- Customer Information Section (Guest Input) --- */
+.customerInfoSection {
+    /* Inherits section-content */
+}
+.guestInfoForm { /* NEW: Styles for guest info form */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+.guestMessage {
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+    text-align: center;
+    margin-bottom: 10px;
+}
+.guestAssurance {
+    font-size: 0.85rem;
+    color: var(--naks-info);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.assuranceText {
+    font-size: 0.9rem;
+    color: var(--naks-info);
+    margin-top: 10px; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--naks-info-light);
+    padding: 8px 12px; 
+    border-radius: 8px;
+    border: 1px solid var(--naks-info);
+}
+.assuranceText svg {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.assuranceText .modalLink { 
+    color: var(--naks-info);
+    text-decoration: underline;
+    font-weight: 600;
+}
+.assuranceText .modalLink:hover {
+    color: var(--naks-text-primary);
+}
+
+
+/* --- Payment Instructions Section --- */
+.paymentMethodSection { /* Reused for instructions display */
+    /* Inherits section-content */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.instructionIntro { 
+    font-size: 1.05rem;
+    color: var(--naks-text-primary);
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.manualPayDetails {
+    background-color: var(--naks-gray-100);
+    border: 1px solid var(--naks-border-medium);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.manualPayDetails p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+}
+.manualPayDetails p strong {
+    color: var(--naks-text-primary);
+}
+.copyBtn { 
+    background: none;
+    border: none;
+    color: var(--naks-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.copyBtn:hover {
+    color: var(--naks-secondary);
+}
+.manualPayInstructions {
+    font-size: 0.9rem;
+    color: var(--naks-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px; 
+}
+.manualPayInstructions svg {
+    font-size: 1rem;
+}
+
+.instructionList {
+    list-style: decimal;
+    padding-left: 25px;
+    margin-top: 8px; 
+    font-size: 0.95rem; 
+    color: var(--naks-text-secondary);
+    line-height: 1.5; 
+}
+.instructionList li {
+    margin-bottom: 3px; 
+}
+.highlightText {
+    font-weight: 700;
+    color: var(--naks-primary);
+}
+.finalInstructionText {
+    font-size: 0.95rem; 
+    color: var(--naks-text-primary);
+    font-weight: 600;
+    margin-top: 15px; 
+    text-align: center;
+}
+
+/* --- Navigation Buttons (Simple) --- */
+.navigationButtons {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px; 
+    gap: 10px; 
+    flex-wrap: wrap; 
+}
+.navigationButtons .btn {
+    flex: 1;
+    max-width: 250px; 
+}
+
+
+/* --- Responsive Design --- */
+/* Mobile is default styles (max-width: 767px) */
+
+@media (max-width: 480px) {
+    .checkoutPageContainer {
+        width: 95%; 
+        margin: 20px auto;
+    }
+    .checkoutTitle {
+        font-size: 1.8rem;
+    }
+    .checkoutSubtitle {
+        font-size: 0.9rem;
+    }
+    .stepOneContent, .stepTwoContent {
+        gap: 10px;
+    }
+    .sectionContent {
+        padding: 15px;
+    }
+    .sectionTitle {
+        font-size: 1.4rem;
+    }
+    .summaryItem, .selectedTicketItem {
+        font-size: 0.85rem;
+    }
+    .totalPriceItem h3 {
+        font-size: 1.1rem;
+    }
+    .totalPriceItem span {
+        font-size: 1.2rem;
+    }
+    .guestInfoForm {
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .guestMessage, .guestAssurance {
+        font-size: 0.85rem;
+    }
+    .assuranceText {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        margin-top: 8px;
+    }
+    .manualPayDetails {
+        padding: 10px;
+        gap: 8px;
+    }
+    .manualPayDetails p {
+        font-size: 0.85rem;
+    }
+    .manualPayInstructions {
+        font-size: 0.75rem;
+        margin-top: 5px;
+    }
+    .instructionList {
+        font-size: 0.85rem;
+        padding-left: 20px;
+        margin-top: 5px;
+    }
+    .finalInstructionText {
+        font-size: 0.85rem;
+        margin-top: 10px;
+    }
+    .copyBtn {
+        font-size: 0.9rem;
+    }
+    .navigationButtons {
+        margin-top: 15px;
+        gap: 8px;
+    }
+    .navigationButtons .btn {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+}
+
+
+@media (min-width: 768px) { /* Tablet / PC Layout */
+    .checkoutPageContainer {
+        width: 80%; /* Wider on tablet/PC */
+        margin: 80px auto; /* More vertical margin */
+    }
+    .checkoutHeader {
+        margin-bottom: 30px;
+    }
+    .checkoutTitle {
+        font-size: 3rem;
+    }
+    .checkoutSubtitle {
+        font-size: 1.2rem;
+    }
+    .checkoutContent {
+        flex-direction: row; /* Two columns */
+        gap: 40px;
+    }
+    .stepOneContent {
+        flex: 2; /* Takes 2/3 of space */
+    }
+    .stepTwoContent {
+        flex: 1; /* Takes 1/3 of space */
+        position: sticky; /* Make payment instructions sticky */
+        top: 80px; /* Stick below navbar */
+        align-self: flex-start; /* Align to top */
+        height: fit-content; /* Only take content height */
+    }
+    .sectionContent {
+        padding: 30px;
+    }
+    .sectionTitle {
+        font-size: 2rem;
+    }
+    .summaryDetails {
+        gap: 12px;
+        margin-top: 20px;
+    }
+    .summaryItem {
+        padding: 8px 0;
+    }
+    .totalPriceItem {
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+    .guestInfoForm {
+        margin-top: 20px;
+    }
+    .assuranceText {
+        margin-top: 20px;
+    }
+    .paymentMethodSection {
+        gap: 20px;
+    }
+    .instructionIntro {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    .manualPayDetails {
+        padding: 15px;
+        gap: 10px;
+    }
+    .manualPayDetails p {
+        font-size: 1rem;
+    }
+    .manualPayInstructions {
+        font-size: 0.95rem;
+        margin-top: 10px;
+    }
+    .instructionList {
+        font-size: 1rem;
+        padding-left: 30px;
+        margin-top: 10px;
+    }
+    .finalInstructionText {
+        font-size: 0.95rem;
+        margin-top: 20px;
+    }
+    .navigationButtons {
+        margin-top: 30px;
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1025px) { /* Large Desktop */
+    .checkoutPageContainer {
+        max-width: 1000px;
+        width: 70%;
+    }
+    .checkoutTitle {
+        font-size: 3.5rem;
+    }
+    .checkoutSubtitle {
+        font-size: 1.3rem;
+    }
+    .checkoutContent {
+        gap: 50px;
+    }
+    .stepOneContent {
+        flex: 3; /* Takes more space on large screens */
+    }
+    .stepTwoContent {
+        flex: 1; /* Remains compact */
+    }
+    .sectionContent {
+        padding: 40px;
+    }
+    .sectionTitle {
+        font-size: 2.2rem;
+    }
+    .summaryItem, .selectedTicketItem {
+        font-size: 1.05rem;
+    }
+    .totalPriceItem h3 {
+        font-size: 1.5rem;
+    }
+    .totalPriceItem span {
+        font-size: 1.8rem;
+    }
+    .manualPayDetails {
+        padding: 20px;
+    }
+    .manualPayDetails p {
+        font-size: 1.05rem;
+    }
+    .instructionList {
+        font-size: 1.05rem;
+    }
+}

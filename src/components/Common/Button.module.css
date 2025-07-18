@@ -1,0 +1,80 @@
+/* /src/components/Common/Button.module.css */
+
+.btn {
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1rem;
+    text-decoration: none; /* Ensure it works for Link components too */
+}
+
+.btnPrimary {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface); /* Assuming --naks-white-surface is defined (e.g., #FFFFFF) */
+    box-shadow: var(--shadow-md); /* Assuming --shadow-md is defined */
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite; /* From global style.css */
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg); /* Assuming --shadow-lg is defined */
+    animation-play-state: paused;
+}
+
+.btnPrimary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm); /* Assuming --shadow-sm is defined */
+}
+
+.btnPrimary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--naks-gray-300); /* Assuming --naks-gray-300 is defined */
+    box-shadow: none;
+    animation: none; /* Stop animation when disabled */
+}
+
+.btnSecondary {
+    background-color: var(--naks-gray-200); /* Assuming --naks-gray-200 is defined */
+    color: var(--naks-text-primary); /* Assuming --naks-text-primary is defined */
+    border: 1px solid var(--naks-border-medium); /* Assuming --naks-border-medium is defined */
+    box-shadow: var(--shadow-sm);
+}
+
+.btnSecondary:hover {
+    background-color: var(--naks-gray-300);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btnSecondary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.btnSecondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Specific size adjustments if needed */
+.btnSmall {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+}
+
+/* Animations (copied from global style.css as they are used by these buttons) */
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

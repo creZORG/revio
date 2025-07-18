@@ -1,0 +1,229 @@
+/* /src/pages/UserDashboardPage.module.css */
+
+/* --- Main Dashboard Container --- */
+.dashboardContainer {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding-top: 60px; /* Default desktop Navbar height */
+    background-color: var(--naks-bg-light);
+    color: var(--naks-text-primary);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    position: relative;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+/* --- Main Content Area (Right Side, adjusted for sidebar width) --- */
+.mainContent {
+    flex-grow: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: var(--naks-bg-light);
+    transition: background-color 0.3s ease, margin-left 0.3s ease;
+    margin-left: 220px;
+    box-sizing: border-box;
+}
+
+/* Class to apply when sidebar is COMPLETELY HIDDEN on desktop */
+.mainContent.sidebarHiddenMargin {
+    margin-left: 0;
+}
+
+/* --- External Mobile Toggle Button (now centered vertically) --- */
+.mobileToggleBtn {
+    display: none; /* Hidden by default on desktop */
+    position: fixed; /* Fixed position */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for perfect centering */
+    left: 15px; /* Position from left, slightly in from the edge */
+    background-color: var(--naks-primary);
+    color: var(--naks-white-surface);
+    border: none;
+    border-radius: var(--border-radius-full);
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    z-index: 550; /* Above main content, below sidebar overlay */
+    transition: transform 0.3s ease, opacity 0.3s ease, left 0.3s ease; /* Added left transition */
+}
+
+/* Hide the toggle button when sidebar is open on desktop, and position it */
+@media (min-width: 1025px) { /* Desktop */
+    .mobileToggleBtn {
+        display: flex; /* Always display on desktop for manual hide/show */
+        left: 235px; /* Position right of expanded sidebar (220px + 15px margin) */
+    }
+    .sidebarHiddenMargin .mobileToggleBtn { /* When sidebar is hidden */
+        left: 15px; /* Position at the far left edge */
+    }
+    .mobileToggleBtn.hidden { /* When sidebar is open, this button should be hidden on desktop (or moved) */
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-50%) translateX(60px); /* Move it right and fade */
+    }
+}
+
+
+/* --- Mobile Overlay for Sidebar --- */
+.mobileOverlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 400;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+.mobileOverlay.active {
+    display: block;
+    opacity: 1;
+}
+
+
+/* --- Dashboard Sections Container (Content area where tabs render) --- */
+.dashboardSections {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* General Section Content Styling - common for tabs/sections */
+.sectionContent {
+    background-color: var(--naks-surface);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    border: 1px solid var(--naks-border-light);
+}
+.sectionContent.loadingSection {
+    display: block;
+}
+
+/* Titles *within* tabs */
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-light);
+}
+
+/* --- Notifications Modal Content (shared styling) --- */
+.notificationsModalContent {
+    padding: 10px 0;
+}
+.notificationList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.notificationItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--naks-border-light);
+}
+.notificationItem:last-child {
+    border-bottom: none;
+}
+.notificationIcon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+.notificationContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.notificationMessage {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--naks-text-primary);
+    margin-bottom: 5px;
+}
+.notificationTime {
+    font-size: 0.8rem;
+    color: var(--naks-text-light);
+}
+.notificationLink {
+    font-size: 0.9rem;
+    color: var(--naks-primary);
+    margin-top: 5px;
+    text-decoration: underline;
+}
+.notificationLink:hover {
+    color: var(--naks-secondary);
+}
+.markReadButton {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+}
+.markReadButton:hover {
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+}
+
+
+/* Responsive Design for Dashboard Layout */
+@media (max-width: 1024px) { /* Tablet and larger phones */
+    .dashboardContainer {
+        padding-top: 60px; /* Match mobile Navbar height */
+    }
+
+    .mainContent {
+        padding: 20px;
+        gap: 20px;
+        margin-left: 0; /* Sidebar is now an overlay on mobile, so no margin for main content */
+    }
+
+    /* Mobile toggle button specific positioning on mobile */
+    .mobileToggleBtn {
+        top: calc(60px + 15px); /* Position below mobile Navbar + spacing */
+        left: 15px; /* Fixed position */
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 767px) { /* Smaller mobile devices */
+    .dashboardContainer {
+        padding-top: 45px; /* Smallest mobile Navbar height */
+    }
+
+    .mainContent {
+        padding: 15px;
+        gap: 15px;
+        margin-left: 0; /* Sidebar is an overlay */
+    }
+
+    .mobileToggleBtn {
+        top: calc(45px + 10px); /* Adjust for smallest Navbar height */
+        left: 10px;
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,327 @@
+/* src/pages/Organizer/Dashboard/Tabs/CreateEventWizard.module.css */
+
+.wizardContainer {
+  background-color: var(--naks-white-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem; /* Consistent padding with other tabs/wizards */
+  max-width: 800px; /* Limit width for better readability on large screens */
+  margin: 0 auto; /* Center the wizard */
+}
+
+.progressIndicator {
+  width: 100%;
+  background-color: var(--naks-gray-200); /* Light gray background for progress bar track */
+  border-radius: var(--border-radius-md);
+  height: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden; /* Ensure rounded corners for inner bar */
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary)); /* Naks Yetu gradient for progress */
+  border-radius: var(--border-radius-md);
+  transition: width 0.5s ease-in-out;
+}
+
+.stepCount { /* NEW: Styled step count */
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: var(--naks-text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.stepTitle { /* Used for internal step titles within the wizard */
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  color: var(--naks-text-primary);
+  margin-bottom: 2rem;
+  text-align: center; /* Adjust if not needed centered for step titles */
+}
+
+
+.stepContent {
+  /* Padding will be handled by individual steps */
+}
+
+/* For form controls, labels, and buttons within steps */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--naks-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.formInput,
+.formTextarea,
+.formSelect {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--naks-border-medium);
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  color: var(--naks-text-primary);
+  background-color: var(--naks-white-surface);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.formInput:focus,
+.formTextarea:focus,
+.formSelect:focus {
+  border-color: var(--naks-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.2);
+}
+
+/* Checkbox and Radio Button styles */
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.checkboxInput {
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--naks-primary); /* Style checkbox itself */
+}
+
+.checkboxLabel {
+  font-size: 1rem;
+  color: var(--naks-text-primary);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between; /* Space out next/prev buttons */
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+/* Base styles for native buttons (primary, secondary, add slot buttons) */
+.buttonGroup button,
+.secondaryButton, /* Applies to all secondary-like buttons */
+.primaryButton { /* Applies to all primary-like buttons */
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-xl);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  border: none; /* Ensure no default border */
+  display: flex; /* For icon and text alignment */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Space between icon and text */
+}
+
+.prevButton,
+.secondaryButton { /* Styling for Previous and Secondary buttons */
+  background-color: var(--naks-gray-300);
+  color: var(--naks-text-primary);
+}
+
+.prevButton:hover:not(:disabled),
+.secondaryButton:hover:not(:disabled) {
+  background-color: var(--naks-gray-200);
+}
+
+.nextButton,
+.primaryButton { /* Styling for Next and Primary buttons */
+  background-color: var(--naks-primary);
+  color: var(--naks-white-surface);
+}
+
+.nextButton:hover:not(:disabled),
+.primaryButton:hover:not(:disabled) {
+  background-color: var(--naks-secondary); /* Hover to secondary color */
+}
+
+.submitButton { /* For final submit button (if applicable) */
+  background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary));
+  color: var(--naks-white-surface);
+}
+
+.submitButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* NEW: Disabled state styling for all buttons */
+.disabledButton {
+  opacity: 0.5;
+  cursor: not-allowed !important; /* Force not-allowed cursor */
+}
+
+/* NEW: Specific styles for Add slot buttons (e.g., Add Gallery Image, Add Sponsor) */
+.addSlotButton {
+  width: 100%; /* Take full width if it's a standalone button */
+  /* Inherits base styles from .secondaryButton */
+}
+
+
+/* NEW: Styles for the new UI structure of Gallery & Sponsors Step */
+.gallerySponsorsStepContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Space between sections */
+}
+
+.sectionCard {
+    background-color: var(--naks-white-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+    border: 1px solid var(--naks-border-light);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 0.75rem;
+}
+
+.sectionHeaderIcon { /* NEW: Style for icons in section headers */
+    width: 24px;
+    height: 24px;
+    color: var(--naks-text-secondary); /* Use a subtle color for icons */
+}
+
+.sectionTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+}
+
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid for image previews */
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.galleryPreviewItem {
+    position: relative;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background-color: var(--naks-gray-50);
+    width: 100px; /* Fixed width for grid items */
+    height: 100px; /* Fixed height for grid items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.galleryPreviewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.compactImageUpload {
+    /* Styles for ImageUpload component when used in a compact way */
+    margin-bottom: 0 !important; /* Remove default margin */
+}
+
+.compactImageUpload .uploadArea {
+    padding: 10px; /* Smaller padding for compact version */
+    min-height: 80px; /* Smaller min-height */
+}
+.compactImageUpload .uploadText {
+    font-size: 0.85rem;
+}
+.compactImageUpload .uploadInfo {
+    font-size: 0.7em;
+}
+
+.removeImageButton {
+    position: absolute;
+    top: 0.25rem; /* Adjusted position inside padding */
+    right: 0.25rem; /* Adjusted position inside padding */
+    background-color: rgba(var(--sys-error-rgb), 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: bold;
+    z-index: 10; /* Ensure it's above the image */
+    transition: background-color 0.2s ease;
+}
+.removeImageButton:hover {
+    background-color: var(--sys-error);
+}
+
+.uploadProgressOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.uploadProgressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px; /* Thin progress bar */
+    background: linear-gradient(90deg, var(--sys-info), var(--sys-success)); /* Blue to green gradient */
+    border-radius: 2.5px;
+}
+
+.uploadProgressText {
+    position: relative;
+    z-index: 1; /* Ensure text is above bar */
+}
+
+.sponsorsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between sponsor entry cards */
+}
+
+.sponsorItemCard {
+    background-color: var(--naks-white-surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 1rem;
+    border: 1px solid var(--naks-border-medium);
+}
+
+.removeSponsorButton {
+    background: none;
+    border: none;
+    color: var(--sys-error);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+.removeSponsorButton:hover {
+    background-color: rgba(var(--sys-error-rgb), 0.1);
+}

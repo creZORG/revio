@@ -1,0 +1,167 @@
+/* /src/components/Events/EventDetailPage/EventSidebarActions.module.css */
+
+.sidebarColumn {
+    flex-basis: 35%; /* Takes 35% of available space on PC */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between sections */
+    position: sticky; /* Make it sticky */
+    top: 80px; /* Stick below navbar (adjust based on actual navbar height) */
+    align-self: flex-start; /* Align to top of its container */
+    height: fit-content; /* Only take content height */
+}
+
+.actionSection {
+    /* Inherits commonStyles.sectionContent */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content within action section */
+    text-align: center;
+    gap: 15px; /* Space between elements */
+}
+
+.sidebarHeading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--naks-border-medium);
+    width: 100%; /* Ensure border spans full width */
+}
+
+.helperText {
+    font-size: 1rem;
+    color: var(--naks-text-secondary);
+    margin-bottom: 10px;
+}
+
+.actionButton {
+    width: 100%; /* Full width button */
+    padding: 15px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+}
+
+/* Share and Contact Section */
+.shareContactSection {
+    /* Inherits commonStyles.sectionContent */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+.shareHeading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--naks-text-primary);
+}
+
+.socialShareIcons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.socialIcon {
+    width: 45px;
+    height: 45px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    transition: all 0.2s ease;
+}
+.socialIcon:hover {
+    background-color: var(--naks-secondary);
+    color: var(--naks-white-surface);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+}
+
+.contactOrganizerButton {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) { /* Tablet and smaller desktop */
+    .sidebarColumn {
+        flex: none;
+        width: 100%; /* Take full width when stacked */
+        position: static; /* Remove sticky on mobile */
+        top: auto;
+        align-self: auto;
+        padding: 20px; /* Smaller padding */
+        gap: 20px;
+    }
+    .sidebarHeading {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    .actionButton {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    .socialIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    .contactOrganizerButton {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 767px) { /* Mobile specific */
+    .sidebarColumn {
+        padding: 15px;
+        gap: 15px;
+    }
+    .sidebarHeading {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    .actionButton {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    .socialIcon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+    }
+    .contactOrganizerButton {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) { /* Very small mobile */
+    .sidebarColumn {
+        padding: 10px;
+        gap: 10px;
+    }
+    .sidebarHeading {
+        font-size: 1.1rem;
+    }
+    .actionButton {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+    .socialIcon {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+}

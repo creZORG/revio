@@ -1,0 +1,89 @@
+/* src/pages/Organizer/Dashboard/Tabs/PromotionsTab.module.css */
+
+.promotionsTabContainer {
+  background-color: var(--naks-white-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem; /* Consistent padding with other tabs/wizards */
+  max-width: 900px; /* Limit width for better readability on larger screens */
+  margin: 0 auto; /* Center the tab content */
+  min-height: calc(100vh - var(--navbar-height-mobile) - 4rem); /* Ensure it fills space below nav/topbar */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+}
+
+.sectionNav {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 1rem; /* Space between buttons */
+  margin-bottom: 2rem; /* Space below the nav */
+  border-bottom: 1px solid var(--naks-border-light); /* Subtle separator */
+  padding-bottom: 0.75rem; /* Padding below buttons before border */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.sectionButton {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--naks-text-secondary); /* Default text color (dark gray) */
+  cursor: pointer; /* Explicitly show clickable cursor */
+  border-radius: var(--border-radius-md);
+  transition: background-color var(--transition-speed) ease-in-out, 
+              color var(--transition-speed) ease-in-out, 
+              transform 0.1s ease-in-out; /* Add subtle hover effect */
+  position: relative; /* For the active indicator */
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+  white-space: nowrap; /* Keep text on one line */
+}
+
+.sectionButton:hover {
+  background-color: var(--naks-gray-100); /* Light gray hover background */
+  color: var(--naks-text-primary); /* Darker text on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.sectionButton:active {
+    transform: translateY(0); /* Press down effect */
+}
+
+.activeSectionButton {
+  color: var(--naks-primary); /* Active text color (vibrant orange/red) */
+  font-weight: bold;
+}
+
+/* Underline effect for active button */
+.activeSectionButton::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem; /* Position below the button, adjusted for padding */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%; /* Width of the underline */
+  height: 3px;
+  background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary)); /* Naks Yetu Gradient */
+  border-radius: 2px;
+}
+
+.sectionContent {
+  flex-grow: 1; /* Allow content to fill remaining space */
+  padding-top: 1rem; /* Space between section nav and content */
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 600px) {
+  .sectionNav {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: stretch; /* Stretch buttons to full width */
+    gap: 0.5rem; /* Reduced gap */
+  }
+  .sectionButton {
+    text-align: center;
+    padding: 0.5rem 1rem;
+  }
+  .sectionButton::after {
+    bottom: -0.25rem; /* Adjust underline position for smaller buttons */
+  }
+}

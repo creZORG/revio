@@ -1,7 +1,10 @@
-/* src/components/Styles/variables.css */
-/* :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --text-color: #333;
-  --background-color: #f8f9fa;
-} */
+:root {
+  --color-primary: #007bff; /* Example blue, matches our TopBar background */
+  --color-secondary: #6c757d; /* Example gray */
+  --color-background-light: #f8f9fa; /* Light background, matches dashboard background */
+  --color-text-dark: #343a40; /* Dark text/sidebar background */
+
+  /* Layout Variables */
+  --navbar-height-mobile: 60px; /* Height of the fixed top bar on mobile */
+  --sidebar-width-desktop: 250px; /* Width of the sidebar on desktop */
+}

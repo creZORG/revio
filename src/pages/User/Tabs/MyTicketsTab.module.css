@@ -1,0 +1,214 @@
+/* /src/pages/User/Tabs/MyTicketsTab.module.css */
+
+.ticketsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust minmax for ticket card width */
+    gap: 30px; /* Space between cards */
+    margin-top: 20px;
+}
+
+.ticketCard {
+    background-color: var(--naks-surface);
+    border: 1px solid var(--naks-border-light);
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden; /* For pseudo-elements like corner design */
+}
+
+.ticketCard::before { /* Decorative corner element */
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 60px solid var(--naks-primary);
+    border-left: 60px solid transparent;
+    border-bottom: 60px solid transparent;
+    border-right: 60px solid transparent;
+    transform: rotate(90deg);
+    opacity: 0.1;
+}
+
+.ticketCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.ticketHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ticketName {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--naks-text-primary);
+    margin: 0;
+}
+
+.ticketStatus {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: var(--naks-info-light);
+    color: var(--naks-info);
+}
+
+.ticketDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--naks-text-secondary);
+    border-top: 1px dashed var(--naks-border-light);
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
+.detailItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detailItem svg {
+    color: var(--naks-primary);
+    font-size: 1.1rem;
+}
+
+.ticketQRCode {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--naks-border-medium);
+}
+
+.ticketQRCode img {
+    max-width: 150px;
+    height: auto;
+    border: 1px solid var(--naks-border-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.ticketActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.actionButton {
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+}
+
+.actionButton:hover {
+    background-color: var(--naks-gray-300);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.actionButton.primary {
+    background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
+    color: var(--naks-white-surface);
+}
+
+.actionButton.primary:hover {
+    box-shadow: var(--shadow-md);
+    animation: gradient-shift 3s ease infinite;
+}
+
+.noTicketsMessage {
+    text-align: center;
+    padding: 50px;
+    color: var(--naks-text-secondary);
+    font-size: 1.1rem;
+    background-color: var(--naks-gray-100);
+    border-radius: 15px;
+    border: 1px solid var(--naks-border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ticketsGrid {
+        grid-template-columns: 1fr; /* Stack cards on mobile */
+        gap: 20px;
+    }
+    .ticketCard {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    .ticketName {
+        font-size: 1.2rem;
+    }
+    .ticketStatus {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+    .ticketDetails {
+        font-size: 0.9rem;
+        gap: 6px;
+    }
+    .detailItem svg {
+        font-size: 1rem;
+    }
+    .ticketQRCode img {
+        max-width: 120px;
+    }
+    .actionButton {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        gap: 6px;
+    }
+    .actionButton svg {
+        font-size: 0.9rem;
+    }
+    .noTicketsMessage {
+        padding: 30px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ticketCard {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    .ticketName {
+        font-size: 1.1rem;
+    }
+    .detailItem {
+        font-size: 0.85rem;
+    }
+    .ticketQRCode {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .ticketQRCode img {
+        max-width: 100px;
+    }
+}

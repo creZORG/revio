@@ -1,0 +1,314 @@
+/* /src/pages/User/Dashboard/components/UserDashboardSidebar.module.css */
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 220px; /* Default desktop open width */
+    flex-shrink: 0;
+    padding: 20px;
+    background-color: var(--naks-surface);
+    box-shadow: var(--shadow-lg);
+    border-right: 1px solid var(--naks-border-light);
+    position: fixed; /* Always fixed */
+    left: 0;
+    top: 0; /* Starts at top of viewport */
+    height: 100vh; /* Covers full viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    box-sizing: border-box; /* Include padding in height/width */
+    padding-top: 60px; /* Pushes content down below main Navbar */
+
+    display: flex;
+    flex-direction: column;
+    z-index: 100; /* Lower than Navbar (1000), higher than main content */
+
+    /* Animation for opening/closing */
+    transform: translateX(0); /* Default: visible */
+    transition: transform 0.3s ease-out, width 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+/* State for COMPLETELY HIDDEN sidebar on desktop */
+@media (min-width: 1025px) {
+    .sidebar.closed { /* Class applied by JS for hidden state */
+        width: 0; /* Completely hidden */
+        transform: translateX(-100%); /* Slide off-screen */
+        box-shadow: none; /* No shadow when hidden */
+        border-right: none;
+        overflow-x: hidden; /* Hide horizontal scrollbar during transition */
+    }
+}
+
+/* Mobile/Tablet specific behavior (default to hidden overlay) */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px; /* Full width for mobile overlay */
+        transform: translateX(-100%); /* HIDDEN by default on mobile */
+        box-shadow: var(--shadow-xl); /* Stronger shadow for overlay */
+        padding-top: 60px; /* Mobile Navbar height */
+        /* Will appear with `left:0` when .open is applied by JS */
+    }
+    .sidebar.open { /* Class applied by JS when sidebar is explicitly opened on mobile */
+        transform: translateX(0); /* Slide in */
+    }
+}
+@media (max-width: 767px) { /* Even smaller mobile */
+    .sidebar {
+        width: 200px; /* Slightly narrower on very small phones */
+        padding-top: 45px; /* Adjust for smallest Navbar height */
+    }
+}
+
+
+/* Header with Logo and Close Button (for mobile overlay) */
+.sidebarHeader {
+    display: flex;
+    justify-content: space-between; /* Space out logo and close button */
+    align-items: center;
+    margin-bottom: 25px;
+    height: auto;
+    padding-right: 5px;
+    position: relative;
+    padding-bottom: 10px; /* Add padding below header */
+    border-bottom: 1px solid var(--naks-border-light); /* Separator */
+}
+
+.sidebarHeader h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin-bottom: 0;
+}
+/* No desktop toggle button within sidebar anymore */
+.sidebarToggleBtn { display: none; }
+
+/* Mobile Close Button (FaTimes) */
+.sidebarCloseBtn {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    color: var(--naks-text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s, color 0.3s;
+}
+.sidebarCloseBtn:hover {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+}
+@media (max-width: 1024px) {
+    .sidebarCloseBtn { display: block; } /* Show close button on mobile overlay */
+}
+
+/* User Mini Profile Info (within Sidebar) */
+.sidebarProfileInfo {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+.sidebarProfilePlaceholder {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    gap: 10px;
+}
+
+.userMiniProfileLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--naks-text-primary);
+    transition: color 0.3s ease;
+}
+.userMiniProfileLink:hover {
+    color: var(--naks-primary);
+}
+
+.userMiniAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--border-radius-full);
+    object-fit: cover;
+    border: 2px solid var(--naks-primary);
+    box-shadow: 0 0 0 2px var(--naks-primary-light);
+    flex-shrink: 0;
+}
+
+.userMiniName {
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Transition opacity/width for full collapse, now handled by parent transform */
+}
+
+
+/* Navigation Links */
+.sidebarNav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.sidebarNav li {
+    margin-bottom: 8px;
+}
+
+.navButton {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--naks-text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.navIcon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    color: var(--naks-text-secondary);
+}
+
+.navLabel {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Transition opacity/width for full collapse */
+}
+
+
+/* Hover state for floating effect */
+.navButton:hover {
+    background-color: rgba(var(--naks-primary-rgb), 0.08);
+    color: var(--naks-text-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--naks-primary-light);
+}
+.navButton:hover .navIcon {
+    color: var(--naks-primary);
+}
+
+/* Active state for floating effect */
+.navButton.active {
+    background-color: rgba(var(--naks-primary-rgb), 0.15);
+    color: var(--naks-primary);
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    border-color: var(--naks-primary);
+}
+.navButton.active .navIcon {
+    color: var(--naks-primary);
+}
+
+/* Dark mode for floating effects */
+:global(body.dark-mode) .navButton:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+:global(body.dark-mode) .navButton.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Action Buttons at the Bottom (Theme Toggle, Notifications) */
+.sidebarActionsBottom {
+    list-style: none;
+    padding: 0;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--naks-border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Dark Mode Toggle & Notification Bell (Integrated Icons) */
+.iconBtn {
+    background: none;
+    border: none;
+    color: var(--naks-text-secondary);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--border-radius-full);
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+}
+.iconBtn:hover {
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-primary);
+}
+
+.notificationBadge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--naks-error);
+    color: var(--naks-white-surface);
+    border-radius: var(--border-radius-full);
+    padding: 2px 7px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* Responsive adjustments specific to mobile overlay behavior */
+@media (max-width: 1024px) { /* Tablet and below (default hidden sidebar, appears as overlay) */
+    .sidebar {
+        /* Mobile specific positioning and visibility */
+        width: 220px; /* Full width for mobile overlay */
+        transform: translateX(-100%); /* HIDDEN by default on mobile */
+        box-shadow: var(--shadow-xl); /* Stronger shadow for overlay */
+        border-right: none; /* No border as it's an overlay */
+        z-index: 600; /* Higher than mobile overlay, lower than Modal */
+        transition: transform 0.3s ease-out; /* Slide in/out animation */
+
+        /* Top/Height adjustments (relative to fixed Navbar) */
+        top: 0; /* Positioned from top of viewport */
+        height: 100vh; /* Full height of viewport */
+        padding-top: 60px; /* Match Navbar height */
+    }
+    .sidebar.open { /* Class applied by JS when sidebar is explicitly opened on mobile */
+        transform: translateX(0); /* Slide in */
+    }
+
+    /* All internal elements that hide/show based on collapse on desktop should now always be visible */
+    .sidebarHeader h1 { display: block; font-size: 1.8rem; width: auto; opacity: 1; visibility: visible; }
+    .sidebarCloseBtn { display: block; } /* Show close button on mobile overlay */
+    .userMiniName { display: inline; } /* Show name on mobile overlay */
+    .navLabel { display: inline; } /* Show labels on mobile overlay */
+    .navButton { justify-content: flex-start; } /* Left align buttons */
+    .navIcon { font-size: 1.2rem; } /* Restore default icon size */
+    .iconBtn { font-size: 22px; } /* Restore default icon size */
+}
+
+@media (max-width: 767px) { /* Even smaller mobile */
+    .sidebar {
+        width: 200px; /* Slightly narrower for very small phones */
+        padding-top: 45px; /* Adjust for smaller Navbar height */
+    }
+}

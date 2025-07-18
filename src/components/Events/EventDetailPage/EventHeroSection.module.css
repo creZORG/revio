@@ -1,0 +1,200 @@
+/* /src/pages/Events/EventDetailPage/EventHeroSection.module.css */
+
+.eventHeroSection {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Mobile height for the entire hero section */
+    overflow: hidden;
+    background-color: var(--naks-gray-300); /* Placeholder background */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: flex-end; /* Push content to bottom */
+    padding: 0 20px 20px; /* Adjust padding for mobile */
+    box-sizing: border-box;
+    box-shadow: var(--shadow-md);
+    z-index: 1; /* Ensure it's above other content */
+}
+
+.eventHeroImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.eventHeroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; 
+    padding: 0 20px 40px; /* Padding for content within overlay */
+    box-sizing: border-box;
+}
+
+.eventHeroTitle {
+    font-size: 2.2rem; /* Mobile-first font size */
+    font-weight: 800;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    color: white; /* Title color */
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative; 
+    z-index: 3;
+    max-width: 90%; /* Prevent overflow on small screens */
+}
+
+.eventHeroMeta {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; /* Stack meta items on mobile */
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Reduced gap for stacking */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative; 
+    z-index: 3;
+}
+.eventHeroMeta span {
+    white-space: nowrap; /* Prevent individual items from wrapping */
+}
+.eventHeroMeta span:nth-child(even) { /* Style for '|' separator */
+    display: none; /* Hide separator on mobile when stacked */
+}
+
+.heroActionButtons {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+    justify-content: center;
+    gap: 10px; /* Reduced gap for mobile */
+    margin-top: 15px;
+    width: 100%; 
+    position: relative; 
+    z-index: 3;
+}
+.heroActionButtons .iconBtn {
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparent background */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 15px; /* Smaller padding for mobile buttons */
+    border-radius: 10px;
+    font-size: 0.85rem; /* Smaller font size for mobile */
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Smaller gap */
+    flex: 1 1 auto; /* Allow buttons to grow/shrink based on space */
+    max-width: 130px; /* Max width for mobile button */
+    text-decoration: none; /* Ensure no underline for Link-like buttons */
+}
+.heroActionButtons .iconBtn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Smaller shadow on hover */
+}
+.heroActionButtons .iconBtn svg {
+    font-size: 1rem; /* Smaller icon size */
+}
+
+.ticketsFloatingButtonContainer {
+    position: absolute;
+    bottom: 20px; /* Position above carousel pagination */
+    width: 90%;
+    max-width: 300px; /* Max width for button */
+    z-index: 10;
+    box-sizing: border-box;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.ticketsFloatingButton {
+    width: 100%;
+    padding: 15px 0;
+    font-size: 1.1rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* --- Desktop Layout (min-width: 768px) --- */
+@media (min-width: 768px) {
+    .eventHeroSection {
+        height: 450px; /* Taller on tablet/desktop */
+        padding-bottom: 40px; /* More padding for content */
+    }
+    .eventHeroOverlay {
+        padding: 0 40px 60px; /* More padding for content */
+    }
+    .eventHeroTitle {
+        font-size: 3.5rem; /* Larger title */
+    }
+    .eventHeroMeta {
+        font-size: 1.2rem;
+        flex-direction: row; /* Horizontal on larger screens */
+        gap: 15px; /* Larger gap */
+    }
+    .eventHeroMeta span:nth-child(even) {
+        display: inline; /* Show separator */
+    }
+    .heroActionButtons {
+        gap: 20px; /* Larger gap */
+        margin-top: 25px; /* More space */
+    }
+    .heroActionButtons .iconBtn {
+        padding: 12px 25px; /* Larger padding */
+        font-size: 1rem; /* Larger font */
+        max-width: 180px; /* Wider buttons */
+    }
+    .ticketsFloatingButtonContainer {
+        bottom: 40px; /* Adjust if hero section is taller */
+        max-width: 350px;
+    }
+    .ticketsFloatingButton {
+        padding: 18px;
+        font-size: 1.2rem;
+    }
+}
+
+/* --- Larger Desktop Screens (min-width: 1025px) --- */
+@media (min-width: 1025px) {
+    .eventHeroSection {
+        height: 550px; /* Even taller on large desktop */
+    }
+    .eventHeroOverlay {
+        padding: 0 60px 80px; /* Even more padding */
+    }
+    .eventHeroTitle {
+        font-size: 4.5rem; /* Even larger title */
+    }
+    .eventHeroMeta {
+        font-size: 1.3rem;
+    }
+    .heroActionButtons {
+        gap: 30px;
+    }
+    .heroActionButtons .iconBtn {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        max-width: 200px;
+    }
+    .ticketsFloatingButtonContainer {
+        bottom: 60px;
+        max-width: 400px;
+    }
+    .ticketsFloatingButton {
+        padding: 20px;
+        font-size: 1.3rem;
+    }
+}
