@@ -1,496 +1,817 @@
-/* /src/pages/CheckoutPage.module.css */
+/* src/pages/CheckoutPage.module.css */
 
-.checkoutPageContainer {
-    max-width: 900px;
-    margin: 60px auto 30px auto; 
+.checkoutContainer {
+    max-width: 1000px;
+    margin: 40px auto;
     padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    background-color: var(--naks-surface); 
-    border-radius: 15px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--naks-border-light);
+    background-color: var(--color-background-light);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-medium);
+    font-family: 'Inter', sans-serif;
+    color: var(--color-text-primary);
 }
 
-.checkoutHeader {
+.pageTitle {
     text-align: center;
-    margin-bottom: 20px;
-}
-.checkoutTitle {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--naks-text-primary);
-    margin-bottom: 10px;
-    background: linear-gradient(90deg, var(--naks-secondary), var(--naks-primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent; 
-}
-.checkoutSubtitle {
-    font-size: 1.1rem;
-    color: var(--naks-text-secondary);
+    color: var(--color-primary-dark);
+    margin-bottom: 40px;
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.5px;
 }
 
-.checkoutContent {
-    min-height: auto; 
-    padding: 0; 
-    background-color: transparent; 
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
+/* Progress Indicator */
+.progressIndicator {
     display: flex;
-    flex-direction: column; 
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+    padding: 0 20px;
 }
 
-.stepOneContent, .stepTwoContent {
+.progressBar {
+    position: absolute;
+    height: 4px;
+    background-color: var(--color-neutral-300);
+    width: calc(100% - 40px); /* Adjust for padding */
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+    border-radius: var(--border-radius-small);
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(to right, var(--color-primary-light), var(--color-primary-dark));
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+    border-radius: var(--border-radius-small);
+}
+
+.progressStep {
     display: flex;
     flex-direction: column;
-    gap: 15px; 
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    background-color: var(--color-background-light); /* To cover the progress bar */
+    padding: 5px;
+    border-radius: var(--border-radius-small);
 }
 
-/* --- Common Section Styling --- */
-.sectionContent {
-    background-color: var(--naks-surface);
-    padding: 20px; 
-    border-radius: 15px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--naks-border-light);
+.stepIcon {
+    width: 28px;
+    height: 28px;
+    color: var(--color-neutral-500);
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
 }
-.sectionTitle {
-    font-size: 1.5rem; 
-    font-weight: 700;
+
+.stepName {
+    font-size: var(--font-size-small);
+    color: var(--color-neutral-600);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.progressStep.activeStep .stepIcon {
+    color: var(--color-primary-dark);
+}
+
+.progressStep.activeStep .stepName {
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Section Cards */
+.sectionCard {
+    background-color: var(--color-background-card);
+    padding: 30px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-small);
+    margin-bottom: 30px;
+    border: 1px solid var(--color-border);
+}
+
+.sectionHeader {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary-dark);
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+.gradientText {
+    background: linear-gradient(to right, var(--color-accent), var(--color-primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sectionSubHeader {
+    font-size: var(--font-size-large);
+    color: var(--color-text-secondary);
+    margin-top: 30px;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--naks-border-light);
-    color: var(--naks-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    font-weight: var(--font-weight-medium);
 }
 
-/* --- Order Summary Section --- */
-.orderSummarySection {
-    /* Inherits section-content */
+/* Event Summary */
+.eventSummary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background-color: var(--color-neutral-100);
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 25px;
+    border: 1px solid var(--color-neutral-200);
 }
+
+.eventThumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-elevation-extra-small);
+}
+
+.eventInfo {
+    flex-grow: 1;
+}
+
+.eventName {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
+}
+
+.eventMeta {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+}
+
+/* Tickets Summary */
+.ticketsSummary {
+    margin-bottom: 30px;
+}
+
+.ticketsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ticketItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed var(--color-border);
+}
+
+.ticketItem:last-child {
+    border-bottom: none;
+}
+
+.ticketDetails {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.ticketDetails span:first-child {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+.ticketPrice {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-medium);
+}
+
+.ticketQuantityControls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantityButton {
+    background-color: var(--color-neutral-200);
+    border: 1px solid var(--color-neutral-300);
+    color: var(--color-text-secondary);
+    padding: 6px;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.quantityButton:hover:not(:disabled) {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.quantityButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ticketQuantity {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
+    min-width: 25px; /* Ensure consistent spacing */
+    text-align: center;
+}
+
+.removeTicketButton {
+    background-color: var(--color-error-light);
+    border: 1px solid var(--color-error);
+    color: var(--color-white);
+    padding: 6px;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.removeTicketButton:hover:not(:disabled) {
+    background-color: var(--color-error-dark);
+    border-color: var(--color-error-dark);
+}
+
+.removeTicketButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.noTicketsMessage {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    padding: 20px;
+    background-color: var(--color-neutral-100);
+    border-radius: var(--border-radius-medium);
+}
+
+/* Total Section */
+.totalSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    margin-top: 30px;
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.totalAmount {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-extrabold);
+}
+
+/* Customer Info Section */
+.customerInfoSection {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--color-border);
+}
+
 .summaryDetails {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 15px; 
-}
-.summaryItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0; 
-    border-bottom: 1px dashed var(--naks-border-light);
-    font-size: 1rem;
-    color: var(--naks-text-secondary);
-}
-.summaryItem p {
-    font-weight: 600;
-    color: var(--naks-text-primary);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.summaryItem p svg {
-    color: var(--naks-gray-400);
-}
-.summaryItem span {
-    font-weight: 700;
-    color: var(--naks-primary);
-}
-.selectedTicketsList {
-    margin-top: 8px; 
-    padding-top: 8px; 
-    border-top: 1px solid var(--naks-border-light);
-    display: flex;
-    flex-direction: column;
-    gap: 5px; 
-}
-.selectedTicketItem {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    color: var(--naks-text-secondary);
-}
-.selectedTicketItem span:first-child {
-    font-weight: 500;
-}
-.selectedTicketItem span:last-child {
-    font-weight: 600;
-    color: var(--naks-text-primary);
-}
-.totalPriceItem {
-    border-top: 2px solid var(--naks-border-medium);
-    padding-top: 12px; 
-    margin-top: 8px; 
-}
-.totalPriceItem h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--naks-text-primary);
-    margin: 0;
-}
-.totalPriceItem span {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--naks-secondary);
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-/* --- Customer Information Section (Guest Input) --- */
-.customerInfoSection {
-    /* Inherits section-content */
-}
-.guestInfoForm { /* NEW: Styles for guest info form */
+.summaryItem {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
 }
-.guestMessage {
-    font-size: 0.95rem;
-    color: var(--naks-text-secondary);
-    text-align: center;
-    margin-bottom: 10px;
-}
-.guestAssurance {
-    font-size: 0.85rem;
-    color: var(--naks-info);
-    margin-top: 5px;
+
+.summaryItem p {
     display: flex;
     align-items: center;
     gap: 5px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
+.summaryIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+}
 
-.assuranceText {
-    font-size: 0.9rem;
-    color: var(--naks-info);
-    margin-top: 10px; 
+.guestInfoForm {
+    background-color: var(--color-neutral-100);
+    padding: 20px;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 20px;
+    border: 1px solid var(--color-neutral-200);
+}
+
+.guestMessage {
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 20px;
+    font-weight: var(--font-weight-medium);
+}
+
+.guestAssurance {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--naks-info-light);
-    padding: 8px 12px; 
-    border-radius: 8px;
-    border: 1px solid var(--naks-info);
-}
-.assuranceText svg {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-}
-.assuranceText .modalLink { 
-    color: var(--naks-info);
-    text-decoration: underline;
-    font-weight: 600;
-}
-.assuranceText .modalLink:hover {
-    color: var(--naks-text-primary);
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 15px;
+    background-color: var(--color-info-light);
+    padding: 10px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--color-info);
 }
 
+.infoIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-info);
+}
 
-/* --- Payment Instructions Section --- */
-.paymentMethodSection { /* Reused for instructions display */
-    /* Inherits section-content */
+.assuranceText {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--color-success-light);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--color-success);
+}
+
+.checkIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-success);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.dashboardLink {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+    font-weight: var(--font-weight-medium);
+}
+
+.dashboardLink:hover {
+    color: var(--color-primary);
+}
+
+/* Navigation Buttons */
+.navigationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
     gap: 15px;
 }
 
-.instructionIntro { 
-    font-size: 1.05rem;
-    color: var(--naks-text-primary);
-    text-align: center;
-    font-weight: 600;
+.navigationButtons button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* M-Pesa Form & Instructions */
+.mpesaForm {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--color-neutral-100);
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--color-neutral-200);
+}
+
+.formLabel {
+    display: block;
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
     margin-bottom: 10px;
+    font-weight: var(--font-weight-medium);
+}
+
+.formInput {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.formInput:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+    outline: none;
+}
+
+.formInput::placeholder {
+    color: var(--color-neutral-400);
+}
+
+.formInput:disabled {
+    background-color: var(--color-neutral-200);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.formHint {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.paymentInstructions {
+    background-color: var(--color-info-light);
+    padding: 25px;
+    border-radius: var(--border-radius-large);
+    border: 1px solid var(--color-info);
+    margin-top: 20px;
+    color: var(--color-text-primary);
+}
+
+.instructionIntro {
+    font-size: var(--font-size-medium);
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 .manualPayDetails {
-    background-color: var(--naks-gray-100);
-    border: 1px solid var(--naks-border-medium);
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--border-radius-medium);
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-elevation-extra-small);
 }
+
 .manualPayDetails p {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 0.95rem;
-    color: var(--naks-text-secondary);
+    justify-content: space-between;
+    font-size: var(--font-size-medium);
+    margin-bottom: 10px;
+    color: var(--color-text-primary);
 }
-.manualPayDetails p strong {
-    color: var(--naks-text-primary);
+
+.manualPayDetails p:last-child {
+    margin-bottom: 0;
 }
-.copyBtn { 
-    background: none;
+
+.manualPayDetails strong {
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-semibold);
+    margin-right: 10px;
+}
+
+.highlightText {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-large);
+}
+
+.copyButton {
+    background-color: var(--color-neutral-300);
+    color: var(--color-text-secondary);
     border: none;
-    color: var(--naks-primary);
-    font-size: 1.1rem;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-small);
     cursor: pointer;
-    transition: color 0.2s;
-}
-.copyBtn:hover {
-    color: var(--naks-secondary);
-}
-.manualPayInstructions {
-    font-size: 0.9rem;
-    color: var(--naks-text-secondary);
+    font-size: var(--font-size-small);
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-top: 8px; 
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
-.manualPayInstructions svg {
-    font-size: 1rem;
+
+.copyButton:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.manualPayInstructions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 15px;
 }
 
 .instructionList {
-    list-style: decimal;
+    list-style-type: decimal;
     padding-left: 25px;
-    margin-top: 8px; 
-    font-size: 0.95rem; 
-    color: var(--naks-text-secondary);
-    line-height: 1.5; 
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: var(--color-text-primary);
 }
+
 .instructionList li {
-    margin-bottom: 3px; 
+    margin-bottom: 8px;
+    font-size: var(--font-size-medium);
 }
-.highlightText {
-    font-weight: 700;
-    color: var(--naks-primary);
+
+.instructionList li strong {
+    color: var(--color-primary-dark);
 }
+
 .finalInstructionText {
-    font-size: 0.95rem; 
-    color: var(--naks-text-primary);
-    font-weight: 600;
-    margin-top: 15px; 
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--color-border);
+}
+
+/* Confirmation Step */
+.confirmationContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.confirmationIconSuccess {
+    width: 80px;
+    height: 80px;
+    color: var(--color-success);
+    margin-bottom: 20px;
+}
+
+.confirmationIconInfo {
+    width: 80px;
+    height: 80px;
+    color: var(--color-info);
+    margin-bottom: 20px;
+}
+
+.confirmationMessageSuccess {
+    font-size: var(--font-size-h3);
+    color: var(--color-success-dark);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.confirmationMessageInfo {
+    font-size: var(--font-size-h3);
+    color: var(--color-info-dark);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.confirmationSubMessage {
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Modal Styling */
+.modalTitle {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary-dark);
+    margin-bottom: 20px;
     text-align: center;
 }
 
-/* --- Navigation Buttons (Simple) --- */
-.navigationButtons {
-    display: flex;
-    justify-content: center; 
-    margin-top: 20px; 
-    gap: 10px; 
-    flex-wrap: wrap; 
-}
-.navigationButtons .btn {
-    flex: 1;
-    max-width: 250px; 
+.modalMessage {
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.6;
 }
 
+.spinner {
+    border: 4px solid var(--color-neutral-200);
+    border-top: 4px solid var(--color-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
 
-/* --- Responsive Design --- */
-/* Mobile is default styles (max-width: 767px) */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-@media (max-width: 480px) {
-    .checkoutPageContainer {
-        width: 95%; 
+.errorMessage {
+    color: var(--color-error);
+    background-color: var(--color-error-light);
+    border: 1px solid var(--color-error);
+    padding: 10px;
+    border-radius: var(--border-radius-medium);
+    text-align: center;
+    margin-top: 20px;
+    font-size: var(--font-size-small);
+}
+
+.loadingText {
+    text-align: center;
+    color: var(--color-text-secondary);
+    margin-top: 20px;
+    font-size: var(--font-size-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkoutContainer {
         margin: 20px auto;
-    }
-    .checkoutTitle {
-        font-size: 1.8rem;
-    }
-    .checkoutSubtitle {
-        font-size: 0.9rem;
-    }
-    .stepOneContent, .stepTwoContent {
-        gap: 10px;
-    }
-    .sectionContent {
         padding: 15px;
     }
-    .sectionTitle {
-        font-size: 1.4rem;
-    }
-    .summaryItem, .selectedTicketItem {
-        font-size: 0.85rem;
-    }
-    .totalPriceItem h3 {
-        font-size: 1.1rem;
-    }
-    .totalPriceItem span {
-        font-size: 1.2rem;
-    }
-    .guestInfoForm {
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .guestMessage, .guestAssurance {
-        font-size: 0.85rem;
-    }
-    .assuranceText {
-        font-size: 0.8rem;
-        padding: 6px 10px;
-        margin-top: 8px;
-    }
-    .manualPayDetails {
-        padding: 10px;
-        gap: 8px;
-    }
-    .manualPayDetails p {
-        font-size: 0.85rem;
-    }
-    .manualPayInstructions {
-        font-size: 0.75rem;
-        margin-top: 5px;
-    }
-    .instructionList {
-        font-size: 0.85rem;
-        padding-left: 20px;
-        margin-top: 5px;
-    }
-    .finalInstructionText {
-        font-size: 0.85rem;
-        margin-top: 10px;
-    }
-    .copyBtn {
-        font-size: 0.9rem;
-    }
-    .navigationButtons {
-        margin-top: 15px;
-        gap: 8px;
-    }
-    .navigationButtons .btn {
-        padding: 10px 18px;
-        font-size: 0.95rem;
-    }
-}
 
-
-@media (min-width: 768px) { /* Tablet / PC Layout */
-    .checkoutPageContainer {
-        width: 80%; /* Wider on tablet/PC */
-        margin: 80px auto; /* More vertical margin */
-    }
-    .checkoutHeader {
+    .pageTitle {
+        font-size: var(--font-size-h3);
         margin-bottom: 30px;
     }
-    .checkoutTitle {
-        font-size: 3rem;
+
+    .progressIndicator {
+        padding: 0 10px;
+        margin-bottom: 40px;
     }
-    .checkoutSubtitle {
-        font-size: 1.2rem;
+
+    .progressBar {
+        width: calc(100% - 20px);
+        left: 10px;
     }
-    .checkoutContent {
-        flex-direction: row; /* Two columns */
-        gap: 40px;
+
+    .stepIcon {
+        width: 24px;
+        height: 24px;
     }
-    .stepOneContent {
-        flex: 2; /* Takes 2/3 of space */
+
+    .stepName {
+        font-size: var(--font-size-x-small);
     }
-    .stepTwoContent {
-        flex: 1; /* Takes 1/3 of space */
-        position: sticky; /* Make payment instructions sticky */
-        top: 80px; /* Stick below navbar */
-        align-self: flex-start; /* Align to top */
-        height: fit-content; /* Only take content height */
+
+    .sectionCard {
+        padding: 20px;
     }
-    .sectionContent {
-        padding: 30px;
+
+    .sectionHeader {
+        font-size: var(--font-size-h4);
+        margin-bottom: 20px;
     }
-    .sectionTitle {
-        font-size: 2rem;
+
+    .eventSummary {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
     }
-    .summaryDetails {
-        gap: 12px;
-        margin-top: 20px;
+
+    .eventThumbnail {
+        width: 60px;
+        height: 60px;
     }
-    .summaryItem {
-        padding: 8px 0;
+
+    .ticketDetails {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
     }
-    .totalPriceItem {
-        padding-top: 15px;
+
+    .ticketPrice {
+        align-self: flex-end; /* Align price to the right */
+    }
+
+    .ticketQuantityControls {
         margin-top: 10px;
+        justify-content: center;
+        width: 100%;
     }
-    .guestInfoForm {
-        margin-top: 20px;
-    }
-    .assuranceText {
-        margin-top: 20px;
-    }
-    .paymentMethodSection {
-        gap: 20px;
-    }
-    .instructionIntro {
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-    }
-    .manualPayDetails {
+
+    .totalSection {
+        font-size: var(--font-size-medium);
         padding: 15px;
+    }
+
+    .totalAmount {
+        font-size: var(--font-size-h4);
+    }
+
+    .navigationButtons {
+        flex-direction: column;
         gap: 10px;
     }
+
+    .navigationButtons button {
+        width: 100%;
+    }
+
     .manualPayDetails p {
-        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
     }
-    .manualPayInstructions {
-        font-size: 0.95rem;
-        margin-top: 10px;
-    }
-    .instructionList {
-        font-size: 1rem;
-        padding-left: 30px;
-        margin-top: 10px;
-    }
-    .finalInstructionText {
-        font-size: 0.95rem;
-        margin-top: 20px;
-    }
-    .navigationButtons {
-        margin-top: 30px;
-        gap: 20px;
+
+    .copyButton {
+        margin-top: 5px;
     }
 }
 
-@media (min-width: 1025px) { /* Large Desktop */
-    .checkoutPageContainer {
-        max-width: 1000px;
-        width: 70%;
+@media (max-width: 480px) {
+    .checkoutContainer {
+        padding: 10px;
     }
-    .checkoutTitle {
-        font-size: 3.5rem;
+
+    .pageTitle {
+        font-size: var(--font-size-h4);
     }
-    .checkoutSubtitle {
-        font-size: 1.3rem;
+
+    .progressStep {
+        padding: 2px;
     }
-    .checkoutContent {
-        gap: 50px;
+
+    .stepIcon {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 5px;
     }
-    .stepOneContent {
-        flex: 3; /* Takes more space on large screens */
+
+    .stepName {
+        font-size: var(--font-size-xx-small);
     }
-    .stepTwoContent {
-        flex: 1; /* Remains compact */
+
+    .sectionHeader {
+        font-size: var(--font-size-large);
     }
-    .sectionContent {
-        padding: 40px;
+
+    .ticketItem {
+        flex-direction: column;
+        align-items: flex-start;
     }
-    .sectionTitle {
-        font-size: 2.2rem;
+
+    .ticketDetails {
+        width: 100%;
+        margin-right: 0;
     }
-    .summaryItem, .selectedTicketItem {
-        font-size: 1.05rem;
+
+    .ticketQuantityControls {
+        width: auto;
+        margin-top: 10px;
+        justify-content: flex-end;
     }
-    .totalPriceItem h3 {
-        font-size: 1.5rem;
+
+    .totalAmount {
+        font-size: var(--font-size-h5);
     }
-    .totalPriceItem span {
-        font-size: 1.8rem;
-    }
-    .manualPayDetails {
-        padding: 20px;
-    }
+
     .manualPayDetails p {
-        font-size: 1.05rem;
+        font-size: var(--font-size-small);
     }
+
+    .highlightText {
+        font-size: var(--font-size-medium);
+    }
+
     .instructionList {
-        font-size: 1.05rem;
+        font-size: var(--font-size-small);
     }
 }

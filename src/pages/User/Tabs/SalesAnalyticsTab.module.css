@@ -1,0 +1,172 @@
+/* src/pages/Organizer/Dashboard/Tabs/SalesAnalyticsTab.module.css */
+
+.salesAnalyticsContainer {
+    padding: 20px;
+    background-color: var(--naks-white-surface);
+    border-radius: 12px;
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.sectionTitle {
+    font-size: var(--font-size-h3);
+    color: var(--naks-text-primary);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+}
+
+.summaryCards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.summaryCard {
+    background: linear-gradient(135deg, var(--naks-pink) 0%, var(--naks-orange) 100%); /* Pink-orange gradient */
+    color: var(--naks-white-surface);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-elevation-medium);
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+    max-width: 30%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.summaryCard:hover {
+    transform: translateY(-5px);
+}
+
+.summaryCard h3 {
+    font-size: var(--font-size-large);
+    margin-bottom: 10px;
+    font-weight: var(--font-weight-semibold);
+}
+
+.summaryCard p {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-extrabold);
+    margin: 0;
+}
+
+.sectionSubTitle {
+    font-size: var(--font-size-h4);
+    color: var(--naks-text-primary);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 8px;
+    font-weight: var(--font-weight-semibold);
+}
+
+.ordersTableContainer {
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+    border: 1px solid var(--naks-border-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-elevation-extra-small);
+}
+
+.ordersTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ensure table doesn't get too squished */
+}
+
+.ordersTable th, .ordersTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--naks-neutral-200);
+}
+
+.ordersTable th {
+    background-color: var(--naks-neutral-100);
+    color: var(--naks-text-primary);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+}
+
+.ordersTable tbody tr:hover {
+    background-color: var(--naks-neutral-50);
+}
+
+.ordersTable tbody td {
+    font-size: var(--font-size-medium);
+    color: var(--naks-text-secondary);
+}
+
+.noSalesData, .salesError {
+    text-align: center;
+    padding: 50px;
+    font-size: var(--font-size-large);
+    color: var(--naks-text-secondary);
+    font-style: italic;
+    background-color: var(--naks-neutral-100);
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.salesError {
+    color: var(--color-error-dark);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .salesAnalyticsContainer {
+        padding: 15px;
+    }
+    .sectionTitle {
+        font-size: var(--font-size-h4);
+        margin-bottom: 15px;
+    }
+    .summaryCards {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    .summaryCard {
+        max-width: 90%;
+        min-width: unset;
+        width: 100%;
+        padding: 15px;
+    }
+    .summaryCard h3 {
+        font-size: var(--font-size-medium);
+    }
+    .summaryCard p {
+        font-size: var(--font-size-large);
+    }
+    .sectionSubTitle {
+        font-size: var(--font-size-medium);
+        margin-bottom: 10px;
+    }
+    .ordersTable th, .ordersTable td {
+        padding: 10px;
+        font-size: var(--font-size-small);
+    }
+}
+
+@media (max-width: 480px) {
+    .salesAnalyticsContainer {
+        padding: 10px;
+    }
+    .sectionTitle {
+        font-size: var(--font-size-h5);
+    }
+    .summaryCard {
+        padding: 12px;
+    }
+    .summaryCard h3 {
+        font-size: var(--font-size-small);
+    }
+    .summaryCard p {
+        font-size: var(--font-size-medium);
+    }
+    .ordersTable th, .ordersTable td {
+        padding: 8px;
+        font-size: var(--font-size-x-small);
+    }
+}

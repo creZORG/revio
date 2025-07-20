@@ -1,0 +1,200 @@
+/* src/components/Checkout/Confirmation.module.css */
+
+.sectionCard {
+    background-color: var(--color-background-card);
+    padding: 25px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-small);
+    margin-bottom: 25px;
+    border: 1px solid var(--color-border);
+}
+
+.sectionHeader {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+.confirmationContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 25px;
+}
+
+/* Icons for different statuses */
+.confirmationIconSuccess {
+    width: 80px;
+    height: 80px;
+    color: var(--color-success); /* Green for success */
+    margin-bottom: 20px;
+}
+
+.confirmationIconInfo {
+    width: 80px;
+    height: 80px;
+    color: var(--color-info); /* Blue for info/pending */
+    margin-bottom: 20px;
+}
+
+.confirmationIconFailed {
+    width: 80px;
+    height: 80px;
+    color: var(--color-error); /* Red for failure */
+    margin-bottom: 20px;
+}
+
+
+/* Messages for different statuses */
+.confirmationMessageSuccess {
+    font-size: var(--font-size-h4);
+    color: var(--color-success-dark);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.confirmationMessageInfo {
+    font-size: var(--font-size-h4);
+    color: var(--color-info-dark);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.confirmationMessageFailed {
+    font-size: var(--font-size-h4);
+    color: var(--color-error-dark);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+}
+
+.confirmationSubMessage {
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 20px; /* Space below main message */
+    line-height: 1.5;
+}
+
+.smallText {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 10px;
+}
+
+.dashboardLink {
+    color: var(--naks-primary);
+    text-decoration: underline;
+    font-weight: 500;
+    cursor: pointer;
+}
+.dashboardLink:hover {
+    color: var(--naks-primary-dark);
+}
+
+
+/* Spinner for loading states */
+.spinner {
+    border: 4px solid var(--color-neutral-200);
+    border-top: 4px solid var(--naks-primary); /* Pink spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Navigation Buttons */
+.navigationButtons {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    margin-top: 30px;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.navigationButtons button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sectionCard {
+        padding: 20px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-h4);
+    }
+    .confirmationIconSuccess, .confirmationIconInfo, .confirmationIconFailed {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+    }
+    .confirmationMessageSuccess, .confirmationMessageInfo, .confirmationMessageFailed {
+        font-size: var(--font-size-h5);
+    }
+    .confirmationSubMessage, .smallText {
+        font-size: var(--font-size-small);
+    }
+    .spinner {
+        width: 30px;
+        height: 30px;
+        margin: 15px auto;
+    }
+    .navigationButtons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .navigationButtons button {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: var(--font-size-small);
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionCard {
+        padding: 15px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-large);
+    }
+    .confirmationIconSuccess, .confirmationIconInfo, .confirmationIconFailed {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+    .confirmationMessageSuccess, .confirmationMessageInfo, .confirmationMessageFailed {
+        font-size: var(--font-size-large);
+    }
+    .confirmationSubMessage, .smallText {
+        font-size: var(--font-size-x-small);
+    }
+    .spinner {
+        width: 25px;
+        height: 25px;
+        margin: 10px auto;
+    }
+    .navigationButtons button {
+        padding: 8px 12px;
+        font-size: var(--font-size-x-small);
+    }
+}

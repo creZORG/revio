@@ -1,16 +1,18 @@
 // src/pages/home/HomePage.jsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './HomePage.module.css'; // Dedicated CSS for the new HomePage
 import { useEvents } from '../../hooks/useEvents.js'; // Assuming this hook fetches events
 import EventList from './EventList.jsx'; // Import the new EventList from src/pages/home/
 import LoadingSkeleton from '../../components/Common/LoadingSkeleton.jsx'; // Reusing existing LoadingSkeleton
-import { 
+import { db } from '../../utils/firebaseConfig.js'; // Import Firestore instance
+import { collection, query, orderBy, getDocs } from 'firebase/firestore'; // Import Firestore functions
+import {
   MagnifyingGlassIcon, AdjustmentsHorizontalIcon, 
   MusicalNoteIcon, PaintBrushIcon, CodeBracketIcon, TrophyIcon, UsersIcon, SparklesIcon,
   CalendarDaysIcon, SunIcon, ForwardIcon, CalendarIcon, AcademicCapIcon, HeartIcon,
-  UserIcon, 
-  MoonIcon, 
+  UserIcon, MoonIcon,
 } from '@heroicons/react/24/outline'; // Ensuring all common Heroicons are imported
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // For carousel arrows
 
 
 const HomePage = () => {
@@ -20,10 +22,155 @@ const HomePage = () => {
   const [selectedLocation, setSelectedLocation] = useState('all'); 
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('all-time'); 
   const [selectedAgeFilter, setSelectedAgeFilter] = useState('all-ages'); 
-
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false); // For mobile filter panel
 
-  // Nakuru Sub-counties
+  // --- Carousel States and Refs ---
+  const carouselTrackRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // Initialize carouselImages with hardcoded data as a robust fallback
+  const [carouselImages, setCarouselImages] = useState([
+    {
+        id: 'fallback1',
+        src: "https://i.postimg.cc/5030yRr3/NAKS-YETU-CAROSEUL-1700-BY-400.jpg",
+        mobileSrc: "https://i.postimg.cc/5030yRr3/NAKS-YETU-CAROSEUL-1700-BY-400.jpg", // Placeholder for mobile
+        tabletSrc: "https://i.postimg.cc/5030yRr3/NAKS-YETU-CAROSEUL-1700-BY-400.jpg", // Placeholder for tablet
+        desktopSrc: "https://i.postimg.cc/5030yRr3/NAKS-YETU-CAROSEUL-1700-BY-400.jpg", // Placeholder for desktop
+        alt: "Default Carousel Image 1",
+        link: "#",
+        order: 1,
+        isActive: true
+    },
+    {
+        id: 'fallback2',
+        src: "https://platform.naksyetu.co.ke/uploads/asset_687a4e20ab82d9.29537154.png",
+        mobileSrc: "https://placehold.co/480x200/FF6B6B/FFFFFF?text=Welcome",
+        tabletSrc: "https://placehold.co/768x300/FF6B6B/FFFFFF?text=Welcome",
+        desktopSrc: "https://platform.naksyetu.co.ke/uploads/asset_687a4e2150f833.25969325.png",
+        alt: "Default Carousel Image 2",
+        link: "#",
+        order: 2,
+        isActive: true
+    },
+    {
+        id: 'fallback3',
+        src: "https://platform.naksyetu.co.ke/uploads/asset_687a4e2150f833.25969325.png",
+        mobileSrc: "https://placehold.co/480x200/FFA07A/FFFFFF?text=Discover",
+        tabletSrc: "https://placehold.co/768x300/FFA07A/FFFFFF?text=Discover",
+        desktopSrc: "https://platform.naksyetu.co.ke/uploads/asset_687a4e20ab82d9.29537154.png",
+        alt: "Default Carousel Image 3",
+        link: "#",
+        order: 3,
+        isActive: true
+    },
+     {
+        id: 'fallback3',
+        src: "https://platform.naksyetu.co.ke/uploads/asset_6871a7dfd992f2.81477033.png",
+        mobileSrc: "https://placehold.co/480x200/FFA07A/FFFFFF?text=Discover",
+        tabletSrc: "https://placehold.co/768x300/FFA07A/FFFFFF?text=Discover",
+        desktopSrc: "https://platform.naksyetu.co.ke/uploads/asset_6871a7dfd992f2.81477033.png",
+        alt: "Default Carousel Image 3",
+        link: "#",
+        order: 3,
+        isActive: true
+    },
+  ]);
+  const [loadingCarousel, setLoadingCarousel] = useState(true); // Set to true initially as we fetch from Firestore
+  const autoSlideIntervalRef = useRef(null);
+
+  // --- Carousel Logic ---
+  const updateCarousel = useCallback(() => {
+    if (carouselTrackRef.current && carouselImages.length > 0) {
+      const offset = -currentIndex * 100;
+      carouselTrackRef.current.style.transform = `translateX(${offset}%)`;
+
+      // Update pagination dots
+      document.querySelectorAll(`.${styles.carouselPagination} .${styles.paginationDot}`).forEach((dot, index) => {
+        if (index === currentIndex) {
+          dot.classList.add(styles.active);
+        } else {
+          dot.classList.remove(styles.active);
+        }
+      });
+    }
+  }, [currentIndex, carouselImages]);
+
+  const resetAutoSlide = useCallback(() => {
+    clearInterval(autoSlideIntervalRef.current);
+    if (carouselImages.length > 1) { // Only auto-slide if more than one image
+      autoSlideIntervalRef.current = setInterval(() => {
+        setCurrentIndex(prevIndex => (prevIndex + 1) % carouselImages.length);
+      }, 5000); // Auto-slide every 5 seconds
+    }
+  }, [carouselImages.length]);
+
+  // Effect to fetch carousel images from Firestore
+  useEffect(() => {
+    const fetchCarouselImages = async () => {
+      setLoadingCarousel(true);
+      try {
+        const carouselCollectionRef = collection(db, 'artifacts/naksyetu-9c648/public/data/carouselImages');
+        const q = query(carouselCollectionRef, orderBy('order', 'asc'));
+        const querySnapshot = await getDocs(q);
+        const imagesData = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.isActive) { // Only show active images
+            imagesData.push({ id: doc.id, ...data });
+          }
+        });
+
+        if (imagesData.length > 0) {
+          setCarouselImages(imagesData); // Update state with fetched images
+        } else {
+          console.log("Firestore returned no carousel images. Using hardcoded fallbacks.");
+          // If no images from Firestore, the initial state (hardcoded images) will persist.
+        }
+      } catch (error) {
+        console.error("Error fetching carousel images from Firestore:", error);
+        console.log("Error fetching carousel images. Using hardcoded fallbacks.");
+        // If error, the initial state (hardcoded images) will persist.
+      } finally {
+        setLoadingCarousel(false);
+      }
+    };
+
+    fetchCarouselImages();
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(autoSlideIntervalRef.current);
+  }, []); // Empty dependency array to run once on mount
+
+  // Effect to update carousel display and reset auto-slide when images or index change
+  useEffect(() => {
+    if (carouselImages.length > 0) {
+      const paginationContainer = document.querySelector(`.${styles.carouselPagination}`);
+      if (paginationContainer) {
+        // Clear existing dots before re-rendering
+        paginationContainer.innerHTML = '';
+        carouselImages.forEach((_, index) => {
+          const dot = document.createElement('div');
+          dot.classList.add(styles.paginationDot);
+          if (index === currentIndex) dot.classList.add(styles.active);
+          dot.dataset.index = index;
+          dot.addEventListener('click', () => {
+            setCurrentIndex(index);
+            resetAutoSlide();
+          });
+          paginationContainer.appendChild(dot);
+        });
+      }
+      updateCarousel();
+      resetAutoSlide();
+    } else if (!loadingCarousel) { // If no images (even after fetch) and not loading, clear carousel
+        if (carouselTrackRef.current) carouselTrackRef.current.style.transform = `translateX(0%)`;
+        const paginationContainer = document.querySelector(`.${styles.carouselPagination}`);
+        if (paginationContainer) paginationContainer.innerHTML = '';
+        clearInterval(autoSlideIntervalRef.current);
+    }
+  }, [carouselImages, currentIndex, updateCarousel, resetAutoSlide, loadingCarousel]);
+
+
+  // --- Sidebar & Filter Logic ---
   const nakuruSubCounties = [
     { value: 'all', label: 'All Nakuru Sub-Counties' },
     { value: 'nakuru_city', label: 'Nakuru City' },
@@ -40,7 +187,6 @@ const HomePage = () => {
     { value: 'subukia', label: 'Subukia' }
   ];
 
-  // Age filters with icons
   const ageFilters = [
     { id: 'all-ages', label: 'All Ages', icon: UsersIcon }, 
     { id: 'kids_friendly', label: 'Kids Friendly', icon: UserIcon }, 
@@ -51,7 +197,6 @@ const HomePage = () => {
     { id: 'seniors', label: 'Seniors (35+)', icon: UserIcon } 
   ];
 
-  // Time filters
   const timeFilters = [
     { id: 'all-time', label: 'All Time', icon: CalendarDaysIcon },
     { id: 'today', label: 'Today', icon: SunIcon },
@@ -62,7 +207,6 @@ const HomePage = () => {
     { id: 'next-month', label: 'Next Month', icon: ForwardIcon }
   ];
 
-  // Event Categories filter in sidebar
   const eventCategories = [
     { id: 'all', name: 'All Categories', icon: SparklesIcon },
     { id: 'music', name: 'Music', icon: MusicalNoteIcon },
@@ -106,7 +250,6 @@ const HomePage = () => {
   }, []);
 
 
-  // FIX: Make filteredEvents a computed value with React.useMemo
   const filteredEvents = React.useMemo(() => {
     return events.filter(event => {
       const eventName = event.eventName ?? '';
@@ -116,21 +259,16 @@ const HomePage = () => {
       const eventStartDate = event.startDate ? new Date(event.startDate) : null;
       const eventTargetAge = event.targetAge ?? '';
 
-      // Search Query Filter
       const matchesSearch = eventName.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             eventDescription.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Category Filter
       const matchesCategory = selectedCategory === 'all' || eventCategory.toLowerCase().includes(selectedCategory.toLowerCase());
 
-      // Location Filter
       const matchesLocation = selectedLocation === 'all' || eventLocation.toLowerCase().includes(selectedLocation.toLowerCase()); 
 
-      // Age Filter (assuming event.targetAge is like 'all-ages', '18_plus' etc.)
       const matchesAge = selectedAgeFilter === 'all-ages' || eventTargetAge.toLowerCase() === selectedAgeFilter.toLowerCase();
 
 
-      // Time Filter (more complex, using current date)
       const matchesTime = (() => {
         if (selectedTimeFilter === 'all-time' || !eventStartDate) return true;
 
@@ -178,9 +316,52 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePageContainer}>
-      {/* Header Section: Search and Top Filters */}
+      {/* Hero Carousel Section (Posters) */}
+      <section className={styles.heroCarouselSection}>
+          {loadingCarousel && carouselImages.length === 0 ? ( // Only show loading if no images AND still loading
+              <div className={styles.carouselLoading}>Loading carousel...</div>
+          ) : carouselImages.length > 0 ? (
+              <>
+                  <div ref={carouselTrackRef} className={styles.carouselTrack}>
+                      {carouselImages.map(img => (
+                          <a key={img.id} href={img.link || '#'} className={styles.carouselLinkWrapper} target="_blank" rel="noopener noreferrer">
+                              <img
+                                  src={img.src} // Fallback/default for browsers that don't support srcset
+                                  srcSet={`
+                                      ${img.mobileSrc} 480w,
+                                      ${img.tabletSrc} 768w,
+                                      ${img.desktopSrc} 1024w
+                                  `}
+                                  sizes="(max-width: 480px) 100vw,
+                                         (max-width: 768px) 100vw,
+                                         100vw" // For screens wider than 768px, carousel takes 100% of viewport width
+                                  alt={img.alt}
+                                  className={styles.carouselImage}
+                              />
+                          </a>
+                      ))}
+                  </div>
+                  {carouselImages.length > 1 && ( // Only show arrows/dots if more than one image
+                      <>
+                          <button className={`${styles.carouselArrow} ${styles.leftArrow}`} onClick={() => setCurrentIndex(prev => (prev - 1 + carouselImages.length) % carouselImages.length)}>
+                              <FaChevronLeft />
+                          </button>
+                          <button className={`${styles.carouselArrow} ${styles.rightArrow}`} onClick={() => setCurrentIndex(prev => (prev + 1) % carouselImages.length)}>
+                              <FaChevronRight />
+                          </button>
+                          <div className={styles.carouselPagination}></div>
+                      </>
+                  )}
+              </>
+          ) : (
+              // This block will only show if loading is false AND carouselImages is empty (meaning no data from Firestore and no hardcoded fallback)
+              <div className={styles.noCarouselImages}>No carousel images available.</div>
+          )}
+      </section>
+
+      {/* Header Section: Search and Top Filters (Moved below carousel) */}
       <section className={styles.heroSection}>
-        <h1 className={styles.mainTitle}>Discover Events in Nakuru</h1>
+       
         <div className={styles.searchFilterContainer}>
             <div className={styles.searchBar}>
                 <MagnifyingGlassIcon className={styles.searchIcon} />

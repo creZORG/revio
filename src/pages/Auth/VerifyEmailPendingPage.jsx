@@ -6,7 +6,7 @@ import { db } from '../../utils/firebaseConfig.js';
 import { useNotification } from '../../contexts/NotificationContext.jsx';
 import LoadingSkeleton from '../../components/Common/LoadingSkeleton.jsx';
 import EventCard from '../../components/Events/EventCard.jsx'; // To display suggested events
-
+import Button from '../../components/Common/Button.jsx';
 import styles from './AuthPage.module.css'; // Re-use auth page styles
 
 import { FaEnvelopeOpenText, FaRedo, FaCalendarAlt, FaSpinner } from 'react-icons/fa';

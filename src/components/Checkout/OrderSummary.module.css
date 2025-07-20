@@ -1,0 +1,418 @@
+/* src/components/Checkout/OrderSummary.module.css */
+
+.sectionCard {
+    background-color: var(--color-background-card);
+    padding: 15px; /* Significantly reduced padding for compactness */
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-small);
+    margin-bottom: 10px; /* Reduced margin-bottom to pull next card closer */
+    border: 1px solid var(--color-border);
+}
+
+.sectionHeader {
+    font-size: var(--font-size-h4); /* Smaller header */
+    color: var(--color-primary);
+    margin-bottom: 10px; /* Reduced margin */
+    text-align: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+.gradientText {
+    background: var(--gradient-naks-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sectionSubHeader {
+    font-size: var(--font-size-small); /* Smaller sub-header */
+    color: var(--color-text-secondary);
+    margin-top: 10px; /* Reduced margin */
+    margin-bottom: 5px; /* Reduced margin */
+    padding-bottom: 3px; /* Reduced padding */
+    border-bottom: 1px solid var(--color-border);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Event Summary */
+.eventSummary {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+    padding: 8px; /* Reduced padding */
+    background-color: var(--color-neutral-100);
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 10px; /* Reduced margin */
+    border: 1px solid var(--color-neutral-200);
+}
+
+.eventThumbnail {
+    width: 50px; /* Even smaller thumbnail */
+    height: 50px;
+    object-fit: cover;
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-elevation-extra-small);
+}
+
+.eventName {
+    font-size: var(--font-size-small); /* Smaller font */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: 1px; /* Minimal margin */
+}
+
+.eventMeta {
+    font-size: var(--font-size-x-small); /* Even smaller font */
+    color: var(--color-text-secondary);
+}
+
+/* Tickets Summary */
+.ticketsSummary {
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.ticketsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ticketItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0; /* Reduced padding */
+    border-bottom: 1px dashed var(--color-border);
+}
+
+.ticketItem:last-child {
+    border-bottom: none;
+}
+
+.ticketDetails {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 8px; /* Reduced margin */
+}
+
+.ticketDetails span:first-child {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-small); /* Smaller font */
+}
+
+.ticketPrice {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-small); /* Smaller font */
+}
+
+.ticketQuantityControls {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Reduced gap */
+}
+
+.quantityButton {
+    background-color: var(--color-neutral-200);
+    border: 1px solid var(--color-neutral-300);
+    color: var(--color-text-secondary);
+    padding: 2px 5px; /* Super small padding */
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    font-size: var(--font-size-x-small); /* Super small font size */
+    font-weight: var(--font-weight-bold);
+    min-width: 20px; /* Ensure clickable area */
+    height: 20px; /* Ensure consistent height */
+}
+
+.quantityButton:hover:not(:disabled) {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.quantityButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ticketQuantity {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-x-small); /* Super small font size */
+    min-width: 15px; /* Ensure consistent spacing */
+    text-align: center;
+}
+
+.removeTicketButton {
+    background-color: var(--color-error);
+    border: 1px solid var(--color-error);
+    color: var(--color-white);
+    padding: 2px 5px; /* Super small padding */
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    font-size: var(--font-size-xx-small); /* Super small font size */
+    height: 20px; /* Ensure consistent height */
+}
+
+.removeTicketButton:hover:not(:disabled) {
+    background-color: var(--color-error-dark);
+    border-color: var(--color-error-dark);
+}
+
+/* Total Section */
+.totalSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px; /* Reduced padding */
+    background: var(--gradient-naks-primary);
+    color: var(--color-white);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-small); /* Smaller font size */
+    font-weight: var(--font-weight-bold);
+    margin-top: 10px; /* Reduced margin */
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.totalAmount {
+    font-size: var(--font-size-medium); /* Smaller font size */
+    font-weight: var(--font-weight-extrabold);
+}
+
+/* Customer Info Section */
+.customerInfoSection {
+    margin-top: 15px; /* Reduced margin */
+    padding-top: 10px; /* Reduced padding */
+    border-top: 1px dashed var(--color-border);
+}
+
+.summaryDetails {
+    gap: 5px; /* Reduced gap */
+    margin-bottom: 8px; /* Reduced margin */
+}
+
+.summaryItem {
+    gap: 5px; /* Reduced gap */
+    font-size: var(--font-size-x-small); /* Smaller font size */
+}
+
+.summaryItem p {
+    margin: 0; /* Ensure no default margins */
+}
+
+.summaryIcon {
+    width: 14px; /* Smaller icon */
+    height: 14px;
+}
+
+.guestInfoForm {
+    padding: 8px; /* Reduced padding */
+    margin-bottom: 8px; /* Reduced margin */
+}
+
+.guestMessage {
+    font-size: var(--font-size-x-small); /* Smaller font size */
+    margin-bottom: 8px; /* Reduced margin */
+}
+
+.guestAssurance {
+    gap: 4px; /* Reduced gap */
+    font-size: var(--font-size-xx-small); /* Smaller font size */
+    padding: 4px; /* Reduced padding */
+    margin-top: 8px; /* Reduced margin */
+}
+
+.infoIcon {
+    width: 12px; /* Smaller icon */
+    height: 12px;
+}
+
+.assuranceText {
+    gap: 4px; /* Reduced gap */
+    font-size: var(--font-size-xx-small); /* Smaller font size */
+    padding: 4px; /* Reduced padding */
+    margin-top: 8px; /* Reduced margin */
+}
+
+.checkIcon {
+    width: 12px; /* Smaller icon */
+    height: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sectionCard {
+        padding: 10px;
+        margin-bottom: 8px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-h5);
+        margin-bottom: 8px;
+    }
+    .sectionSubHeader {
+        font-size: var(--font-size-x-small);
+        margin-top: 8px;
+        margin-bottom: 4px;
+        padding-bottom: 2px;
+    }
+    .eventSummary {
+        gap: 6px;
+        padding: 6px;
+        margin-bottom: 8px;
+    }
+    .eventThumbnail {
+        width: 40px;
+        height: 40px;
+    }
+    .eventName {
+        font-size: var(--font-size-x-small);
+    }
+    .eventMeta {
+        font-size: var(--font-size-xxx-small);
+    }
+    .ticketsSummary {
+        margin-bottom: 10px;
+    }
+    .ticketItem {
+        padding: 6px 0;
+    }
+    .ticketDetails {
+        margin-right: 6px;
+    }
+    .ticketQuantityControls {
+        gap: 3px;
+    }
+    .quantityButton, .removeTicketButton {
+        padding: 1px 3px;
+        font-size: var(--font-size-xx-small);
+        min-width: 18px;
+        height: 18px;
+    }
+    .ticketQuantity {
+        font-size: var(--font-size-xx-small);
+        min-width: 12px;
+    }
+    .totalSection {
+        padding: 8px 10px;
+        font-size: var(--font-size-x-small);
+        margin-top: 8px;
+    }
+    .totalAmount {
+        font-size: var(--font-size-small);
+    }
+    .customerInfoSection {
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+    .summaryDetails {
+        gap: 4px;
+        margin-bottom: 6px;
+    }
+    .summaryItem {
+        font-size: var(--font-size-xx-small);
+    }
+    .summaryIcon {
+        width: 12px;
+        height: 12px;
+    }
+    .guestInfoForm {
+        padding: 6px;
+        margin-bottom: 6px;
+    }
+    .guestMessage {
+        font-size: var(--font-size-xx-small);
+        margin-bottom: 6px;
+    }
+    .guestAssurance, .assuranceText {
+        font-size: var(--font-size-xxx-small);
+        padding: 3px;
+        margin-top: 6px;
+    }
+    .infoIcon, .checkIcon {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionCard {
+        padding: 8px;
+        margin-bottom: 6px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-medium);
+        margin-bottom: 6px;
+    }
+    .eventSummary {
+        gap: 5px;
+        padding: 5px;
+        margin-bottom: 6px;
+    }
+    .eventThumbnail {
+        width: 30px;
+        height: 30px;
+    }
+    .eventName {
+        font-size: var(--font-size-xx-small);
+    }
+    .ticketsSummary {
+        margin-bottom: 8px;
+    }
+    .ticketItem {
+        padding: 5px 0;
+    }
+    .ticketDetails {
+        margin-right: 5px;
+    }
+    .quantityButton, .removeTicketButton {
+        padding: 0 2px;
+        font-size: var(--font-size-xxx-small);
+        min-width: 15px;
+        height: 15px;
+    }
+    .ticketQuantity {
+        font-size: var(--font-size-xxx-small);
+        min-width: 10px;
+    }
+    .totalSection {
+        padding: 6px 8px;
+        font-size: var(--font-size-xx-small);
+        margin-top: 8px;
+    }
+    .totalAmount {
+        font-size: var(--font-size-x-small);
+    }
+    .customerInfoSection {
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+    .summaryDetails {
+        gap: 3px;
+        margin-bottom: 5px;
+    }
+    .summaryItem {
+        font-size: var(--font-size-xxx-small);
+    }
+    .guestInfoForm {
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+    .guestMessage {
+        font-size: var(--font-size-xxx-small);
+        margin-bottom: 5px;
+    }
+    .guestAssurance, .assuranceText {
+        padding: 3px;
+        margin-top: 5px;
+    }
+}

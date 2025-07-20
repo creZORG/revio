@@ -27,19 +27,23 @@
 
 /* Calendar Badge */
 .calendarCard {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background-color: var(--naks-primary);
-  color: #fff;
-  border-radius: 8px;
-  padding: 4px 8px;
-  text-align: center;
-  font-weight: bold;
-  z-index: 2;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 15px; /* Slightly more space from top */
+    left: 15px; /* Slightly more space from left */
+    
+    background-color: rgba(var(--naks-primary-rgb), 0.7); /* Transparent primary color for glassmorphism */
+    backdrop-filter: blur(var(--glass-backdrop-blur)); /* Apply blur from global variable */
+    -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+    border: 1px solid rgba(255, 255, 255, 0.3); /* White transparent border */
+    color: var(--naks-white-surface); /* White text */
+    border-radius: 12px; /* More rounded corners for glass look */
+    padding: 6px 10px; /* Increased padding */
+    text-align: center;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for floating effect */
+    transition: all 0.2s ease;
 }
-
 .dayOfWeek {
   font-size: 10px;
   text-transform: uppercase;

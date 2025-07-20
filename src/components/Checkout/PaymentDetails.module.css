@@ -1,0 +1,450 @@
+/* src/components/Checkout/PaymentDetails.module.css */
+
+.sectionCard {
+    background-color: var(--color-background-card);
+    padding: 25px; /* Reduced padding */
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-small);
+    margin-bottom: 25px; /* Reduced margin */
+    border: 1px solid var(--color-border);
+}
+
+.sectionHeader {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary); /* Using the new primary pink */
+    margin-bottom: 20px; /* Reduced margin */
+    text-align: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Tab Navigation */
+.tabContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px; /* Space below tabs */
+    border-bottom: 2px solid var(--color-neutral-200);
+}
+
+.tabButton {
+    background-color: transparent;
+    border: none;
+    padding: 12px 20px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: color 0.3s ease, border-bottom-color 0.3s ease;
+    border-bottom: 2px solid transparent;
+    margin: 0 5px; /* Small gap between buttons */
+}
+
+.tabButton:hover:not(:disabled) {
+    color: var(--color-primary-dark);
+}
+
+.tabButton.activeTab {
+    color: var(--color-primary); /* Active tab color */
+    font-weight: var(--font-weight-bold);
+    border-bottom-color: var(--color-primary); /* Active tab indicator */
+}
+
+.tabButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.tabContent {
+    padding: 15px 0; /* Padding inside tab content area */
+}
+
+/* STK Push Content */
+.stkPushContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between elements */
+}
+
+.mpesaForm {
+    width: 100%; /* Take full width within its container */
+    max-width: 400px; /* Limit input width */
+    margin-bottom: 0; /* Remove bottom margin as gap handles spacing */
+    padding: 20px; /* Reduced padding */
+    background-color: var(--color-neutral-100);
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--color-neutral-200);
+}
+
+.formLabel {
+    display: block;
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 8px; /* Reduced margin */
+    font-weight: var(--font-weight-medium);
+}
+
+.formInput {
+    width: 100%;
+    padding: 10px 12px; /* Reduced padding */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.formInput:focus {
+    border-color: var(--color-primary); /* Using new primary pink */
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+    outline: none;
+}
+
+.formInput::placeholder {
+    color: var(--color-neutral-400);
+}
+
+.formInput:disabled {
+    background-color: var(--color-neutral-200);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.formHint {
+    font-size: var(--font-size-x-small); /* Smaller font */
+    color: var(--color-text-secondary);
+    margin-top: 6px; /* Reduced margin */
+    font-style: italic;
+}
+
+.totalSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px; /* Reduced padding */
+    background: var(--gradient-naks-primary); /* Using the new gradient */
+    color: var(--color-white);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    width: 100%;
+    max-width: 400px; /* Match input width */
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.totalAmount {
+    font-size: var(--font-size-h4); /* Slightly smaller */
+    font-weight: var(--font-weight-extrabold);
+}
+
+.stkPushContent .primaryButton { /* Targeting the Button component directly */
+    width: 100%;
+    max-width: 400px; /* Match input width */
+    padding: 12px 20px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    background: var(--gradient-naks-primary); /* Use gradient for primary button */
+    color: var(--color-white);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.stkPushContent .primaryButton:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-elevation-medium);
+}
+
+.stkPushContent .primaryButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.stkInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-x-small);
+    color: var(--color-text-secondary);
+    background-color: var(--color-info-light);
+    padding: 10px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--color-info);
+    width: 100%;
+    max-width: 400px; /* Match input width */
+}
+
+/* Manual Pay Content */
+.manualPayContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between elements */
+}
+
+.instructionIntro {
+    font-size: var(--font-size-medium);
+    line-height: 1.5;
+    text-align: center;
+}
+
+.manualPayDetails {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--border-radius-medium);
+    padding: 15px;
+    box-shadow: var(--shadow-elevation-extra-small);
+}
+
+.manualPayDetails p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-small);
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.manualPayDetails p:last-child {
+    margin-bottom: 0;
+}
+
+.manualPayDetails strong {
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-semibold);
+    margin-right: 10px;
+}
+
+.highlightText {
+    color: var(--naks-accent); /* Using the new accent orange */
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-large);
+}
+
+.copyButton {
+    background-color: var(--color-neutral-300);
+    color: var(--color-text-secondary);
+    border: none;
+    padding: 4px 8px;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    font-size: var(--font-size-x-small);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.copyButton:hover {
+    background-color: var(--color-primary); /* Using new primary pink */
+    color: var(--color-white);
+}
+
+.manualPayInstructions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.infoIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--color-info);
+}
+
+.instructionList {
+    list-style-type: decimal;
+    padding-left: 20px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+}
+
+.instructionList li {
+    margin-bottom: 6px;
+    font-size: var(--font-size-small);
+}
+
+.instructionList li strong {
+    color: var(--color-primary); /* Using new primary pink */
+}
+
+.finalInstructionText {
+    font-size: var(--font-size-x-small);
+    color: var(--color-text-secondary);
+    font-style: italic;
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-border);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sectionCard {
+        padding: 20px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-h4);
+        margin-bottom: 15px;
+    }
+    .tabButton {
+        padding: 10px 15px;
+        font-size: var(--font-size-small);
+    }
+    .tabContainer {
+        margin-bottom: 20px;
+    }
+    .tabContent {
+        padding: 10px 0;
+    }
+    .stkPushContent {
+        gap: 15px;
+    }
+    .mpesaForm {
+        padding: 15px;
+    }
+    .formLabel {
+        font-size: var(--font-size-small);
+    }
+    .formInput {
+        padding: 8px 10px;
+        font-size: var(--font-size-small);
+    }
+    .formHint {
+        font-size: var(--font-size-xx-small);
+    }
+    .totalSection {
+        padding: 12px 15px;
+        font-size: var(--font-size-medium);
+    }
+    .totalAmount {
+        font-size: var(--font-size-h5);
+    }
+    .stkPushContent .primaryButton {
+        padding: 10px 15px;
+        font-size: var(--font-size-small);
+    }
+    .stkInfo {
+        padding: 8px;
+        font-size: var(--font-size-xx-small);
+    }
+    .manualPayContent {
+        gap: 10px;
+    }
+    .instructionIntro {
+        font-size: var(--font-size-small);
+    }
+    .manualPayDetails {
+        padding: 12px;
+    }
+    .manualPayDetails p {
+        font-size: var(--font-size-x-small);
+    }
+    .highlightText {
+        font-size: var(--font-size-medium);
+    }
+    .copyButton {
+        padding: 3px 6px;
+        font-size: var(--font-size-xx-small);
+    }
+    .manualPayInstructions {
+        font-size: var(--font-size-x-small);
+    }
+    .instructionList {
+        padding-left: 15px;
+    }
+    .instructionList li {
+        font-size: var(--font-size-x-small);
+    }
+    .finalInstructionText {
+        font-size: var(--font-size-xx-small);
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionCard {
+        padding: 15px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-large);
+    }
+    .tabButton {
+        padding: 8px 12px;
+        font-size: var(--font-size-x-small);
+        margin: 0 2px;
+    }
+    .tabContainer {
+        margin-bottom: 15px;
+    }
+    .tabContent {
+        padding: 8px 0;
+    }
+    .stkPushContent {
+        gap: 10px;
+    }
+    .mpesaForm {
+        padding: 10px;
+    }
+    .formLabel {
+        font-size: var(--font-size-x-small);
+    }
+    .formInput {
+        padding: 6px 8px;
+        font-size: var(--font-size-x-small);
+    }
+    .formHint {
+        font-size: var(--font-size-xxx-small);
+    }
+    .totalSection {
+        padding: 10px 12px;
+        font-size: var(--font-size-small);
+    }
+    .totalAmount {
+        font-size: var(--font-size-h6);
+    }
+    .stkPushContent .primaryButton {
+        padding: 8px 12px;
+        font-size: var(--font-size-x-small);
+    }
+    .stkInfo {
+        padding: 6px;
+        font-size: var(--font-size-xxx-small);
+    }
+    .manualPayContent {
+        gap: 8px;
+    }
+    .instructionIntro {
+        font-size: var(--font-size-x-small);
+    }
+    .manualPayDetails {
+        padding: 10px;
+    }
+    .manualPayDetails p {
+        font-size: var(--font-size-xx-small);
+    }
+    .highlightText {
+        font-size: var(--font-size-small);
+    }
+    .copyButton {
+        padding: 2px 5px;
+        font-size: var(--font-size-xxx-small);
+    }
+    .manualPayInstructions {
+        font-size: var(--font-size-xx-small);
+    }
+    .instructionList {
+        padding-left: 12px;
+    }
+    .instructionList li {
+        font-size: var(--font-size-xx-small);
+    }
+    .finalInstructionText {
+        font-size: var(--font-size-xxx-small);
+        padding-top: 8px;
+    }
+}

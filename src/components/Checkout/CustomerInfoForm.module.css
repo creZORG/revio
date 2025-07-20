@@ -1,0 +1,131 @@
+/* src/components/Checkout/CustomerInfoForm.module.css */
+
+.customerInfoSection {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--color-border);
+}
+
+.sectionSubHeader {
+    font-size: var(--font-size-large);
+    color: var(--color-text-secondary);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+    font-weight: var(--font-weight-medium);
+}
+
+.summaryDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.summaryItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--font-size-medium);
+    color: var(--color-text-primary);
+}
+
+.summaryItem p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.summaryIcon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+}
+
+.guestInfoForm {
+    background-color: var(--color-neutral-100);
+    padding: 20px;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 20px;
+    border: 1px solid var(--color-neutral-200);
+}
+
+.guestMessage {
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 20px;
+    font-weight: var(--font-weight-medium);
+}
+
+.guestAssurance {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 15px;
+    background-color: var(--color-info-light);
+    padding: 10px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--color-info);
+}
+
+.infoIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-info);
+}
+
+.assuranceText {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--color-success-light);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--color-success);
+}
+
+.checkIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-success);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.dashboardLink {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+    font-weight: var(--font-weight-medium);
+}
+
+.dashboardLink:hover {
+    color: var(--color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sectionSubHeader {
+        font-size: var(--font-size-medium);
+    }
+    .guestInfoForm {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .guestMessage {
+        font-size: var(--font-size-small);
+    }
+    .guestAssurance, .assuranceText {
+        font-size: var(--font-size-x-small);
+    }
+}

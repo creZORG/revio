@@ -1,362 +1,828 @@
-/* src/pages/home/HomePage.module.css */
 
-.homePageContainer {
-  display: flex;
-  flex-direction: column; /* Stack vertically on mobile */
-  padding: 1rem; /* Mobile-first padding */
-  max-width: 1280px; /* Overall max width for desktop content */
-  margin: 0 auto; /* Center content horizontally */
-  background-color: var(--naks-bg-light); /* Light background from Naks Yetu variables */
-  color: var(--naks-text-primary); /* Default text color */
-  min-height: calc(100vh - var(--navbar-height-mobile) - 4rem); /* Adjust based on your actual Navbar/Footer heights */
-  position: relative; /* For sidebar positioning */
+.glassmorphism {
+    background-color: var(--glass-bg-light);
+    backdrop-filter: blur(var(--glass-backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 4px 30px var(--glass-shadow);
+    border-radius: 15px; /* Ensure rounded corners for glass effect */
 }
 
-/* --- Hero Section (Search & Top Filters) --- */
+.glassmorphism-dark {
+    background-color: var(--glass-bg-dark);
+    backdrop-filter: blur(var(--glass-backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+    border: 1px solid var(--glass-border-dark);
+    box-shadow: 0 4px 30px var(--glass-shadow);
+    border-radius: 15px;
+}
+
+/* --- Keyframe Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Removed @keyframes pulse as per request */
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* --- Main Wrapper for the entire HomePage content --- */
+.homePageWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    background-color: var(--naks-bg-light); /* Light background for the overall page */
+    color: var(--naks-text-primary);
+    animation: fadeIn 0.8s ease-out; /* Fade in the whole page */
+}
+
+/* --- Hero Carousel Section --- */
+.heroCarouselSection {
+    position: relative;
+    width: 100%;
+    height: 450px; /* Default fixed height for desktop */
+    overflow: hidden;
+    background-color: var(--naks-gray-300); /* Placeholder background */
+    box-shadow: var(--shadow-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--naks-text-secondary);
+    font-size: 1.5rem;
+    animation: slideInUp 0.8s ease-out; /* Slide in the carousel */
+    z-index: 1; /* Ensure carousel is below sidebar when sidebar is sticky/overlay */
+    /* Transition height for smooth collapse/expand */
+    transition: height 0.3s ease-out;
+    margin-bottom: 0; /* Reset margin */
+}
+
+/* Conditional height for when carousel is empty or loading minimal content */
+.heroCarouselSection:has(.carouselLoading),
+.heroCarouselSection:has(.noCarouselImages) {
+    height: 100px; /* Reduced height for loading/no images state */
+    min-height: 100px; /* Ensure it's not completely collapsed */
+}
+
+.carouselLoading,
+.noCarouselImages {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: var(--naks-text-secondary);
+    z-index: 1; /* Ensure text is above track */
+}
+
+.carouselLinkWrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.carouselTrack {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth ease-out effect */
+}
+
+.carouselImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    animation: fadeIn 1s ease-out; /* Fade in individual images */
+}
+
+.carouselArrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4); /* Slightly transparent */
+    color: var(--naks-white-surface);
+    border: none;
+    padding: 18px; /* Larger hit area */
+    font-size: 1.8rem; /* Larger arrows */
+    cursor: pointer;
+    border-radius: 50%; /* Perfect circle */
+    z-index: 10;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.carouselArrow:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.05); /* Slight scale on hover */
+}
+
+.leftArrow {
+    left: 25px; /* More prominent position */
+}
+
+.rightArrow {
+    right: 25px; /* More prominent position */
+}
+
+.carouselPagination {
+    position: absolute;
+    bottom: 25px; /* Slightly higher */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px; /* More space between dots */
+    z-index: 10;
+}
+
+.paginationDot {
+    width: 12px; /* Larger dots */
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.6); /* More visible */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+}
+
+.paginationDot.active {
+    background-color: var(--naks-white-surface);
+    transform: scale(1.3); /* More pronounced scale */
+    box-shadow: 0 0 0 2px rgba(var(--naks-primary-rgb), 0.5); /* Pink glow */
+}
+
+
+/* --- Main Layout (Content Area with Filters) --- */
+.mainWrapper {
+    display: flex;
+    /* Adjusted min-height to account for the 450px carousel */
+    min-height: calc(100vh - 60px - 450px); /* Full height minus navbar and carousel */
+    padding: 30px; /* Increased padding around content */
+    gap: 0; /* CRITICAL: REMOVED GAP BETWEEN HERO SECTION AND EVENTS LISTING AREA */
+    box-sizing: border-box;
+    animation: fadeIn 1s ease-out 0.2s; /* Delayed fade in */
+    position: relative; /* Establish a new stacking context */
+    z-index: 2; /* Ensure main content is above carousel */
+    align-items: flex-start; /* Align items to the top to prevent vertical centering */
+}
+
+/* --- Hero Section (Search and Top Filters) --- */
 .heroSection {
-  text-align: center;
-  padding: 1.5rem 0;
-  margin-bottom: 2.5rem;
+    background: linear-gradient(135deg, var(--naks-primary-light), var(--naks-orange)); /* Soft gradient background */
+    padding: 30px; /* Increased padding */
+    border-radius: 20px; /* More rounded */
+    box-shadow: var(--shadow-lg); /* More pronounced shadow */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    animation: slideInUp 0.8s ease-out 0.4s; /* Delayed slide in */
 }
 
 .mainTitle {
-  font-size: 2.2rem; /* Mobile-first title size */
-  font-weight: 800; /* Extra bold */
-  color: var(--naks-text-primary);
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
+    font-size: 3rem; /* Larger title */
+    background: var(--gradient-naks-primary); /* Pink-orange gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    font-weight: 800; /* Extra bold */
+    letter-spacing: -1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle text shadow */
 }
 
 .searchFilterContainer {
-  background-color: var(--naks-white-surface);
-  border-radius: var(--border-radius-xl); /* Large border radius for the whole search/filter card */
-  box-shadow: var(--shadow-md);
-  padding: 1rem; /* Padding inside the card */
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* CRITICAL: REMOVED GAP BETWEEN SEARCH BAR/DROPDOWN AND AGE PILLS */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 .searchBar {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--naks-border-medium);
-  border-radius: var(--border-radius-xl);
-  overflow: hidden; /* Ensures contents stay within rounded borders */
-  margin-bottom: 1rem; /* Space before age filters/mobile toggle */
+    display: flex;
+    align-items: center;
+    background-color: var(--naks-white-surface); /* White background for search bar */
+    border-radius: 12px; /* More rounded */
+    padding: 10px 15px; /* Increased padding */
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 1px solid var(--naks-border-light);
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+}
+
+.searchBar:focus-within {
+    box-shadow: 0 0 0 3px rgba(var(--naks-primary-rgb), 0.3); /* Pink focus glow */
+    border-color: var(--naks-primary);
 }
 
 .searchIcon {
-  width: 20px;
-  height: 20px;
-  color: var(--naks-text-secondary);
-  margin-left: 1rem;
+    width: 24px; /* Larger icon */
+    height: 24px;
+    color: var(--naks-text-secondary);
+    margin-right: 12px; /* More space */
 }
 
 .searchInput {
-  flex-grow: 1; /* Takes up available space */
-  padding: 0.75rem 0.5rem;
-  border: none; /* Remove default input border */
-  outline: none; /* Remove outline on focus */
-  font-size: 1rem;
-  color: var(--naks-text-primary);
-  background: transparent; /* Match parent background */
+    flex-grow: 1;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 1.1rem; /* Larger font */
+    color: var(--naks-text-primary);
+    padding: 0; /* Remove default input padding */
 }
 
 .searchInput::placeholder {
-  color: var(--naks-gray-300);
+    color: var(--naks-text-placeholder);
 }
 
-.locationDropdown { /* Style for the new location dropdown */
-  padding: 0.75rem 0.5rem;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  color: var(--naks-text-primary);
-  background: transparent;
-  cursor: pointer;
-  border-left: 1px solid var(--naks-border-light); /* Separator */
-  margin-left: 0.5rem;
-  appearance: none; /* Remove default dropdown arrow */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E"); /* Custom arrow */
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1.5em;
-  padding-right: 2.5rem; /* Space for custom arrow */
+.locationDropdown {
+    padding: 10px 15px; /* Increased padding */
+    border: 1px solid var(--naks-border-light);
+    border-radius: 12px; /* More rounded */
+    background-color: var(--naks-white-surface);
+    color: var(--naks-text-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2C197.3L159.9%2C69.9c-2.2-2.2-5.1-3.4-8.2-3.4s-6%2C1.2-8.2%2C3.4L5.4%2C197.3c-4.5%2C4.5-4.5%2C11.7%2C0%2C16.2c4.5%2C4.5%2C11.7%2C4.5%2C16.2%2C0l130.6-130.6l130.6%2C130.6c4.5%2C4.5%2C11.7%2C4.5%2C16.2%2C0C291.5%2C209%2C291.5%2C201.8%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
-.filterToggleButton { /* Mobile filter toggle */
-  background-color: var(--naks-primary);
-  color: var(--naks-white-surface);
-  border: none;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--border-radius-xl); /* Match search bar radius */
-  margin-left: 0.5rem; /* Space from location dropdown */
+.locationDropdown:hover {
+    border-color: var(--naks-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.filterToggleButton {
+    background: var(--gradient-naks-primary); /* Pink-orange gradient */
+    border: none;
+    color: var(--naks-white-surface);
+    cursor: pointer;
+    padding: 6px; /* Super small padding */
+    width: 36px; /* Fixed width to make it small */
+    height: 36px; /* Fixed height to make it small */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    display: flex; /* Ensure icon is centered */
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem; /* Adjust icon size if needed, or target SVG directly */
 }
 
 .filterToggleButton:hover {
-  background-color: var(--naks-secondary);
+    opacity: 0.9;
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: var(--shadow-lg);
 }
 
-.ageFilterPills { /* Age filter pills (top row) */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--naks-border-light);
+.ageFilterPills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* REDUCED GAP: Spacing between age pills */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    justify-content: center;
 }
 
 .ageFilterPill {
-  background-color: var(--naks-gray-100);
-  color: var(--naks-text-primary);
-  padding: 0.6rem 1rem;
-  border-radius: var(--border-radius-xl);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) ease, transform 0.1s ease;
-  display: flex;
-  flex-direction: column; /* Stack icon and text */
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 0.25rem;
-  border: 1px solid transparent; /* For active state border */
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Reduced gap */
+    padding: 8px 15px; /* Reduced padding */
+    border-radius: 20px; /* More rounded */
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--naks-border-light);
+    animation: slideInUp 0.5s ease-out; /* Slide in pills */
 }
 
 .ageFilterPill:hover {
-  background-color: var(--naks-gray-200);
-  transform: translateY(-2px);
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: var(--shadow-xs);
 }
 
-.activeAgeFilterPill {
-  background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Naks Yetu Gradient */
-  color: var(--naks-white-surface);
-  font-weight: bold;
-  border-color: var(--naks-primary);
+.ageFilterPill.activeAgeFilterPill {
+    background: var(--gradient-naks-primary); /* Pink-orange gradient */
+    color: var(--naks-white-surface);
+    box-shadow: var(--shadow-md);
+    border-color: var(--naks-primary);
+    /* Removed: animation: pulse 1s infinite ease-in-out; */ /* Pulsing animation removed */
 }
 
 .ageFilterIcon {
-  width: 18px;
-  height: 18px;
-  color: inherit; /* Inherit color */
+    width: 20px;
+    height: 20px;
+    color: inherit; /* Inherit color from parent pill */
 }
+
 
 /* --- Sidebar Filters (Mobile: Slide-in, Desktop: Fixed left) --- */
 .sidebarFilters {
-  position: fixed; /* Fixed position */
-  top: 0; /* Will be adjusted by AppContent to clear Navbar */
-  left: -280px; /* Hidden by default on mobile */
-  width: 280px; /* Sidebar width */
-  height: 100%; /* Full height */
-  background-color: var(--naks-white-surface); /* White background for sidebar */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  transition: transform var(--transition-speed) ease-in-out;
-  z-index: 100; /* Above main content */
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Space between filter sections */
-  overflow-y: auto; /* Enable scrolling for long filter lists */
+    background-color: var(--naks-surface);
+    padding: 25px; /* Increased padding */
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    width: 300px; /* Wider sidebar for desktop */
+    flex-shrink: 0;
+    position: sticky;
+    top: 30px; /* Adjust based on navbar height */
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* REDUCED GAP: Spacing between filter sections within sidebar (less than 10px) */
+    transition: all 0.3s ease;
+    z-index: 5; /* Higher z-index to be above main content and cards */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 .sidebarFiltersOpen {
-  transform: translateX(280px); /* Slide into view */
+    /* Mobile specific: overlay behavior */
+    position: fixed;
+    top: 0;
+    left: -100%; /* Hidden off-screen */
+    width: 80%; /* Take up 80% of screen width */
+    max-width: 350px; /* Max width for sidebar */
+    height: 100%;
+    background-color: var(--naks-surface);
+    z-index: 1000; /* Very high z-index for mobile overlay */
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease-out;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-.sidebarTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--naks-text-primary);
-  margin-bottom: 1.5rem;
-  text-align: center;
+.sidebarFiltersOpen {
+    transform: translateX(100%); /* Slide in from left */
 }
 
 .closeSidebarButton {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: var(--naks-text-secondary);
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  cursor: pointer;
-  z-index: 101; /* Ensure close button is clickable */
+    display: none; /* Hidden on desktop */
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2.5rem; /* Larger close button */
+    color: var(--naks-text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.closeSidebarButton:hover {
+    color: var(--naks-primary);
 }
 
 .filterSection {
-  margin-bottom: 0; /* Controlled by gap in sidebarFilters */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 .filterSectionTitle {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--naks-text-primary);
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--naks-border-light);
-  padding-bottom: 0.5rem;
-  text-align: left;
+    font-size: 1.2rem; /* Larger title */
+    font-weight: 600;
+    color: var(--naks-text-primary);
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    border-bottom: 1px solid var(--naks-border-light);
+    padding-bottom: 8px; /* Reduced padding */
 }
 
-.categoriesGrid { /* Grid for sidebar categories */
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Tighter grid for sidebar */
-  gap: 0;
+.categoriesGrid {
+    display: grid;
+    /* Adjusted to make pills smaller, occupying only required space */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Smaller min-width */
+    gap: 8px; /* Reduced gap */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
-.categoryPill { /* Inherits from top, but overrides for sidebar */
-  padding: 0.5rem 0.75rem;
-  font-size: 0.8rem;
-  flex-direction: column; /* Stack icon and text */
+.categoryPill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Reduced gap */
+    padding: 8px; /* Reduced padding */
+    border-radius: 8px; /* More compact rounded corners */
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-size: 0.75rem; /* Smaller font size */
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    border: 1px solid var(--naks-border-light);
 }
 
-.categoryIcon { /* Inherits from top, but overrides for sidebar */
+.categoryPill:hover {
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: var(--shadow-xs);
+}
+
+.categoryPill.activeCategoryPill {
+    background: var(--gradient-naks-primary); /* Pink-orange gradient */
+    color: var(--naks-white-surface); /* White text */
+    box-shadow: var(--shadow-md);
+    border-color: var(--naks-primary);
+    /* Removed: animation: pulse 1s infinite ease-in-out; */ /* Pulsing animation removed */
+}
+
+.categoryIcon {
     width: 20px;
     height: 20px;
+    color: inherit; /* Inherit color from parent pill */
 }
 
 .timeFilterList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Reduced gap */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 .timeFilterItem {
-  background-color: var(--naks-gray-100);
-  color: var(--naks-text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius-md);
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed) ease, transform 0.1s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+    padding: 8px 12px; /* Reduced padding */
+    border-radius: 8px; /* More compact rounded corners */
+    background-color: var(--naks-gray-100);
+    color: var(--naks-text-secondary);
+    font-size: 0.85rem; /* Slightly smaller font size */
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--naks-border-light);
 }
 
 .timeFilterItem:hover {
-  background-color: var(--naks-gray-200);
-  transform: translateX(3px); /* Subtle slide effect */
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: var(--shadow-xs);
 }
 
-.activeTimeFilterItem {
-  background: linear-gradient(45deg, var(--naks-primary), var(--naks-secondary));
-  color: var(--naks-white-surface);
-  font-weight: bold;
-  border-color: var(--naks-primary);
+.timeFilterItem.activeTimeFilterItem {
+    background: var(--gradient-naks-primary); /* Pink-orange gradient */
+    color: var(--naks-white-surface); /* White text */
+    box-shadow: var(--shadow-md);
+    border-color: var(--naks-primary);
+    /* Removed: animation: pulse 1s infinite ease-in-out; */ /* Pulsing animation removed */
 }
 
 .timeFilterIcon {
-  width: 20px;
-  height: 20px;
-  color: inherit;
+    width: 18px;
+    height: 18px;
+    color: inherit; /* Inherit color from parent pill */
 }
 
 
 /* --- Events Listing Area --- */
 .eventsListingArea {
-  flex-grow: 1; /* Takes remaining horizontal space */
-  padding: 1.5rem 0; /* Vertical padding */
+    flex-grow: 1; /* Allow this area to grow and fill available vertical space */
+    padding: 0;
+    z-index: 1; /* Ensure event list is below sidebar */
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 .sectionHeading {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--naks-text-primary);
-  margin-bottom:0;
-  text-align: center;
+    font-size: 2.5rem; /* Larger heading */
+    color: var(--naks-primary);
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
+    text-align: center;
+    font-weight: 700;
 }
 
 .noEventsMessage {
-  text-align: center;
-  color: var(--naks-text-secondary);
-  font-size: 1.1rem;
-  padding: 2rem;
-  border: 1px dashed var(--naks-border-medium);
-  border-radius: var(--border-radius-lg);
-  margin-top: 2rem;
-}
-
-.errorMessage {
-  color: var(--sys-error);
-  text-align: center;
-  padding: 1rem;
+    text-align: center;
+    color: var(--naks-text-secondary);
+    font-style: italic;
+    padding: 50px; /* More padding */
+    background-color: var(--naks-surface);
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+    font-size: 1.1rem;
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 0; /* Reset margin */
 }
 
 
-/* --- Desktop Adjustments --- */
-@media (min-width: 768px) {
-  .homePageContainer {
-    flex-direction: row; /* Sidebar and main content side-by-side */
-    padding: 3rem 2rem; /* Increased padding */
-    gap: 2rem; /* Space between sidebar and events area */
-  }
+/* --- Responsive Design for HomePage --- */
+@media (max-width: 1023px) { /* Tablet and smaller */
+    .mainWrapper {
+        flex-direction: column;
+        padding: 20px; /* Adjust padding */
+        gap: 5px; /* REDUCED GAP for tablet to be very small */
+    }
 
-  .heroSection {
-    flex-basis: 100%; /* Hero section spans full width on desktop */
-    order: 1; /* Place hero section first */
-    text-align: left; /* Align search/title to left */
-  }
-  .mainTitle {
-    font-size: 3.5rem;
-  }
-  .searchFilterContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    flex-wrap: nowrap; /* Prevent wrapping search and location dropdown */
-    gap: 1rem;
-  }
-  .searchBar {
-    flex-grow: 1; /* Search bar takes more space */
-    margin-bottom: 0; /* Remove bottom margin */
-    max-width: none; /* Remove max width */
-  }
-  .locationDropdown {
-    margin-left: 1rem; /* Space from search bar */
-  }
-  .filterToggleButton {
-    display: none; /* Hide mobile filter toggle on desktop */
-  }
-  .ageFilterPills {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    flex-grow: 1; /* Allow pills to spread */
-    justify-content: flex-end; /* Push to right */
-    gap: 1rem;
-  }
-  .ageFilterPill {
-    padding: 0.75rem 1.25rem;
-  }
+    .heroCarouselSection {
+        height: 350px; /* Adjust carousel height for tablets */
+    }
+
+    .mainTitle {
+        font-size: 2.5rem;
+    }
+
+    .searchFilterContainer {
+        gap: 0; /* CRITICAL: REMOVED GAP FOR TABLET */
+    }
+
+    .searchBar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    .searchInput, .locationDropdown {
+        width: calc(50% - 4px); /* Two items per row */
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .filterToggleButton {
+        order: 3;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .ageFilterPills {
+        justify-content: flex-start;
+        gap: 8px; /* Reduced gap for tablet */
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+    .ageFilterPill {
+        padding: 6px 12px; /* Reduced padding for tablet */
+        font-size: 0.8rem;
+        gap: 6px;
+    }
+    .ageFilterIcon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sidebarFilters {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Hidden off-screen */
+        width: 80%; /* Take up 80% of screen width */
+        max-width: 350px; /* Max width for sidebar */
+        height: 100%;
+        background-color: var(--naks-surface);
+        z-index: 1000; /* Higher z-index for mobile overlay */
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease-out;
+        padding: 20px;
+        overflow-y: auto;
+        gap: 8px; /* REDUCED GAP for sidebar sections on tablet */
+    }
+
+    .sidebarFiltersOpen {
+        transform: translateX(100%); /* Slide in from left */
+    }
+
+    .closeSidebarButton {
+        display: block; /* Show close button on mobile */
+        font-size: 2rem;
+    }
+
+    .sidebarTitle {
+        font-size: 1.5rem;
+    }
+
+    .filterSectionTitle {
+        font-size: 1.1rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+        padding-bottom: 8px; /* Adjusted padding */
+    }
+
+    .categoriesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Smaller min-width for tablet */
+        gap: 8px;
+    }
+
+    .categoryPill {
+        padding: 8px; /* Adjusted padding for tablet */
+        font-size: 0.75rem; /* Adjusted font size for tablet */
+        gap: 5px;
+    }
+    .categoryIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .timeFilterItem {
+        padding: 8px 12px; /* Adjusted padding for tablet */
+        font-size: 0.85rem; /* Adjusted font size for tablet */
+        gap: 8px;
+    }
+    .timeFilterIcon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sectionHeading {
+        font-size: 2rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+}
+
+@media (max-width: 767px) { /* Mobile specific styles */
+    .heroCarouselSection {
+        height: 250px; /* Further reduce carousel height for mobile */
+    }
+    /* Add a specific rule for when it's empty or loading on mobile */
+    .heroCarouselSection:has(.carouselLoading),
+    .heroCarouselSection:has(.noCarouselImages) {
+        height: 80px; /* Reduced height for loading/no images state on mobile */
+        min-height: 80px;
+    }
 
 
-  .sidebarFilters {
-    position: sticky; /* Sticky on desktop so it scrolls with viewport but stays visible */
-    top: calc(var(--navbar-height-mobile) + 1rem); /* Stick below Navbar and some margin */
-    left: 0; /* Align to left */
-    height: auto; /* Auto height based on content */
-    transform: translateX(0); /* Always visible */
-    box-shadow: var(--shadow-sm); /* Subtle shadow for desktop sidebar */
-    flex-shrink: 0; /* Don't shrink */
-    width: 280px; /* Fixed width on desktop */
-    order: 2; /* Place after hero section in row */
-  }
-  .closeSidebarButton {
-    display: none; /* Hide close button on desktop */
-  }
+    .carouselArrow {
+        padding: 12px;
+        font-size: 1.2rem;
+        left: 15px;
+        right: 15px;
+        visibility: hidden;
+    }
+    .carouselPagination {
+        bottom: 15px;
+        gap: 8px;
+    }
+    .paginationDot {
+        width: 10px;
+        height: 10px;
+    }
 
-  .eventsListingArea {
-    flex-grow: 1; /* Events list takes remaining space */
-    order: 3; /* Place after sidebar */
-    padding: 2.5rem 0; /* Vertical padding */
-  }
-  .sectionHeading {
-    font-size: 2.5rem;
-  }
+    .mainWrapper {
+        padding: 15px;
+        gap: 5px; /* REDUCED GAP for mobile to be very small */
+    }
+
+    .heroSection {
+        padding: 20px;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .mainTitle {
+        font-size: 2rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .searchBar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px;
+        gap: 8px;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+    .searchIcon {
+        margin-right: 0;
+        margin-bottom: 5px;
+        align-self: flex-start;
+    }
+    .searchInput, .locationDropdown {
+        width: 100%;
+        min-width: unset;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    .filterToggleButton {
+        /* Super small padding, width, height for mobile */
+        padding: 4px; /* Even smaller padding */
+        width: 32px; /* Even smaller width */
+        height: 32px; /* Even smaller height */
+        font-size: 0.9rem; /* Smaller icon size */
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .ageFilterPills {
+        gap: 8px;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+    .ageFilterPill {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+        gap: 6px;
+    }
+    .ageFilterIcon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sidebarFilters {
+        width: 90%;
+        max-width: none;
+        padding: 15px;
+        gap: 8px; /* REDUCED GAP for sidebar sections on mobile */
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .sidebarTitle {
+        font-size: 1.3rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .closeSidebarButton {
+        font-size: 2rem;
+        top: 10px;
+        right: 10px;
+    }
+
+    .filterSection {
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .filterSectionTitle {
+        font-size: 1rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+        padding-bottom: 5px; /* Adjusted padding */
+    }
+
+    .categoriesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Further smaller grid items for mobile */
+        gap: 6px; /* Further reduced gap */
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .categoryPill {
+        padding: 6px; /* Further reduced padding */
+        font-size: 0.6rem; /* Further reduced font size */
+        gap: 4px;
+    }
+    .categoryIcon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .timeFilterItem {
+        padding: 6px 10px; /* Further reduced padding */
+        font-size: 0.75rem; /* Further reduced font size */
+        gap: 6px;
+    }
+    .timeFilterIcon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sectionHeading {
+        font-size: 1.8rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
+
+    .noEventsMessage {
+        padding: 30px;
+        font-size: 1rem;
+        margin-top: 0; /* Reset margin */
+        margin-bottom: 0; /* Reset margin */
+    }
 }

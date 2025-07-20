@@ -1,0 +1,127 @@
+/* src/components/Checkout/CouponInput.module.css */
+
+.sectionCard {
+    background-color: var(--color-background-card);
+    padding: 30px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-elevation-small);
+    margin-bottom: 30px;
+    border: 1px solid var(--color-border);
+}
+
+.sectionHeader {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary-dark);
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+.couponIntro {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: var(--font-size-medium);
+    color: var(--color-text-secondary);
+}
+
+.couponInputContainer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: flex-end; /* Align input and button bottoms */
+}
+
+.couponInputContainer > div { /* Target the TextInput wrapper */
+    flex-grow: 1;
+}
+
+.applyCouponButton {
+    padding: 12px 20px;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.applyCouponButton:hover {
+    background-color: var(--color-accent-dark);
+}
+
+.appliedCouponInfo {
+    background-color: var(--color-success-light);
+    border: 1px solid var(--color-success);
+    color: var(--color-success-dark);
+    padding: 15px;
+    border-radius: var(--border-radius-medium);
+    margin-top: 20px;
+    text-align: center;
+    font-weight: var(--font-weight-medium);
+}
+
+.appliedCouponInfo p {
+    margin: 5px 0;
+}
+
+.totalSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    margin-top: 30px;
+    box-shadow: var(--shadow-elevation-small);
+}
+
+.totalAmount {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-extrabold);
+}
+
+
+/* Responsive adjustments for coupon section */
+@media (max-width: 768px) {
+    .sectionCard {
+        padding: 20px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-h4);
+    }
+    .couponInputContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .applyCouponButton {
+        width: 100%;
+    }
+    .totalSection {
+        font-size: var(--font-size-medium);
+        padding: 15px;
+    }
+    .totalAmount {
+        font-size: var(--font-size-h4);
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionCard {
+        padding: 10px;
+    }
+    .sectionHeader {
+        font-size: var(--font-size-large);
+    }
+    .couponIntro {
+        font-size: var(--font-size-small);
+    }
+    .totalAmount {
+        font-size: var(--font-size-h5);
+    }
+}

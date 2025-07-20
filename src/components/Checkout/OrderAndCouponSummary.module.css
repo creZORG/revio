@@ -1,0 +1,609 @@
+/* src/components/Checkout/OrderAndCouponSummary.module.css */
+
+/* --- General Card & Section Styling --- */
+.sectionCard {
+    background-color: var(--color-background-card); /* Assuming a light background for the card */
+    padding: 20px; /* Comfortable padding around the entire card content */
+    border-radius: 12px; /* Standard rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft, elegant shadow */
+    margin-bottom: 20px; /* Space below the entire card */
+    border: 1px solid var(--color-border); /* Subtle border */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Standard gap between major sections within the card */
+}
+
+.mainHeader {
+    font-size: 1.8em; /* Larger, more prominent main header */
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--naks-pink), var(--naks-orange)); /* CORRECTED: Naks Yetu gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 15px; /* Space below main header */
+}
+
+.sectionBlock {
+    padding-bottom: 15px; /* Padding at the bottom of each logical section within the card */
+    border-bottom: 1px dashed var(--color-neutral-300); /* Subtle dashed separator */
+}
+
+.sectionBlock:last-of-type {
+    border-bottom: none; /* No border on the last section */
+    padding-bottom: 0;
+}
+
+.sectionSubHeader {
+    font-size: 1.1em; /* Sub-header for sections like "Order Summary" */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 10px; /* Space below sub-header */
+}
+
+.gradientText {
+    background: linear-gradient(90deg, var(--naks-pink), var(--naks-orange)); /* CORRECTED: Naks Yetu gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- Event Summary (within Order Summary) --- */
+.eventSummary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background-color: var(--color-neutral-100);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-neutral-200);
+}
+
+.eventThumbnail {
+    width: 48px; /* Compact thumbnail */
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.eventInfo {
+    flex-grow: 1;
+}
+
+.eventName {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+.eventMeta {
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+}
+
+/* --- Tickets List --- */
+.ticketsSummary {
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.ticketsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ticketItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0; /* Compact padding */
+    font-size: 0.9em;
+    border-bottom: 1px dashed var(--color-neutral-200);
+}
+
+.ticketItem:last-child {
+    border-bottom: none;
+}
+
+.ticketDetails {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 8px;
+}
+
+.ticketDetails span:first-child {
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.ticketPrice {
+    font-weight: 600;
+    color: var(--color-primary-dark); /* Using primary-dark for price */
+}
+
+.ticketQuantityControls {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Very compact gap */
+}
+
+.quantityButton {
+    background-color: var(--color-neutral-200);
+    border: 1px solid var(--color-neutral-300);
+    color: var(--color-text-secondary);
+    padding: 2px 4px; /* Minimal padding */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75em; /* Small font */
+    font-weight: bold;
+    min-width: 24px; /* Ensures clickable area */
+    height: 24px; /* Ensures consistent height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.quantityButton:hover:not(:disabled) {
+    background-color: var(--naks-primary-light); /* Lighter pink on hover */
+    color: var(--naks-white-surface);
+    border-color: var(--naks-primary);
+}
+
+.quantityButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ticketQuantity {
+    font-weight: 600;
+    font-size: 0.85em;
+    min-width: 15px;
+    text-align: center;
+}
+
+.removeTicketButton {
+    background-color: var(--color-error);
+    border: 1px solid var(--color-error-dark);
+    color: var(--naks-white-surface);
+    padding: 2px 4px; /* Minimal padding */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75em; /* Small font */
+    height: 24px; /* Consistent height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.removeTicketButton:hover:not(:disabled) {
+    background-color: var(--color-error-dark);
+}
+
+.noTicketsMessage {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    padding: 15px;
+    background-color: var(--color-neutral-100);
+    border-radius: 8px;
+}
+
+/* --- Customer Information Section --- */
+.customerInfoSection {
+    margin-bottom: 15px; /* Space below this section */
+}
+
+.summaryDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Compact gap */
+    margin-bottom: 10px;
+}
+
+.summaryItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: var(--color-text-primary);
+}
+
+.summaryItem p {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.summaryIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--naks-primary); /* Pink icon */
+}
+
+.guestInfoForm {
+    padding: 10px; /* Compact padding */
+    background-color: var(--color-neutral-100);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-neutral-200);
+}
+
+.guestMessage {
+    font-size: 0.85em;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+}
+
+/* New: M-Pesa Phone Input Group */
+.mpesaPhoneInputGroup {
+    margin-top: 10px; /* Space above phone input */
+}
+
+.formLabel { /* Reusing formLabel from PaymentDetails */
+    display: block;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--color-text-primary);
+}
+
+.formHint { /* Reusing formHint from PaymentDetails */
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+    margin-top: 5px;
+    font-style: italic;
+}
+
+
+.guestAssurance {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+    padding: 8px;
+    background-color: var(--color-info-light);
+    border-radius: 6px;
+    border: 1px solid var(--color-info);
+    margin-top: 10px; /* Space after phone input */
+}
+
+.infoIcon {
+    width: 14px;
+    height: 14px;
+    color: var(--color-info);
+}
+
+.assuranceText {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+    padding: 8px;
+    background-color: var(--color-success-light);
+    border-radius: 6px;
+    border: 1px solid var(--color-success);
+}
+
+.checkIcon {
+    width: 14px;
+    height: 14px;
+    color: var(--color-success);
+    flex-shrink: 0;
+}
+
+.dashboardLink {
+    color: var(--naks-primary); /* Pink link */
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.dashboardLink:hover {
+    color: var(--naks-primary-dark);
+}
+
+/* --- Coupon Section --- */
+.couponSection {
+    margin-bottom: 15px; /* Space below coupon section */
+}
+
+.couponEncouragement {
+    font-size: 0.85em; /* Smaller font for encouragement */
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 5px 0; /* Minimal padding */
+}
+
+.couponInputContainer {
+    display: flex;
+    gap: 8px; /* Standard gap */
+    margin-bottom: 10px; /* Space below input group */
+    align-items: flex-end;
+}
+
+.couponInputContainer > div { /* Targeting the TextInput wrapper */
+    flex-grow: 1;
+}
+
+.applyButton { /* Renamed from applyCouponButton for consistency with HTML mockup */
+    padding: 10px 18px; /* Standard button padding */
+    background: linear-gradient(90deg, var(--naks-accent), var(--naks-orange)); /* CORRECTED: Orange gradient for apply button */
+    color: var(--naks-white-surface);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.applyButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(var(--naks-accent-rgb), 0.3); /* Orange shadow */
+}
+
+.appliedCouponInfo {
+    background-color: var(--color-success-light);
+    border: 1px solid var(--color-success);
+    color: var(--color-success-dark);
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.appliedCouponInfo p {
+    margin: 2px 0;
+}
+
+/* --- Final Total Section --- */
+.finalTotalSection {
+    margin-top: 15px; /* Space above this section */
+    padding-top: 15px; /* Padding above the top border */
+    border-top: 1px dashed var(--color-neutral-300); /* Dashed separator */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between total rows */
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em; /* Standard font size */
+    color: var(--color-text-primary);
+}
+
+.grandTotal {
+    font-weight: 700;
+    font-size: 1.3em; /* Larger for grand total */
+    color: var(--naks-pink); /* CORRECTED: Pink for grand total */
+    padding-top: 10px; /* More padding above grand total line */
+    border-top: 1px solid var(--color-neutral-400); /* Solid separator above grand total */
+    margin-top: 10px; /* Space above solid separator */
+}
+
+.discountAmount {
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .sectionCard {
+        padding: 15px;
+        gap: 15px; /* Reduced gap for sections */
+    }
+    .mainHeader {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    .sectionSubHeader {
+        font-size: 1em;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+    .eventSummary {
+        gap: 8px;
+        padding: 6px;
+        margin-bottom: 8px;
+    }
+    .eventThumbnail {
+        width: 40px;
+        height: 40px;
+    }
+    .eventName {
+        font-size: 0.9em;
+    }
+    .eventMeta {
+        font-size: 0.75em;
+    }
+    .ticketsSummary {
+        margin-bottom: 10px;
+    }
+    .ticketItem {
+        padding: 5px 0;
+        font-size: 0.85em;
+    }
+    .ticketDetails {
+        margin-right: 5px;
+    }
+    .quantityButton, .removeTicketButton {
+        padding: 1px 3px;
+        font-size: 0.7em;
+        min-width: 16px;
+        height: 16px;
+    }
+    .ticketQuantity {
+        font-size: 0.75em;
+        min-width: 12px;
+    }
+    .customerInfoSection, .couponSection, .finalTotalSection {
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+    .guestInfoForm {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    .guestMessage, .couponEncouragement {
+        font-size: 0.8em;
+        margin-bottom: 8px;
+    }
+    .summaryItem, .totalRow {
+        font-size: 0.9em;
+    }
+    .grandTotal {
+        font-size: 1.1em;
+    }
+    .applyButton {
+        padding: 8px 15px;
+        font-size: 0.85em;
+    }
+    .appliedCouponInfo {
+        font-size: 0.8em;
+    }
+
+    /* New: M-Pesa Phone Input Group */
+    .mpesaPhoneInputGroup {
+        margin-top: 10px; /* Space above phone input */
+    }
+
+    .formLabel { /* Reusing formLabel from PaymentDetails */
+        display: block;
+        font-size: 0.9em;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: var(--color-text-primary);
+    }
+
+    .formHint { /* Reusing formHint from PaymentDetails */
+        font-size: 0.8em;
+        color: var(--color-text-secondary);
+        margin-top: 5px;
+        font-style: italic;
+    }
+}
+
+@media (max-width: 480px) {
+    .sectionCard {
+        padding: 10px;
+        margin-bottom: 8px;
+    }
+    .mainHeader {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+    }
+    .sectionSubHeader {
+        font-size: 0.9em;
+        margin-top: 8px;
+        margin-bottom: 4px;
+    }
+    .eventSummary {
+        gap: 6px;
+        padding: 5px;
+        margin-bottom: 6px;
+    }
+    .eventThumbnail {
+        width: 30px;
+        height: 30px;
+    }
+    .eventName {
+        font-size: 0.85em;
+    }
+    .ticketsSummary {
+        margin-bottom: 8px;
+    }
+    .ticketItem {
+        padding: 4px 0;
+        font-size: 0.8em;
+    }
+    .ticketDetails {
+        margin-right: 4px;
+    }
+    .quantityButton, .removeTicketButton {
+        padding: 0 2px;
+        font-size: 0.65em;
+        min-width: 14px;
+        height: 14px;
+    }
+    .ticketQuantity {
+        font-size: 0.7em;
+        min-width: 10px;
+    }
+    .totalSection {
+        padding: 6px 8px;
+        font-size: 0.75em;
+        margin-top: 8px;
+    }
+    .totalAmount {
+        font-size: 0.9em;
+    }
+    .customerInfoSection {
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+    .summaryDetails {
+        gap: 3px;
+        margin-bottom: 5px;
+    }
+    .summaryItem {
+        font-size: 0.75em;
+    }
+    .guestInfoForm {
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+    .guestMessage {
+        font-size: 0.75em;
+        margin-bottom: 5px;
+    }
+    .guestAssurance, .assuranceText {
+        padding: 3px;
+        margin-top: 5px;
+    }
+
+    /* Coupon Section */
+    .couponSection {
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+    .couponInputContainer {
+        gap: 4px;
+        margin-bottom: 5px;
+    }
+    .applyButton {
+        padding: 4px 8px;
+        font-size: 0.7em;
+    }
+    .appliedCouponInfo {
+        padding: 4px;
+        margin-top: 4px;
+        font-size: 0.7em;
+    }
+
+    /* Final Total Section */
+    .finalTotalSection {
+        margin-top: 8px;
+        padding-top: 6px;
+        gap: 3px;
+    }
+    .totalRow {
+        font-size: 0.75em;
+    }
+    .grandTotal {
+        font-size: 0.9em;
+        padding-top: 3px;
+        margin-top: 3px;
+    }
+}
