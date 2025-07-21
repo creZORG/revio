@@ -3,24 +3,24 @@ import React, { useState, useCallback } from 'react';
 import { FaPlus, FaMinus, FaClock, FaCalendarAlt, FaInfoCircle } from 'react-icons/fa';
 import { format, isBefore, isAfter } from 'date-fns';
 
-import { useNotification } from '../../../contexts/NotificationContext.jsx'; 
-import { useCart } from '../../../contexts/CartContext.jsx'; 
+import { useNotification } from '../../../contexts/NotificationContext.jsx';
+import { useCart } from '../../../contexts/CartContext.jsx';
 
-import styles from './TicketPurchaseSection.module.css'; // CORRECTED: Import dedicated CSS module
+import styles from './TicketPurchaseSection.module.css'; // Import dedicated CSS module
 import commonStyles from '../../Common/Button.module.css'; // For common button styles (e.g., btn, btnPrimary)
 import eventDetailPageStyles from '../../Events/EventDetailPage.module.css'; // For general sectionContent, sectionTitle
 
 
 const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, setMpesaAmount, setMpesaPhoneNumber }) => {
     const { showNotification } = useNotification();
-    const { cartItems, updateCartItemQuantity } = useCart(); 
+    const { cartItems, updateCartItemQuantity } = useCart(); // Get cartItems and update function
 
     // Derived total price for display within this section (matches sidebar)
-    const currentTotalPrice = (cartItems && event?.ticketDetails) ? 
-        Object.keys(cartItems).reduce((sum, ticketId) => {
-            const ticket = event.ticketDetails.find(t => t.id === ticketId);
-            const qty = cartItems[ticketId];
-            const rawPrice = ticket?.price;
+    const currentTotalPrice = (cartItems && event?.ticketDetails) ?
+        Object.values(cartItems).reduce((sum, cartItem) => { // Iterate over cart items (which now contain full ticket data)
+            // No need to find ticket in event.ticketDetails here, cartItem already has it
+            const qty = cartItem.quantity || 0;
+            const rawPrice = cartItem.price; // Get price directly from cartItem
             const numericPrice = typeof rawPrice === 'object' && rawPrice !== null ? Object.values(rawPrice)[0] || 0 : rawPrice || 0;
             const finalPrice = typeof numericPrice === 'number' ? numericPrice : 0;
             return sum + (qty * finalPrice);
@@ -44,12 +44,12 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
         return status;
     }, []);
 
-    const handleQuantityChange = useCallback((ticketId, change) => {
-        const ticket = event.ticketDetails.find(t => t.id === ticketId);
-        if (!ticket) return;
+    const handleQuantityChange = useCallback((ticket, change) => {
+        // `ticket` here is the full ticket object from `event.ticketDetails`
+        const currentCartItem = cartItems[ticket.id] || { quantity: 0 };
+        const currentQty = currentCartItem.quantity;
 
-        const currentQty = cartItems[ticketId] || 0;
-        const newQty = Math.max(0, currentQty + change);
+        const newQty = Math.max(0, currentQty + change); // Calculate the new absolute quantity
 
         const maxAvailable = ticket.quantity - (ticket.sold || 0);
         if (change > 0 && newQty > maxAvailable) {
@@ -57,12 +57,13 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
             return;
         }
 
-        updateCartItemQuantity(ticketId, newQty);
-    }, [cartItems, event?.ticketDetails, updateCartItemQuantity, showNotification]);
+        // Pass the full ticket object and the calculated new absolute quantity
+        updateCartItemQuantity(ticket, newQty);
+    }, [cartItems, updateCartItemQuantity, showNotification]);
+
 
     // Handle "Proceed to Checkout" button click for this section
     const handleCheckoutClick = useCallback(() => {
-        // This will open the M-Pesa modal in EventDetailPage
         if (currentTotalPrice > 0) {
             setMpesaAmount(currentTotalPrice);
             // setMpesaPhoneNumber(currentUser?.phoneNumber || ''); // If you want to pre-fill phone
@@ -76,15 +77,16 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
     return (
         <section className={`${eventDetailPageStyles.sectionContent} ${styles.ticketsSection}`}>
             <h2 className={eventDetailPageStyles.sectionTitle}>Tickets</h2>
-            
+
             <div className={styles.ticketTypesList}>
                 {event?.ticketDetails?.length === 0 ? (
                     <p className={styles.noTicketsMessage}>No tickets configured for this event yet.</p>
                 ) : (
                     event?.ticketDetails?.map(ticket => {
                         const status = getTicketStatus(ticket);
-                        const currentQty = cartItems[ticket.id] || 0;
-                        const isTicketDisabled = !status.canBuy; 
+                        // Access quantity for this specific ticket from cartItems object
+                        const currentQty = cartItems[ticket.id]?.quantity || 0;
+                        const isTicketDisabled = !status.canBuy;
 
                         return (
                             <div key={ticket.id} className={`${styles.ticketItem} ${isTicketDisabled ? styles.disabled : ''}`}>
@@ -98,12 +100,14 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
                                         )}
                                     </p>
                                     {ticket.description && <p className={styles.ticketDescription}>{ticket.description}</p>}
-                                    {ticket.quantity && <p className={styles.ticketAvailability}>{} </p>}
+                                    {ticket.quantity !== undefined && ticket.quantity !== null && (
+                                        <p className={styles.ticketAvailability}>Available: {ticket.quantity - (ticket.sold || 0)}</p>
+                                    )}
                                 </div>
                                 <div className={styles.ticketQuantityControl}>
                                     <button
                                         className={styles.quantityBtn}
-                                        onClick={() => handleQuantityChange(ticket.id, -1)}
+                                        onClick={() => handleQuantityChange(ticket, -1)}
                                         disabled={isTicketDisabled || currentQty <= 0}
                                     >
                                         <FaMinus />
@@ -111,7 +115,7 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
                                     <span className={styles.ticketQty}>{currentQty}</span>
                                     <button
                                         className={styles.quantityBtn}
-                                        onClick={() => handleQuantityChange(ticket.id, 1)}
+                                        onClick={() => handleQuantityChange(ticket, 1)}
                                         disabled={isTicketDisabled || currentQty >= (ticket.quantity - (ticket.sold || 0))}
                                     >
                                         <FaPlus />
@@ -122,7 +126,7 @@ const TicketPurchaseSection = ({ event, onProceedToCheckout, setShowMpesaModal, 
                     })
                 )}
             </div>
-            {/* The ticket summary and checkout button are now in the parent EventDetailPage's sidebar/mobile action button */}
+            {/* Removed the mini-cart section as per your feedback */}
         </section>
     );
 };

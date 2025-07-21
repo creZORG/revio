@@ -190,7 +190,7 @@ body.dark-mode .sectionCard {
     align-items: center;
     gap: 20px;
     padding: 15px;
-    background-color: var(--naks-gray-100); /* Light gray background */
+    background-color: var(--naks-gray-100);
     border-radius: var(--border-radius-medium);
     margin-bottom: 25px;
     border: 1px solid var(--naks-gray-200);
@@ -241,7 +241,7 @@ body.dark-mode .eventSummary {
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    border-bottom: 1px dashed var(--naks-border-medium); /* Dashed theme border */
+    border-bottom: 1px dashed var(--naks-border-medium);
 }
 
 .ticketItem:last-child {
@@ -341,18 +341,18 @@ body.dark-mode .eventSummary {
     border: 1px solid var(--naks-gray-200);
 }
 
-/* Total Section (in CheckoutStepOne) */
+/* Subtotal / Total Section (in CheckoutStepOne) */
 .totalSection {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: var(--naks-gray-100); /* Subtle background */
+    padding: 15px 20px;
+    background-color: var(--naks-gray-100);
     color: var(--naks-text-primary);
     border-radius: var(--border-radius-medium);
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bold);
-    margin-top: 30px;
+    margin-top: 20px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--naks-border-light);
 }
@@ -364,8 +364,18 @@ body.dark-mode .totalSection {
 .totalAmount {
     font-size: var(--font-size-h3);
     font-weight: var(--font-weight-extrabold);
-    color: var(--naks-secondary); /* Pink accent for total amount */
+    color: var(--naks-secondary);
 }
+
+/* Processing Fee text */
+.processingFee {
+    font-size: var(--font-size-small);
+    color: var(--naks-text-secondary);
+    font-weight: var(--font-weight-medium);
+    margin-top: 5px;
+    text-align: right;
+}
+
 
 /* Customer Info Section (in CheckoutStepOne) */
 .customerInfoSection {
@@ -374,39 +384,122 @@ body.dark-mode .totalSection {
     border-top: 1px dashed var(--naks-border-medium);
 }
 
-.guestInfoForm {
+/* Input Grouping */
+.inputGroupContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
     background-color: var(--naks-gray-100);
     padding: 20px;
     border-radius: var(--border-radius-medium);
-    margin-bottom: 20px;
     border: 1px solid var(--naks-gray-200);
+    margin-bottom: 20px;
 }
-body.dark-mode .guestInfoForm {
+body.dark-mode .inputGroupContainer {
     background-color: var(--naks-gray-200);
     border-color: var(--naks-gray-300);
 }
 
-.guestMessage {
-    font-size: var(--font-size-medium);
-    color: var(--naks-text-secondary);
-    margin-bottom: 20px;
-    font-weight: var(--font-weight-medium);
+/* Individual TextInput styling overrides for compactness */
+.formInputCompact {
+    margin-bottom: 0 !important;
+    flex: 1 1 calc(50% - 7.5px);
+    min-width: 150px;
+}
+.formInputCompact.fullWidth {
+    flex: 1 1 100%;
 }
 
-.guestAssurance {
+/* Phone Input Specifics */
+.phoneInputWrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
+    border: 1px solid var(--naks-border-medium);
+    border-radius: var(--border-radius-small);
+    background-color: var(--naks-surface);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    width: 100%;
+}
+body.dark-mode .phoneInputWrapper {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+.phoneInputWrapper.error {
+    border-color: var(--naks-error);
+    box-shadow: 0 0 0 2px var(--naks-error-light);
+}
+.phoneInputWrapper:focus-within {
+    border-color: var(--naks-primary);
+    box-shadow: 0 0 0 2px var(--naks-primary-light);
+}
+
+.phonePrefix {
+    padding: 10px 8px;
+    color: var(--naks-text-secondary);
+    font-size: var(--font-size-medium);
+    background-color: var(--naks-gray-100);
+    border-right: 1px solid var(--naks-border-medium);
+    border-top-left-radius: var(--border-radius-small);
+    border-bottom-left-radius: var(--border-radius-small);
+    font-weight: var(--font-weight-medium);
+    flex-shrink: 0;
+}
+body.dark-mode .phonePrefix {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-border-medium);
+    color: var(--naks-text-primary);
+}
+
+.phoneInputField {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: none;
+    background-color: transparent;
+    font-size: var(--font-size-medium);
+    color: var(--naks-text-primary);
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.phoneInputField::placeholder {
+    color: var(--naks-text-placeholder);
+}
+
+/* Icon for TextInput (used in TextInput.jsx) */
+.inputIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--naks-gray-400);
+    margin-left: 12px;
+    flex-shrink: 0;
+}
+body.dark-mode .inputIcon {
+    color: var(--naks-gray-100);
+}
+
+
+/* "Tickets will be sent to..." message */
+.ticketDeliveryMessage {
     font-size: var(--font-size-small);
     color: var(--naks-text-secondary);
     margin-top: 15px;
-    background-color: var(--naks-info-light);
+    line-height: 1.4;
     padding: 10px;
+    background-color: var(--naks-info-light);
     border-radius: var(--border-radius-small);
     border: 1px solid var(--naks-info);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+body.dark-mode .ticketDeliveryMessage {
+    background-color: rgba(var(--naks-info-rgb), 0.2);
+    border-color: var(--naks-info);
 }
 
-.infoIcon {
+.messageIcon {
     width: 18px;
     height: 18px;
     color: var(--naks-info);
@@ -414,38 +507,22 @@ body.dark-mode .guestInfoForm {
     margin-top: 2px;
 }
 
-.assuranceText {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: var(--font-size-small);
-    color: var(--naks-text-secondary);
-    margin-top: 20px;
-    padding: 10px;
-    background-color: var(--naks-success-light);
-    border-radius: var(--border-radius-small);
-    border: 1px solid var(--naks-success);
+
+/* Coupon Input */
+.couponSection {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--naks-border-medium);
 }
 
-.checkIcon {
-    width: 18px;
-    height: 18px;
-    color: var(--naks-success);
-    flex-shrink: 0;
-    margin-top: 2px;
+/* Payment Details Section */
+.paymentDetailsSection {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--naks-border-medium);
 }
 
-.dashboardLink {
-    color: var(--naks-primary-dark);
-    text-decoration: underline;
-    font-weight: var(--font-weight-medium);
-}
-
-.dashboardLink:hover {
-    color: var(--naks-primary);
-}
-
-/* M-Pesa Form & Instructions (in CheckoutStepOne) */
+/* M-Pesa Form & Instructions (copied from CheckoutPage.module.css) */
 .mpesaForm {
     margin-bottom: 30px;
     padding: 20px;
@@ -458,70 +535,11 @@ body.dark-mode .mpesaForm {
     border-color: var(--naks-gray-300);
 }
 
-.formLabel {
-    display: block;
-    font-size: var(--font-size-medium);
-    color: var(--naks-text-secondary);
-    margin-bottom: 10px;
-    font-weight: var(--font-weight-medium);
-}
-
-.formInput {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--naks-border-medium);
-    border-radius: var(--border-radius-medium);
-    font-size: var(--font-size-medium);
-    color: var(--naks-text-primary);
-    background-color: var(--naks-surface);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-body.dark-mode .formInput {
-    background-color: var(--naks-surface);
-    border-color: var(--naks-border-medium);
-    color: var(--naks-text-primary);
-}
-
-.formInput:focus {
-    border-color: var(--naks-primary);
-    box-shadow: 0 0 0 3px var(--naks-primary-light);
-    outline: none;
-}
-
-.formInput::placeholder {
-    color: var(--naks-text-placeholder);
-}
-
-.formInput:disabled {
-    background-color: var(--naks-gray-200);
-    cursor: not-allowed;
-    opacity: 0.8;
-}
-
-.formHint {
-    font-size: var(--font-size-small);
-    color: var(--naks-text-secondary);
-    margin-top: 8px;
-    font-style: italic;
-}
-
-.paymentInstructions {
-    background-color: var(--naks-info-light);
-    padding: 25px;
-    border-radius: var(--border-radius-large);
-    border: 1px solid var(--naks-info);
-    margin-top: 20px;
-    color: var(--naks-text-primary);
-}
-body.dark-mode .paymentInstructions {
-    background-color: var(--naks-info-light);
-    border-color: var(--naks-info);
-}
-
 .instructionIntro {
     font-size: var(--font-size-medium);
     margin-bottom: 20px;
     line-height: 1.6;
+    color: var(--naks-text-primary);
 }
 
 .manualPayDetails {
@@ -616,214 +634,103 @@ body.dark-mode .copyButton:hover {
     border-top: 1px dashed var(--naks-border-medium);
 }
 
-/* Modal Styling (for global modals like errors) */
-.modalTitle {
-    font-size: var(--font-size-h3);
-    color: var(--naks-primary-dark);
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.modalMessage {
-    font-size: var(--font-size-medium);
-    color: var(--naks-text-primary);
-    text-align: center;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-.spinner {
-    border: 4px solid var(--naks-gray-200);
-    border-top: 4px solid var(--naks-primary);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.errorMessage {
-    color: var(--naks-error);
-    background-color: var(--naks-error-light);
-    border: 1px solid var(--naks-error);
-    padding: 10px;
-    border-radius: var(--border-radius-medium);
-    text-align: center;
-    margin-top: 20px;
-    font-size: var(--font-size-small);
-}
-
-.loadingText {
-    text-align: center;
-    color: var(--naks-text-secondary);
-    margin-top: 20px;
-    font-size: var(--font-size-medium);
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .checkoutContainer {
-        margin: 20px auto;
-        padding: 15px;
-    }
-
-    .pageTitle {
-        font-size: var(--font-size-h3);
-        margin-bottom: 30px;
-    }
-
-    .progressIndicator {
-        padding: 0 10px;
-        margin-bottom: 40px;
-    }
-
-    .progressBar {
-        width: calc(100% - 20px);
-        left: 10px;
-    }
-
-    .stepIconContainer {
-        width: 24px;
-        height: 24px;
-    }
-    .stepIcon {
-        width: 16px;
-        height: 16px;
-    }
-
-    .stepName {
-        font-size: var(--font-size-x-small);
-    }
-
     .sectionCard {
         padding: 20px;
     }
-
     .sectionHeader {
         font-size: var(--font-size-h4);
         margin-bottom: 20px;
     }
-
     .eventSummary {
         flex-direction: column;
         text-align: center;
         gap: 15px;
     }
-
     .eventThumbnail {
         width: 60px;
         height: 60px;
     }
-
     .ticketDetails {
         flex-direction: column;
         align-items: flex-start;
         gap: 5px;
     }
-
     .ticketPrice {
         align-self: flex-end;
     }
-
     .ticketQuantityControls {
         margin-top: 10px;
         justify-content: center;
         width: 100%;
     }
-
     .totalSection {
         font-size: var(--font-size-medium);
         padding: 15px;
     }
-
     .totalAmount {
         font-size: var(--font-size-h4);
     }
-
-    .navigationButtons {
+    .inputGroupContainer { /* Mobile: stack inputs vertically */
         flex-direction: column;
         gap: 10px;
+        padding: 15px;
     }
-
-    .navigationButtons button {
+    .formInputCompact {
+        flex: 1 1 100%; /* Full width on mobile */
+    }
+    .phoneInputWrapper {
         width: 100%;
     }
-
-    .manualPayDetails p {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+    .phonePrefix {
+        padding: 8px 6px 8px 10px;
+        font-size: var(--font-size-small);
     }
-
-    .copyButton {
-        margin-top: 5px;
+    .phoneInputField {
+        padding: 8px 10px;
+        font-size: var(--font-size-small);
+    }
+    .ticketDeliveryMessage {
+        font-size: var(--font-size-x-small);
+        padding: 8px;
+    }
+    .messageIcon {
+        width: 16px;
+        height: 16px;
     }
 }
 
 @media (max-width: 480px) {
-    .checkoutContainer {
-        padding: 10px;
+    .sectionCard {
+        padding: 15px;
     }
-
-    .pageTitle {
-        font-size: var(--font-size-h4);
-    }
-
-    .progressStep {
-        padding: 2px;
-    }
-
-    .stepIconContainer {
-        width: 20px;
-        height: 20px;
-        margin-bottom: 5px;
-    }
-    .stepIcon {
-        width: 14px;
-        height: 14px;
-    }
-
-    .stepName {
-        font-size: var(--font-size-xx-small);
-    }
-
     .sectionHeader {
         font-size: var(--font-size-large);
     }
-
     .ticketItem {
         flex-direction: column;
         align-items: flex-start;
     }
-
     .ticketDetails {
         width: 100%;
         margin-right: 0;
     }
-
     .ticketQuantityControls {
         width: auto;
         margin-top: 10px;
         justify-content: flex-end;
     }
-
     .totalAmount {
         font-size: var(--font-size-h5);
     }
-
     .manualPayDetails p {
         font-size: var(--font-size-small);
     }
-
     .highlightText {
         font-size: var(--font-size-medium);
     }
-
     .instructionList {
         font-size: var(--font-size-small);
     }

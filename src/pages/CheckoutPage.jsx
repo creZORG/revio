@@ -1,19 +1,19 @@
-// src/pages/CheckoutPage.jsx
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { useNotification } from '../contexts/NotificationContext.jsx';
 import { db } from '../utils/firebaseConfig.js';
-import { collection, doc, setDoc, serverTimestamp, Timestamp, onSnapshot, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, serverTimestamp, Timestamp, onSnapshot, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import LoadingSkeleton from '../components/Common/LoadingSkeleton.jsx';
 import Modal from '../components/Common/Modal.jsx';
 import commonFormStyles from './Organizer/Dashboard/Tabs/CreateEventWizard.module.css';
-import styles from './CheckoutPage.module.css';
+import styles from './CheckoutPage.module.css'; // Correct import for pageStyles
 
 // Import new components
-import OrderAndCouponSummary from '../components/Checkout/OrderAndCouponSummary.jsx';
-import Confirmation from '../components/Checkout/Confirmation.jsx'; // Will be heavily modified
+import CheckoutStepOne from '../components/Checkout/CheckoutStepOne';
+import Confirmation from '../components/Checkout/Confirmation.jsx';
+import ProcessingModalContent from '../components/Checkout/ProcessingModalContent.jsx';
 
 import {
     ShoppingCartIcon, CheckCircleIcon
@@ -21,125 +21,126 @@ import {
 
 import { getEventById } from '../services/eventApiService.js';
 
-const BASE_URL = 'https://us-central1-naksyetu-9c648.cloudfunctions.net/initiateStkPush'; // Your initiateStkPush CF URL
+import { CartContext } from '../contexts/CartContext';
+
+// CRITICAL FIX: Define all necessary constants GLOBALLY in this file
+const FIREBASE_COLLECTIONS_BASE_ID = "naksyetu-9c648"; // Your Firebase Project ID
+const FIREBASE_EVENTS_APP_ID = "1:147113503727:web:1d9d351c30399b2970241a"; // The specific App ID for your events collection
+
+// Define Firestore collection segments (arrays) globally
+const ORDERS_COLLECTION_SEGMENTS = ['artifacts', FIREBASE_COLLECTIONS_BASE_ID, 'orders'];
+const PAYMENTS_COLLECTIONS_SEGMENTS = ['artifacts', FIREBASE_COLLECTIONS_BASE_ID, 'payments'];
+const EVENTS_COLLECTION_SEGMENTS = ['artifacts', FIREBASE_EVENTS_APP_ID, 'public', 'data_for_app', 'events'];
+
+
+const BASE_URL = 'https://us-central1-naksyetu-9c648.cloudfunctions.net/initiateStkPush';
+const NAKSYETU_PAYBILL_NUMBER = '4168319';
 
 const CheckoutPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { currentUser, loadingAuth, isAuthenticated, isAuthReady } = useAuth();
+    const { currentUser, loadingAuth, isAuthenticated, isAuthReady, authenticatedUser } = useAuth();
     const { showNotification } = useNotification();
+    const { cartItems, clearCart, updateCartItemQuantity, removeCartItem, loadingCart } = useContext(CartContext);
 
     const functionsInstance = getFunctions();
     const createOrderCallable = httpsCallable(functionsInstance, 'createOrder');
+    const createManualPaymentRecordCallable = httpsCallable(functionsInstance, 'createManualPaymentRecord');
 
-    const { eventId: initialEventId, selectedTickets: initialSelectedTickets } = location.state || {};
+
+    const { eventId: initialEventIdFromState } = location.state || {};
+
 
     const [eventDetails, setEventDetails] = useState(null);
-    const [order, setOrder] = useState(null); // 'order' state will still hold base info
+    const [order, setOrder] = useState(null);
     const [originalTotalAmount, setOriginalTotalAmount] = useState(0);
 
-    const [customerName, setCustomerName] = useState('');
-    const [customerEmail, setCustomerEmail] = useState('');
-    const [mpesaPhoneNumber, setMpesaPhoneNumber] = useState('');
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [orderId, setOrderId] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('stkPush');
+
+    const [customerInfo, setCustomerInfo] = useState({
+        fullName: authenticatedUser ? authenticatedUser.displayName : '',
+        email: authenticatedUser ? authenticatedUser.email : '',
+        mpesaPhoneNumber: '',
+    });
 
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState(null);
 
     const [currentStep, setCurrentStep] = useState(1);
-    const [loadingInitialData, setLoadingInitialData] = useState(true);
     const [initialDataError, setInitialDataError] = useState(null);
 
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [paymentStatusMessage, setPaymentStatusMessage] = useState('');
-    const [darajaCheckoutRequestID, setDarajaCheckoutRequestID] = useState(null);
+    const [checkoutRequestId, setCheckoutRequestId] = useState(null);
+    const [paymentStatus, setPaymentStatus] = useState('pending');
+    const [generatedTickets, setGeneratedTickets] = useState([]);
 
-    // Use a ref to store the latest order data for async calls
-    const latestOrderRef = useRef(order);
-    useEffect(() => {
-        latestOrderRef.current = order;
-    }, [order]);
+    const hasLoadedInitialData = useRef(false);
 
-
-    const FIREBASE_PROJECT_ID = "naksyetu-9c648";
-    const ORDERS_COLLECTION_PATH = `artifacts/${FIREBASE_PROJECT_ID}/public/data/orders`;
-    const PAYMENTS_TRANSACTIONS_COLLECTION_PATH = `artifacts/${FIREBASE_PROJECT_ID}/public/data/payments`;
 
     useEffect(() => {
         const loadCheckoutData = async () => {
-            // DEBUG: Log auth states
-            console.log("DEBUG: loadCheckoutData useEffect triggered. loadingAuth:", loadingAuth, "isAuthReady:", isAuthReady, "currentUser:", currentUser);
-
-            // CRITICAL FIX: Only proceed if auth is ready AND not currently loading auth
-            if (!isAuthReady || loadingAuth) {
-                console.log("DEBUG: loadCheckoutData returning early because auth not ready or loading.");
+            if (loadingAuth || loadingCart || hasLoadedInitialData.current) {
                 return;
             }
-            // Also, only load if order is not already set (prevent re-running after successful load)
-            if (order && eventDetails) {
-                console.log("DEBUG: loadCheckoutData returning early because order/eventDetails already set.");
-                setLoadingInitialData(false); // Ensure loading is off if already set
+            hasLoadedInitialData.current = true;
+
+            if (Object.keys(cartItems).length === 0) {
+                setInitialDataError("Your cart is empty. Please add tickets to proceed.");
+                showNotification("Your cart is empty. Redirecting to events.", 'error');
+                setTimeout(() => navigate('/events', { replace: true }), 1500);
                 return;
             }
 
+            const cartItemsArray = Object.values(cartItems);
+            const eventId = (cartItemsArray.length > 0 ? cartItemsArray[0].eventId : null) || initialEventIdFromState;
 
-            if (!initialEventId || !initialSelectedTickets || Object.keys(initialSelectedTickets).length === 0) {
-                setInitialDataError("No event or tickets selected for checkout. Redirecting...");
-                showNotification("No event or tickets selected. Please select items from an event page.", 'error');
-                setLoadingInitialData(false);
+            if (!eventId) {
+                setInitialDataError("No event ID found in cart or navigation state.");
+                showNotification("Could not determine event for checkout. Please try again.", 'error');
                 setTimeout(() => navigate('/events', { replace: true }), 3000);
                 return;
             }
 
-            setLoadingInitialData(true);
             setInitialDataError(null);
 
             try {
-                const fetchedEvent = await getEventById(initialEventId);
+                const fetchedEvent = await getEventById(eventId);
 
                 if (!fetchedEvent) {
                     setInitialDataError("Event not found. It might have been removed or is unavailable.");
                     showNotification("Event not found. Please try again.", 'error');
-                    setLoadingInitialData(false);
                     setTimeout(() => navigate('/events', { replace: true }), 3000);
                     return;
                 }
 
                 setEventDetails(fetchedEvent);
 
-                let constructedTickets = [];
                 let calculatedTotalPrice = 0;
-                for (const ticketTypeId in initialSelectedTickets) {
-                    const quantity = initialSelectedTickets[ticketTypeId];
-                    const ticketDetail = fetchedEvent.ticketDetails.find(td => td.id === ticketTypeId);
-
-                    if (ticketDetail && quantity > 0) {
-                        constructedTickets.push({
-                            ticketTypeId: ticketDetail.id,
-                            name: ticketDetail.name,
-                            price: ticketDetail.price,
-                            quantity: quantity
-                        });
-                        calculatedTotalPrice += quantity * ticketDetail.price;
-                    }
-                }
-
-                if (constructedTickets.length === 0) {
-                    setInitialDataError("No valid tickets selected for checkout.");
-                    showNotification("No valid tickets selected. Please re-select from the event page.", 'error');
-                    setLoadingInitialData(false);
-                    setTimeout(() => navigate('/events', { replace: true }), 3000);
-                    return;
-                }
+                const constructedTickets = Object.values(cartItems).map(item => {
+                    const itemPrice = parseFloat(item.price) || 0;
+                    calculatedTotalPrice += itemPrice * item.quantity;
+                    return {
+                        ticketTypeId: item.id,
+                        name: item.name,
+                        price: itemPrice,
+                        quantity: item.quantity,
+                    };
+                });
 
                 setOriginalTotalAmount(calculatedTotalPrice);
+                setTotalAmount(calculatedTotalPrice);
+
                 setOrder({
                     orderId: `order_${currentUser?.uid || 'guest'}_${Date.now()}`,
-                    userId: currentUser?.uid, // Use currentUser.uid (will be anonymous UID for guests)
-                    customerName: currentUser?.displayName || '',
-                    customerEmail: currentUser?.email || '',
+                    userId: currentUser?.uid || 'anonymous',
+                    customerName: authenticatedUser?.displayName || '',
+                    customerEmail: authenticatedUser?.email || '',
                     mpesaPhoneNumber: '',
                     eventId: fetchedEvent.id,
-                    eventDetails: { // Store essential event details, with fallbacks for undefined
+                    eventDetails: {
                         id: fetchedEvent.id,
                         eventName: fetchedEvent.eventName || 'Unknown Event',
                         bannerImageUrl: fetchedEvent.bannerImageUrl || '',
@@ -148,543 +149,590 @@ const CheckoutPage = () => {
                         mainLocation: fetchedEvent.mainLocation || 'Online/TBD',
                     },
                     tickets: constructedTickets,
+                    originalTotalAmount: calculatedTotalPrice,
                     totalAmount: calculatedTotalPrice,
                     couponApplied: null,
-                    orderStatus: 'pending_initiation',
+                    orderStatus: 'pending_creation',
+                    paymentStatus: 'pending_creation',
                     initiatedAt: null,
                     createdAt: Timestamp.now(),
                     updatedAt: Timestamp.now(),
+                    checkoutRequestID: null,
                 });
-                console.log("DEBUG: Initial order state set:", {
-                    orderId: `order_${currentUser?.uid || 'guest'}_${Date.now()}`,
-                    userId: currentUser?.uid,
-                    customerName: currentUser?.displayName || '',
-                    customerEmail: currentUser?.email || '',
-                    mpesaPhoneNumber: '',
-                    eventId: fetchedEvent.id,
-                    eventDetails: fetchedEvent.eventDetails,
-                    tickets: constructedTickets,
-                    totalAmount: calculatedTotalPrice,
-                    couponApplied: null,
-                    orderStatus: 'pending_initiation',
-                });
-
 
             } catch (err) {
                 console.error("Error loading checkout data:", err);
                 setInitialDataError(`Failed to load checkout details: ${err.message}`);
                 showNotification("Failed to load checkout details. Please try again.", 'error');
-            } finally {
-                setLoadingInitialData(false);
             }
         };
 
-        loadCheckoutData();
-    }, [initialEventId, initialSelectedTickets, loadingAuth, currentUser, navigate, showNotification, isAuthReady, order, eventDetails]); // Added order, eventDetails to dependencies
+        if (!loadingAuth && !loadingCart && !hasLoadedInitialData.current) {
+            loadCheckoutData();
+        }
+    }, [loadingAuth, loadingCart, cartItems, initialEventIdFromState, navigate, showNotification, currentUser, authenticatedUser]);
+
 
     useEffect(() => {
-        if (currentUser) {
-            if (!customerName || customerName === 'Guest User') {
-                setCustomerName(currentUser.displayName || 'Guest User');
-            }
-            if (!customerEmail) {
-                setCustomerEmail(currentUser.email || '');
-            }
-        } else {
-            setCustomerName('');
-            setCustomerEmail('');
+        let newCalculatedTotal = originalTotalAmount;
+        if (appliedCoupon && appliedCoupon.discount) {
+            newCalculatedTotal = originalTotalAmount * (1 - appliedCoupon.discount);
         }
-    }, [currentUser, customerName, customerEmail]); // Added customerName, customerEmail to dependencies
+        setTotalAmount(newCalculatedTotal);
 
-    useEffect(() => {
-        if (order) {
-            let currentTotal = order.tickets.reduce((sum, ticket) => sum + (ticket.price * ticket.quantity), 0);
-            setOriginalTotalAmount(currentTotal);
-
-            let newCalculatedTotal = currentTotal;
-            if (appliedCoupon && appliedCoupon.discount) {
-                newCalculatedTotal = currentTotal * (1 - appliedCoupon.discount);
-            }
-            
-            if (order.totalAmount !== newCalculatedTotal) { // Corrected from totalTotal
-                setOrder(prevOrder => ({ ...prevOrder, totalAmount: newCalculatedTotal }));
-                console.log("DEBUG: Order totalAmount updated:", newCalculatedTotal);
-            }
-        }
-    }, [order?.tickets, appliedCoupon, order?.totalAmount]); // Corrected from totalTotal
-
-    const totalAmount = order?.totalAmount || 0; // Corrected from totalTotal
-
-    const handleModifyQuantity = (ticketTypeId, change) => {
-        if (!order || isProcessingPayment) return;
         setOrder(prevOrder => {
-            const updatedTickets = prevOrder.tickets.map(ticket => {
-                if (ticket.ticketTypeId === ticketTypeId) {
-                    const newQuantity = ticket.quantity + change;
-                    return { ...ticket, quantity: Math.max(0, newQuantity) };
-                }
-                return ticket;
-            }).filter(ticket => ticket.quantity > 0);
+            const currentOrder = prevOrder || {
+                orderId: `order_${currentUser?.uid || 'guest'}_${Date.now()}`,
+                userId: currentUser?.uid || 'anonymous',
+                customerName: authenticatedUser?.displayName || '',
+                customerEmail: authenticatedUser?.email || '',
+                mpesaPhoneNumber: '',
+                eventId: eventDetails?.id,
+                eventDetails: eventDetails,
+                couponApplied: null,
+                orderStatus: 'pending_creation',
+                paymentStatus: 'pending_creation',
+                initiatedAt: null,
+                createdAt: Timestamp.now(),
+                updatedAt: Timestamp.now(),
+                checkoutRequestID: null,
+            };
 
-            const newOriginalTotal = updatedTickets.reduce((sum, ticket) => sum + (ticket.price * ticket.quantity), 0);
-            setOriginalTotalAmount(newOriginalTotal);
-
-            let newCalculatedTotal = newOriginalTotal;
-            if (appliedCoupon && appliedCoupon.discount) {
-                newCalculatedTotal = newOriginalTotal * (1 - appliedCoupon.discount);
-            }
-            return { ...prevOrder, tickets: updatedTickets };
+            return {
+                ...currentOrder,
+                originalTotalAmount: originalTotalAmount,
+                totalAmount: newCalculatedTotal,
+                tickets: Object.values(cartItems).map(item => ({
+                    ticketTypeId: item.id,
+                    name: item.name,
+                    price: parseFloat(item.price) || 0,
+                    quantity: item.quantity,
+                })),
+            };
         });
-    };
 
-    const handleRemoveTicket = (ticketTypeId) => {
-        if (!order || isProcessingPayment) return;
-        setOrder(prevOrder => {
-            const updatedTickets = prevOrder.tickets.filter(ticket => ticket.ticketTypeId !== ticketTypeId);
+    }, [cartItems, eventDetails, appliedCoupon, order, originalTotalAmount, setOrder, setOriginalTotalAmount, setTotalAmount, currentUser, authenticatedUser]);
 
-            const newOriginalTotal = updatedTickets.reduce((sum, ticket) => sum + (ticket.price * ticket.quantity), 0);
-            setOriginalTotalAmount(newOriginalTotal);
 
-            let newCalculatedTotal = newOriginalTotal;
-            if (appliedCoupon && appliedCoupon.discount) {
-                newCalculatedTotal = newOriginalTotal * (1 - appliedCoupon.discount);
-            }
-            return { ...prevOrder, tickets: updatedTickets };
-        });
-    };
-
-    const handlePhoneChange = useCallback((e) => {
-        let value = e.target.value;
-        value = value.replace(/[^0-9]/g, '');
-
-        if (value.startsWith('0') && value.length > 10) {
-            value = value.substring(0, 10);
-        } else if (value.startsWith('254') && value.length > 12) {
-            value = value.substring(0, 12);
-        } else if (!value.startsWith('0') && !value.startsWith('254') && value.length > 9) {
-            value = value.substring(0, 9);
-        }
-
-        if ((value.startsWith('07') || value.startsWith('01')) && value.length === 10) {
-            value = '254' + value.substring(1);
-        } else if ((value.startsWith('7') || value.startsWith('1')) && value.length === 9) {
-            value = '254' + value;
-        }
-
-        setMpesaPhoneNumber(value);
-        setOrder(prevOrder => ({ ...prevOrder, mpesaPhoneNumber: value }));
-    }, [setMpesaPhoneNumber, setOrder]);
-
-    const handleCustomerNameChange = (e) => {
-        setCustomerName(e.target.value);
-        setOrder(prevOrder => ({ ...prevOrder, customerName: e.target.value }));
-    };
-
-    const handleCustomerEmailChange = (e) => {
-        setCustomerEmail(e.target.value);
-        setOrder(prevOrder => ({ ...prevOrder, customerEmail: e.target.value }));
-    };
-
-    const handleApplyCoupon = () => {
-        if (!couponCode.trim()) {
-            showNotification('Please enter a coupon code.', 'warning');
-            setAppliedCoupon(null);
-            setOrder(prevOrder => ({ ...prevOrder, couponApplied: null }));
-            return;
-        }
-
-        if (couponCode.toUpperCase() === 'NAKSYETU10') {
-            setAppliedCoupon({ code: 'NAKSYETU10', discount: 0.10 });
-            showNotification('Coupon "NAKSYETU10" applied! You get 10% off.', 'success');
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                couponApplied: { code: 'NAKSYETU10', discount: 0.10 }
-            }));
+    const applyCoupon = useCallback(async (code) => {
+        if (code === 'NAKSYETU10') {
+            const discount = originalTotalAmount * 0.10;
+            setAppliedCoupon({ code: 'NAKSYETU10', discount: discount });
+            showNotification(`Coupon 'NAKSYETU10' applied! You get KES ${discount.toFixed(2)} off.`, 'success');
         } else {
             setAppliedCoupon(null);
             showNotification('Invalid or expired coupon code.', 'error');
-            setOrder(prevOrder => ({ ...prevOrder, couponApplied: null }));
         }
-    };
+    }, [originalTotalAmount, showNotification]);
 
-    // --- Step Navigation & Validation ---
-    const handleNextStep = useCallback(async () => {
-        // Validation for Step 1 (Order Confirmation & Payment)
-        if (currentStep === 1) {
-            if (order.tickets.length === 0) {
-                showNotification("Your cart is empty. Please add tickets to proceed.", 'error');
-                return;
-            }
-            if (!isAuthenticated) {
-                if (!customerName.trim()) {
-                    showNotification('Your name is required for the order.', 'error');
-                    return;
-                }
-                if (!customerEmail.trim() || !/\S+@\S+\.\S+/.test(customerEmail)) {
-                    showNotification('A valid email is required for ticket delivery.', 'error');
-                    return;
-                }
-            }
-            // Phone number validation is now done when moving from Step 1 to Step 2 (Payment)
-            // This is the only place we update order.mpesaPhoneNumber before payment
-            if (!mpesaPhoneNumber || !(mpesaPhoneNumber.startsWith('2547') || mpesaPhoneNumber.startsWith('2541')) || mpesaPhoneNumber.length !== 12) {
-                showNotification("Please enter a valid M-Pesa phone number (e.g., 2547XXXXXXXX or 2541XXXXXXXX).", 'error');
-                return;
-            }
-            
-            // This entire try/catch block for createOrderCallable is now moved to initiateSTKPushPayment
-            // It will be called when the user clicks the "Initiate STK Push" button.
-            // No action needed here other than proceeding to the next step.
-        }
 
-        // Validation for proceeding from any step if totalAmount is 0
-        if (totalAmount <= 0 && currentStep < 2 && !(appliedCoupon?.discount === 1)) { // currentStep < 2 for 2 steps
-            showNotification("Total amount is zero. Cannot proceed with payment unless a 100% coupon is applied.", 'error');
-            return;
-        }
+    const handleModifyQuantity = useCallback((item, change) => {
+        updateCartItemQuantity(item, item.quantity + change);
+    }, [updateCartItemQuantity]);
 
-        setCurrentStep(prev => prev + 1);
-    }, [currentStep, totalAmount, order, isAuthenticated, customerName, customerEmail, showNotification, appliedCoupon, mpesaPhoneNumber, createOrderCallable, originalTotalAmount, eventDetails, currentUser]);
+    const handleRemoveTicket = useCallback((ticketId) => {
+        removeCartItem(ticketId);
+    }, [removeCartItem]);
 
-    const handlePrevStep = useCallback(() => {
-        setCurrentStep(prev => prev - 1);
-        if (currentStep === 2) { // If going back from Confirmation to Order & Payment
-            setIsProcessingPayment(false);
-            setPaymentStatusMessage('');
-        }
-    }, [currentStep]);
 
-    const initiateSTKPushPayment = async () => {
-        // This function is now called from the button on Step 1.
-        // It needs to first create the order document via Cloud Function, then initiate STK Push.
-
-        // Re-validate phone number just before initiating payment to be safe
-        if (!mpesaPhoneNumber || !(mpesaPhoneNumber.startsWith('2547') || mpesaPhoneNumber.startsWith('2541')) || mpesaPhoneNumber.length !== 12) {
-            showNotification("Please enter a valid M-Pesa phone number (e.g., 2547XXXXXXXX or 2541XXXXXXXX).", 'error');
+    const handleInitiatePayment = useCallback(async () => {
+        // CRITICAL FIX: Check if callable functions are initialized
+        if (!createOrderCallable || !createManualPaymentRecordCallable) {
+            showNotification("Payment services are not ready. Please wait or refresh.", "error");
             setIsProcessingPayment(false);
             return;
         }
-        if (!isAuthenticated && (!customerName || !customerEmail)) {
-            showNotification("Please provide your name and email for the order.", 'error');
-            setIsProcessingPayment(false);
-            return;
-        }
-        
-        if (totalAmount <= 0 && appliedCoupon?.discount !== 1) {
-            showNotification("Cannot process payment for zero amount unless a 100% coupon is applied.", 'error');
-            setIsProcessingPayment(false);
+
+        if (isProcessingPayment || (orderId && checkoutRequestId && (paymentStatus === 'processing' || paymentStatus === 'stk_push_sent'))) {
+            console.warn("Frontend: Payment already processing or initiated. Ignoring duplicate request.");
+            showNotification("Payment is already being processed. Please check your phone.", "info");
             return;
         }
 
         setIsProcessingPayment(true);
-        setPaymentStatusMessage('Initiating M-Pesa STK Push...');
-        setInitialDataError(null);
+        setPaymentStatusMessage('Initiating payment...');
+        setPaymentStatus('processing');
+        setCurrentStep(2);
 
-        let currentOrderId = order.orderId; // Initialize with current orderId
 
-        try {
-            // CRITICAL FIX: Call createOrder callable function for ALL users here
-            // This ensures the order document is created/updated securely by the CF
-            setPaymentStatusMessage('Finalizing order details...'); // Update modal message
-
-            const orderDataForCloudFunction = {
-                orderId: order.orderId, // Use existing generated orderId
-                customerName: customerName, // Use from state
-                customerEmail: customerEmail, // Use from state
-                mpesaPhoneNumber: mpesaPhoneNumber, // Use the collected phone number
-                eventId: order.eventId, // Use from order state
-                eventDetails: order.eventDetails, // Use from order state
-                tickets: order.tickets, // Use from order state
-                originalTotalAmount: originalTotalAmount, // Use from state
-                totalAmount: totalAmount, // Use from state
-                couponApplied: appliedCoupon, // Use from state
-                userId: currentUser?.uid, // Pass the actual UID from AuthContext (anonymous or authenticated)
-                checkoutRequestIdFromMpesa: `ws_CO_${currentUser?.uid || 'guest'}_${Date.now()}` // Temporary ID
-            };
-            console.log("Calling createOrder with:", orderDataForCloudFunction);
-
-            const createOrderResult = await createOrderCallable(orderDataForCloudFunction);
-            console.log("createOrder result:", createOrderResult.data);
-
-            if (createOrderResult.data.success) {
-                // Update local order state with confirmed IDs from Cloud Function
-                // This is crucial for the subsequent STK Push call
-                const updatedOrderFromCF = {
-                    ...order, // Start with existing order data
-                    checkoutRequestID: createOrderResult.data.checkoutRequestId,
-                    orderStatus: 'pending_initiation',
-                    mpesaPhoneNumber: mpesaPhoneNumber, // Ensure phone number is on order state
-                    userId: currentUser?.uid, // Ensure userId is correctly set from CF's perspective
-                    customerName: customerName, // Ensure latest customerName
-                    customerEmail: customerEmail, // Ensure latest customerEmail
-                };
-                setOrder(updatedOrderFromCF); // Update state for polling and subsequent calls
-                setDarajaCheckoutRequestID(createOrderResult.data.checkoutRequestId);
-                currentOrderId = updatedOrderFromCF.orderId; // Update currentOrderId for this scope
-                showNotification('Order prepared successfully!', 'success');
-            } else {
-                throw new Error(createOrderResult.data.message || 'Failed to prepare order via Cloud Function.');
-            }
-        } catch (error) {
-            console.error("Error creating order via Cloud Function:", error);
-            showNotification(`Error preparing order: ${error.message}`, 'error');
-            setInitialDataError(`Error preparing order: ${error.message}`);
-            setIsProcessingPayment(false); // Turn off loading
-            return; // Stop progression if order creation fails
+        if (!eventDetails || Object.keys(cartItems).length === 0) {
+            showNotification('Missing event or cart details. Please refresh and try again.', 'error');
+            setIsProcessingPayment(false);
+            setPaymentStatus('pending');
+            return;
         }
 
-        // Now, proceed with initiating STK Push
-        setPaymentStatusMessage('Initiating M-Pesa STK Push...'); // Update message for next stage
+        if (totalAmount <= 0 && (!appliedCoupon || appliedCoupon.discount !== 1)) {
+            showNotification("Cannot process payment for zero amount unless a 100% coupon is applied.", 'error');
+            setIsProcessingPayment(false);
+            setPaymentStatus('failed');
+            return;
+        }
+
+        let currentOrderId = orderId;
+        if (!currentOrderId) {
+            currentOrderId = `order_${currentUser?.uid || uuidv4()}_${Date.now()}`;
+            setOrderId(currentOrderId);
+        }
+
+        console.log(`Frontend: Initiating STK Push for Order ID: ${currentOrderId}`);
 
         try {
-            // CRITICAL FIX: Use the most recent order data (updatedOrderFromCF) for the STK push payload
-            // This ensures all fields are correctly populated.
-            const orderDataForStkPush = {
-                phoneNumber: mpesaPhoneNumber, // Use directly from state
-                amount: totalAmount, // Use directly from state
-                event_id: eventDetails.id, // Use directly from state
-                user_id: currentUser?.uid, // Use directly from state
-                selected_tickets: order.tickets, // Use from order state (should be consistent)
-                coupon_code: appliedCoupon?.code || null, // Use from state
-                transaction_description: `Naks Yetu Tickets for ${eventDetails?.eventName}`, // Use directly from state
-                checkout_request_id: darajaCheckoutRequestID, // Use directly from state
-            };
-            console.log("Calling initiateStkPush with:", orderDataForStkPush);
+            setPaymentStatusMessage('Finalizing order details...');
+            const createOrderResult = await createOrderCallable({
+                orderId: currentOrderId,
+                userId: currentUser?.uid || 'anonymous',
+                customerName: customerInfo.fullName,
+                customerEmail: customerInfo.email,
+                mpesaPhoneNumber: customerInfo.mpesaPhoneNumber,
+                eventId: eventDetails.id,
+                eventDetails: {
+                    id: eventDetails.id,
+                    eventName: eventDetails.eventName,
+                    bannerImageUrl: eventDetails.bannerImageUrl || '',
+                    startDate: eventDetails.startDate || '',
+                    startTime: eventDetails.startTime || '',
+                    mainLocation: eventDetails.mainLocation || 'Online/TBD',
+                },
+                tickets: Object.values(cartItems).map(item => ({
+                    ticketTypeId: item.id,
+                    name: item.name,
+                    price: parseFloat(item.price) || 0,
+                    quantity: item.quantity,
+                })),
+                couponApplied: appliedCoupon,
+            });
+
+            if (!createOrderResult.data.success) {
+                throw new Error(createOrderResult.data.message || 'Failed to prepare order via Cloud Function.');
+            }
+            setOriginalTotalAmount(createOrderResult.data.originalTotalAmount);
+            setTotalAmount(createOrderResult.data.totalAmount);
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                originalTotalAmount: createOrderResult.data.originalTotalAmount,
+                totalAmount: createOrderResult.data.totalAmount,
+                orderStatus: 'pending_payment_initiation',
+                paymentStatus: 'pending_payment_initiation',
+                checkoutRequestID: createOrderResult.data.checkoutRequestId,
+            }));
+            setCheckoutRequestId(createOrderResult.data.checkoutRequestId);
+            console.log('Frontend: Order created/updated by CF:', createOrderResult.data.orderId, 'Backend verified total:', createOrderResult.data.totalAmount, 'Backend generated checkoutRequestId:', createOrderResult.data.checkoutRequestId);
+            showNotification('Order prepared successfully!', 'success');
 
 
-            const response = await fetch(`${BASE_URL}`, {
+            setPaymentStatusMessage('Sending STK Push to your phone...');
+            const response = await fetch(BASE_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderDataForStkPush), // Use the explicitly constructed requestBody
+                body: JSON.stringify({
+                    phoneNumber: customerInfo.mpesaPhoneNumber,
+                    amount: totalAmount,
+                    event_id: eventDetails.id,
+                    user_id: currentUser?.uid || 'anonymous',
+                    selected_tickets: Object.values(cartItems).map(item => ({ id: item.id, quantity: item.quantity })),
+                    transaction_description: `Tickets for ${eventDetails.eventName}`,
+                    orderId: currentOrderId,
+                    checkout_request_id: order?.checkoutRequestID || createOrderResult.data.checkoutRequestId,
+                }),
             });
 
             const data = await response.json();
-            console.log("STK Push Cloud Function Response:", data);
+            console.log("Frontend: M-Pesa STK Push Response from CF:", data);
 
             if (response.ok && data.success) {
-                setPaymentStatusMessage(data.CustomerMessage || 'STK Push sent. Check your phone!');
+                setPaymentStatusMessage(data.CustomerMessage || 'STK Push initiated successfully. Please check your phone.');
                 showNotification('STK Push sent. Check your phone!', 'success');
-                setDarajaCheckoutRequestID(data.CheckoutRequestID);
-
-                await updateDoc(doc(db, ORDERS_COLLECTION_PATH, currentOrderId), {
-                    checkoutRequestID: data.CheckoutRequestID,
-                    orderStatus: 'stk_push_sent',
-                    updatedAt: serverTimestamp(),
-                });
-                pollPaymentStatus(currentOrderId, data.CheckoutRequestID);
+                console.log(`Frontend: Switched listener to CF-generated CheckoutRequestID: ${data.CheckoutRequestID}`);
 
             } else {
-                setPaymentStatusMessage(data.message || 'Payment initiation failed.');
-                setInitialDataError(data.developerMessage || 'Unknown error from M-Pesa.');
+                setPaymentStatus('failed');
+                setPaymentStatusMessage(data.message || 'STK Push initiation failed.');
                 showNotification(`Payment failed: ${data.message}`, 'error');
-                await updateDoc(doc(db, ORDERS_COLLECTION_PATH, currentOrderId), {
+                await updateDoc(doc(db, ...ORDERS_COLLECTION_SEGMENTS, currentOrderId), {
                     orderStatus: 'stk_push_failed',
-                    ResultDesc: data.ResultDesc,
+                    paymentStatus: 'failed',
+                    ResultDesc: data.message || 'STK Push failed.',
                     updatedAt: serverTimestamp(),
                 });
                 setIsProcessingPayment(false);
             }
-        } catch (err) {
-            console.error("Error during checkout process:", err);
-            setInitialDataError(`Checkout error: ${err.message}`);
-            setPaymentStatusMessage('An error occurred during checkout.');
-            showNotification(`Checkout error: ${err.message}`, 'error');
+        } catch (error) {
+            console.error('Frontend: Payment initiation error:', error);
+            setPaymentStatus('failed');
+            setPaymentStatusMessage('An error occurred during payment initiation. Please try again.');
+            showNotification(error.message || 'An unexpected error occurred.', 'error');
             if (currentOrderId) {
                 try {
-                    await updateDoc(doc(db, ORDERS_COLLECTION_PATH, currentOrderId), {
+                    await updateDoc(doc(db, ...ORDERS_COLLECTION_SEGMENTS, currentOrderId), {
                         orderStatus: 'internal_error',
-                        ResultDesc: err.message,
+                        paymentStatus: 'failed',
+                        ResultDesc: error.message || 'Internal error.',
                         updatedAt: serverTimestamp(),
                     });
                 } catch (updateErr) {
-                    console.error("Failed to update order status to internal_error:", updateErr);
+                    console.error("Frontend: Failed to update order status to internal_error:", updateErr);
                 }
             }
             setIsProcessingPayment(false);
         }
-    };
+    }, [
+        customerInfo, eventDetails, cartItems, originalTotalAmount, totalAmount, appliedCoupon,
+        currentUser, orderId, showNotification, createOrderCallable,
+        db, isProcessingPayment, paymentStatus, checkoutRequestId, order, ORDERS_COLLECTION_SEGMENTS
+    ]);
 
-    const pollPaymentStatus = useCallback((orderId, checkoutRequestId) => {
-        const paymentDocRef = doc(collection(db, PAYMENTS_TRANSACTIONS_COLLECTION_PATH), checkoutRequestId);
 
-        const unsubscribe = onSnapshot(paymentDocRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                console.log("Polling update for CheckoutRequestID " + checkoutRequestId + ":", data);
-                
-                if (data.status === 'Completed') {
-                    setPaymentStatusMessage('Payment successful! Generating your tickets...');
-                    showNotification('Payment successful! Your tickets will be emailed shortly.', 'success', 8000);
-                    setIsProcessingPayment(false);
-                    updateDoc(doc(db, ORDERS_COLLECTION_PATH, orderId), {
-                        orderStatus: 'paid',
-                        paymentStatus: 'completed',
-                        orderEndTime: serverTimestamp(),
-                        mpesaReceipt: data.MpesaReceiptNumber,
-                        updatedAt: serverTimestamp(),
-                    });
-                    setCurrentStep(2); // Move to final confirmation step (now step 2)
-                    unsubscribe();
-                } else if (data.status === 'Failed' || data.status === 'STK_Push_Failed' || data.status === 'Cancelled') {
-                    setPaymentStatusMessage('Payment failed. ' + (data.ResultDesc || 'Please try again.'));
-                    showNotification('Payment failed or cancelled. Please try again.', 'error', 8000);
-                    setIsProcessingPayment(false);
-                    updateDoc(doc(db, ORDERS_COLLECTION_PATH, orderId), {
-                        orderStatus: 'payment_failed',
+    const handleManualPaymentConfirmation = useCallback(async () => {
+        // CRITICAL FIX: Check if callable functions are initialized
+        if (!createOrderCallable || !createManualPaymentRecordCallable) {
+            showNotification("Payment services are not ready. Please wait or refresh.", "error");
+            setIsProcessingPayment(false);
+            return;
+        }
+
+        if (isProcessingPayment || (orderId && checkoutRequestId && (paymentStatus === 'processing' || paymentStatus === 'pending_manual'))) {
+            console.warn("Frontend: Manual payment already processing or initiated. Ignoring duplicate request.");
+            showNotification("Manual payment is already being processed. Please check your order status.", "info");
+            return;
+        }
+
+        setIsProcessingPayment(true);
+        setPaymentStatusMessage('Confirming manual payment...');
+        setPaymentStatus('processing');
+        setCurrentStep(2);
+
+
+        if (!eventDetails || Object.keys(cartItems).length === 0) {
+            showNotification('Missing event or cart details. Please refresh and try again.', 'error');
+            setIsProcessingPayment(false);
+            setPaymentStatus('pending');
+            return;
+        }
+
+        if (totalAmount <= 0 && (!appliedCoupon || appliedCoupon.discount !== 1)) {
+            showNotification("Cannot process payment for zero amount unless a 100% coupon is applied.", 'error');
+            setIsProcessingPayment(false);
+            setPaymentStatus('failed');
+            return;
+        }
+
+        let currentOrderId = orderId;
+        if (!currentOrderId) {
+            currentOrderId = `order_${currentUser?.uid || uuidv4()}_${Date.now()}`;
+            setOrderId(currentOrderId);
+        }
+
+        try {
+            const createOrderResult = await createOrderCallable({
+                orderId: currentOrderId,
+                userId: currentUser?.uid || 'anonymous',
+                customerName: customerInfo.fullName,
+                customerEmail: customerInfo.email,
+                mpesaPhoneNumber: customerInfo.mpesaPhoneNumber,
+                eventId: eventDetails.id,
+                eventDetails: {
+                    id: eventDetails.id,
+                    eventName: eventDetails.eventName,
+                    bannerImageUrl: eventDetails.bannerImageUrl || '',
+                    startDate: eventDetails.startDate || '',
+                    startTime: eventDetails.startTime || '',
+                    mainLocation: eventDetails.mainLocation || 'Online/TBD',
+                },
+                tickets: Object.values(cartItems).map(item => ({
+                    ticketTypeId: item.id,
+                    name: item.name,
+                    price: parseFloat(item.price) || 0,
+                    quantity: item.quantity,
+                })),
+                couponApplied: appliedCoupon,
+            });
+
+            if (!createOrderResult.data.success) {
+                throw new Error(createOrderResult.data.message || 'Failed to prepare order for manual payment.');
+            }
+            setOriginalTotalAmount(createOrderResult.data.originalTotalAmount);
+            setTotalAmount(createOrderResult.data.totalAmount);
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                originalTotalAmount: createOrderResult.data.originalTotalAmount,
+                totalAmount: createOrderResult.data.totalAmount,
+                orderStatus: 'pending_payment_initiation',
+                paymentStatus: 'pending_payment_initiation',
+                checkoutRequestID: createOrderResult.data.checkoutRequestId,
+            }));
+            setCheckoutRequestId(createOrderResult.data.checkoutRequestId);
+            console.log('Frontend: Order created/updated for manual payment by CF:', createOrderResult.data.orderId, 'Backend verified total:', createOrderResult.data.totalAmount);
+            showNotification('Order prepared successfully!', 'success');
+
+
+            setPaymentStatusMessage('Creating manual payment record...');
+            const createManualPaymentResult = await createManualPaymentRecordCallable({
+                orderId: currentOrderId,
+                userId: currentUser?.uid || 'anonymous',
+                customerName: customerInfo.fullName,
+                customerEmail: customerInfo.email,
+                mpesaPhoneNumber: customerInfo.mpesaPhoneNumber,
+                eventId: eventDetails.id,
+                totalAmount: totalAmount,
+            });
+
+            if (!createManualPaymentResult.data.success) {
+                throw new Error(createManualPaymentResult.data.message || 'Failed to create manual payment record.');
+            }
+            console.log('Frontend: Manual payment record created by CF:', createManualPaymentResult.data.checkoutRequestId);
+            showNotification('Manual payment record created. Please complete payment via M-Pesa Paybill.', 'info');
+
+            setCheckoutRequestId(createManualPaymentResult.data.checkoutRequestId);
+            console.log(`Frontend: Switched listener to CF-generated Manual CheckoutRequestID: ${createManualPaymentResult.data.checkoutRequestId}`);
+
+        } catch (error) {
+            console.error('Frontend: Manual payment initiation error:', error);
+            setPaymentStatus('failed');
+            setPaymentStatusMessage('An error occurred during manual payment setup. Please try again.');
+            showNotification(error.message || 'An unexpected error occurred for manual payment.', 'error');
+            if (currentOrderId) {
+                try {
+                    await updateDoc(doc(db, ...ORDERS_COLLECTION_SEGMENTS, currentOrderId), {
+                        orderStatus: 'internal_error',
                         paymentStatus: 'failed',
-                        ResultDesc: data.ResultDesc,
+                        ResultDesc: error.message || 'Internal error.',
                         updatedAt: serverTimestamp(),
                     });
-                    setCurrentStep(2); // Move to final confirmation step (now step 2)
-                    unsubscribe();
-                } else if (data.status === 'Pending' || data.status === 'STK_Push_Sent') {
-                    setPaymentStatusMessage('Waiting on your payment. Please approve the STK Push on your phone...');
-                    setIsProcessingPayment(true);
+                } catch (updateErr) {
+                    console.error("Frontend: Failed to update order status to internal_error:", updateErr);
                 }
             }
-        }, (err) => {
-            console.error("Error polling payment status:", err);
-            showNotification("Error checking payment status. Please check your M-Pesa messages.", 'error');
-            unsubscribe();
             setIsProcessingPayment(false);
-            setCurrentStep(2); // Move to final confirmation step on error
+        }
+    }, [
+        customerInfo, eventDetails, cartItems, originalTotalAmount, totalAmount, appliedCoupon,
+        currentUser, orderId, showNotification, createOrderCallable, createManualPaymentRecordCallable,
+        db, isProcessingPayment, paymentStatus, checkoutRequestId, order, ORDERS_COLLECTION_SEGMENTS
+    ]);
+
+
+    const pollPaymentStatus = useCallback((currentOrderId, currentCheckoutRequestId) => {
+        if (!currentOrderId || !currentCheckoutRequestId) {
+            console.warn("pollPaymentStatus called with invalid IDs. Skipping listener setup.");
+            return () => {};
+        }
+
+        console.log(`Frontend: Setting up Firestore listeners for Order: ${currentOrderId} and Payment: ${currentCheckoutRequestId}`);
+
+        const orderDocRef = doc(db, ...ORDERS_COLLECTION_SEGMENTS, currentOrderId);
+        const paymentDocRef = doc(db, ...PAYMENTS_COLLECTIONS_SEGMENTS, currentCheckoutRequestId);
+
+
+        const unsubscribeOrder = onSnapshot(orderDocRef, (orderDocSnap) => {
+            if (orderDocSnap.exists()) {
+                const data = orderDocSnap.data();
+                console.log('Frontend: Polling Order Update:', data);
+                setPaymentStatus(data.paymentStatus || 'pending');
+                setPaymentStatusMessage(data.ResultDesc || data.orderStatus || 'Awaiting payment confirmation...');
+                setGeneratedTickets(data.generatedTicketDetails || []);
+
+                if (data.paymentStatus === 'completed') {
+                    setIsProcessingPayment(false);
+                } else if (data.paymentStatus === 'failed' || data.paymentStatus === 'payment_failed' || data.paymentStatus === 'stk_push_failed' || data.paymentStatus === 'internal_error') {
+                    setIsProcessingPayment(false);
+                }
+            }
+        }, (error) => {
+            console.error('Frontend: Error listening to order document:', error);
+            showNotification('Failed to get real-time order updates.', 'error');
+            setIsProcessingPayment(false);
+        });
+
+        const unsubscribePayment = onSnapshot(paymentDocRef, (paymentDocSnap) => {
+            if (paymentDocSnap.exists()) {
+                const data = paymentDocSnap.data();
+                console.log('Frontend: Polling Payment Transaction Update:', data);
+                if (data.status && data.status !== 'pending_initiation' && data.status !== 'STK_Push_Sent') {
+                    setPaymentStatus(data.status.toLowerCase());
+                    setPaymentStatusMessage(data.ResultDesc || data.status);
+                }
+            }
+        }, (error) => {
+            console.error('Frontend: Error listening to payment document:', error);
+            showNotification('Failed to get real-time payment updates for transaction.', 'error');
         });
 
         const pollingTimeout = setTimeout(() => {
-            if (unsubscribe) {
-                unsubscribe();
-                if (isProcessingPayment) { // Only show timeout if payment is still considered processing
-                    showNotification("Payment confirmation timed out. Please check your M-Pesa messages or contact support.", 'warning');
-                    setPaymentStatusMessage('Payment timed out. Please check your phone or try again.');
-                    updateDoc(doc(db, ORDERS_COLLECTION_PATH, orderId), {
-                        orderStatus: 'payment_timeout',
-                        updatedAt: serverTimestamp(),
-                    });
-                    setIsProcessingPayment(false);
-                    setCurrentStep(2); // Move to final confirmation step on timeout
-                }
+            if (isProcessingPayment) {
+                showNotification("Payment confirmation timed out. Please check your M-Pesa messages or contact support.", 'warning');
+                setPaymentStatusMessage('Payment timed out. Please check your phone or try again.');
+                updateDoc(doc(db, ...ORDERS_COLLECTION_SEGMENTS, currentOrderId), {
+                    orderStatus: 'payment_timeout',
+                    paymentStatus: 'failed',
+                    updatedAt: serverTimestamp(),
+                }).catch(err => console.error("Frontend: Failed to update order status to payment_timeout:", err));
+                setIsProcessingPayment(false);
             }
-        }, 5 * 60 * 1000); // 5 minutes timeout
+            unsubscribeOrder();
+            unsubscribePayment();
+        }, 5 * 60 * 1000);
 
         return () => {
+            console.log(`Frontend: Unsubscribing from Firestore listeners for Order: ${currentOrderId} and Payment: ${currentCheckoutRequestId}`);
             clearTimeout(pollingTimeout);
-            if (unsubscribe) unsubscribe();
+            unsubscribeOrder();
+            unsubscribePayment();
         };
-    }, [showNotification, isProcessingPayment]);
+    }, [showNotification, clearCart, isProcessingPayment, ORDERS_COLLECTION_SEGMENTS, PAYMENTS_COLLECTIONS_SEGMENTS, db]);
 
 
-    if (loadingInitialData || !order || !eventDetails) {
+    useEffect(() => {
+        let cleanupFn = () => {};
+        if (currentStep === 2 && orderId && checkoutRequestId) {
+            cleanupFn = pollPaymentStatus(orderId, checkoutRequestId);
+        }
+        return cleanupFn;
+    }, [currentStep, orderId, checkoutRequestId, pollPaymentStatus]);
+
+
+    const handleTryAgain = useCallback(() => {
+        setCurrentStep(1);
+        setPaymentStatus('pending');
+        setPaymentStatusMessage('Ready to try again.');
+        setIsProcessingPayment(false);
+        setOrderId(null);
+        setCheckoutRequestId(null);
+        setGeneratedTickets([]);
+    }, []);
+
+    useEffect(() => {
+        if (!loadingAuth && !loadingCart && !hasLoadedInitialData.current && Object.keys(cartItems).length === 0 && paymentStatus !== 'completed' && paymentStatus !== 'processing') {
+            if (hasCheckedCartInitially.current) {
+                showNotification('Your cart is empty. Redirecting to events.', 'info');
+                navigate('/events', { replace: true });
+            } else {
+                hasLoadedInitialData.current = true;
+            }
+        }
+    }, [cartItems, loadingAuth, loadingCart, navigate, showNotification, paymentStatus]);
+
+
+    if (loadingAuth || loadingCart || (!hasLoadedInitialData.current && (Object.keys(cartItems).length === 0 && !initialDataError))) {
         return (
             <div className={styles.checkoutContainer}>
                 <LoadingSkeleton count={3} />
                 <p className={styles.loadingText}>Loading checkout details...</p>
-                {initialDataError && <p className={styles.errorMessage}>{initialDataError}</p>}
             </div>
         );
     }
 
-    const PAYBILL_NUMBER = "4168319";
-    const ACCOUNT_REFERENCE_DISPLAY = `NAKS_${(customerName.replace(/\s+/g, '') || currentUser?.uid?.substring(0, 5) || 'Guest').substring(0, 5).toUpperCase()}_${eventDetails.eventName.replace(/\s+/g, '').substring(0, 5).toUpperCase()}`;
+    if (initialDataError) {
+        return (
+            <div className={styles.checkoutContainer}>
+                <h1 className={styles.pageTitle}>Checkout Error</h1>
+                <div className={`${styles.sectionCard} max-w-xl mx-auto p-8 text-center`}>
+                    <p className="text-red-500 text-lg mb-4">{initialDataError}</p>
+                    <button onClick={() => { setInitialDataError(null); navigate('/events'); }} className={commonFormStyles.secondaryButton}>
+                        Go to Events
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
-    const isPayButtonDisabled = isProcessingPayment || totalAmount <= 0 || !mpesaPhoneNumber || !(mpesaPhoneNumber.startsWith('2547') || mpesaPhoneNumber.startsWith('2541')) || mpesaPhoneNumber.length !== 12;
+    if (!order || !eventDetails) {
+        return (
+            <div className={styles.checkoutContainer}>
+                <h1 className={styles.pageTitle}>Checkout Unavailable</h1>
+                <div className={`${styles.sectionCard} max-w-xl mx-auto p-8 text-center`}>
+                    <p className="text-gray-700 text-lg mb-4">No order details found. Please ensure you have selected tickets.</p>
+                    <button onClick={() => navigate('/events')} className="px-8 py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-md shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                        Go to Events
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const isPayButtonDisabled = isProcessingPayment || Number(totalAmount) <= 0;
 
     const progressSteps = [
-        { id: 1, name: 'Order & Payment', icon: ShoppingCartIcon }, // Combined step 1 and 2
-        { id: 2, name: 'Confirm', icon: CheckCircleIcon },          // Now step 2
+        { id: 1, name: 'Order & Payment', icon: ShoppingCartIcon },
+        { id: 2, name: 'Confirm', icon: CheckCircleIcon },
     ];
 
     return (
-        <div className={styles.checkoutContainer}>
+        <div className={`${styles.checkoutContainer} dark-mode-class-if-any`}>
             <h1 className={styles.pageTitle}>Secure Checkout</h1>
 
             {/* Progress Indicator */}
             <div className={styles.progressIndicator}>
-                {progressSteps.map(step => (
-                    <div key={step.id} className={`${styles.progressStep} ${currentStep >= step.id ? styles.activeStep : ''}`}>
-                        <step.icon className={styles.stepIcon} />
-                        <span className={styles.stepName}>{step.name}</span>
+                <div className={`${styles.progressStep} ${currentStep >= 1 ? styles.activeStep : ''}`}>
+                    <div className={styles.stepIconContainer}>
+                        <ShoppingCartIcon className={styles.stepIcon} />
                     </div>
-                ))}
+                    <span className={styles.stepName}>Order & Payment</span>
+                </div>
                 <div className={styles.progressBar}>
-                    <div className={styles.progressBarFill} style={{ width: `${(currentStep / (progressSteps.length - 1)) * 100}%` }}></div> {/* Adjusted progress bar fill */}
+                    <div className={styles.progressBarFill} style={{ width: `${(currentStep - 1) / (progressSteps.length - 1) * 100}%` }}></div>
+                </div>
+                <div className={`${styles.progressStep} ${currentStep >= 2 ? styles.activeStep : ''}`}>
+                    <div className={styles.stepIconContainer}>
+                        <CheckCircleIcon className={styles.stepIcon} />
+                    </div>
+                    <span className={styles.stepName}>Confirmation</span>
                 </div>
             </div>
 
-            {/* Main Content Area based on Step */}
             <div className={styles.checkoutContent}>
-                {/* Step 1: Order Confirmation & Payment */}
                 {currentStep === 1 && (
-                    <>
-                        <OrderAndCouponSummary
-                            eventDetails={eventDetails}
-                            order={order}
-                            originalTotalAmount={originalTotalAmount}
-                            isProcessingPayment={isProcessingPayment}
-                            isAuthenticated={isAuthenticated}
-                            customerName={customerName}
-                            handleCustomerNameChange={handleCustomerNameChange}
-                            customerEmail={customerEmail}
-                            handleCustomerEmailChange={handleCustomerEmailChange}
-                            handleModifyQuantity={handleModifyQuantity}
-                            handleRemoveTicket={handleRemoveTicket}
-                            couponCode={couponCode}
-                            setCouponCode={setCouponCode}
-                            appliedCoupon={appliedCoupon}
-                            handleApplyCoupon={handleApplyCoupon}
-                            totalAmount={totalAmount}
-                            // Pass phone number state and handler to OrderAndCouponSummary
-                            mpesaPhoneNumber={mpesaPhoneNumber}
-                            handlePhoneChange={handlePhoneChange}
-                        />
-                        {/* Payment Details (STK Push button) - Now integrated here */}
-                        <div className={styles.paymentDetailsSection}> {/* New section for payment details */}
-                            <h3 className={styles.sectionSubHeader}>Payment Details</h3>
-                            <p className={styles.paymentIntroText}>
-                                Click "Initiate STK Push" to receive a payment prompt on your M-Pesa registered phone number.
-                            </p>
-                            <button
-                                onClick={initiateSTKPushPayment} // This button now triggers the whole process
-                                className={commonFormStyles.primaryButton}
-                                disabled={isPayButtonDisabled}
-                            >
-                                {isProcessingPayment ? 'Processing...' : `Initiate STK Push for KES ${totalAmount.toFixed(2)}`}
-                            </button>
-                        </div>
-                        <div className={styles.navigationButtons}>
-                            <button onClick={() => navigate(`/events/${eventDetails.id}`)} className={commonFormStyles.secondaryButton}>
-                                Back to Event
-                            </button>
-                            {/* Removed "Next: Payment" button, as initiateSTKPushPayment handles progression */}
-                        </div>
-                    </>
+                    <CheckoutStepOne
+                        cartItems={cartItems}
+                        eventDetails={eventDetails}
+                        customerInfo={customerInfo}
+                        setCustomerInfo={setCustomerInfo}
+                        couponCode={couponCode}
+                        setCouponCode={setCouponCode}
+                        applyCoupon={applyCoupon}
+                        appliedCoupon={appliedCoupon}
+                        totalAmount={totalAmount}
+                        originalTotalAmount={originalTotalAmount}
+                        paymentMethod={paymentMethod}
+                        setPaymentMethod={setPaymentMethod}
+                        handleInitiatePayment={handleInitiatePayment}
+                        handleManualPaymentConfirmation={handleManualPaymentConfirmation}
+                        isProcessingPayment={isProcessingPayment}
+                        authenticatedUser={authenticatedUser}
+                        paybillNumber={NAKSYETU_PAYBILL_NUMBER}
+                        orderId={orderId}
+                        handleModifyQuantity={handleModifyQuantity}
+                        handleRemoveTicket={handleRemoveTicket}
+                    />
                 )}
 
-                {/* Step 2: Confirmation */}
-                {currentStep === 2 && ( // Now Step 2
+                {currentStep === 2 && (
                     <Confirmation
+                        paymentStatus={paymentStatus}
                         paymentStatusMessage={paymentStatusMessage}
-                        customerEmail={customerEmail}
-                        isProcessingPayment={isProcessingPayment}
-                        isAuthenticated={isAuthenticated}
-                        handleNavigateToTickets={() => navigate('/dashboard/my-tickets')}
-                        handleExploreMoreEvents={() => navigate('/events')}
-                        handleRetryPayment={() => {
-                            setCurrentStep(1); // Go back to Step 1 (Order & Payment)
-                            setIsProcessingPayment(false);
-                            setPaymentStatusMessage('');
-                        }}
+                        customerEmail={customerInfo.email}
+                        orderId={orderId}
+                        generatedTickets={generatedTickets}
+                        authenticatedUser={authenticatedUser}
+                        handleTryAgain={handleTryAgain}
+                        eventDetails={eventDetails}
+                        onGoToMyTickets={() => { clearCart(); navigate('/user-dashboard/my-tickets'); }}
+                        onExploreMoreEvents={() => { clearCart(); navigate('/events'); }}
                     />
                 )}
             </div>
 
-            {/* Global Loading/Error Modal (for initial data load or unexpected errors) */}
-            { (loadingInitialData && !order) || initialDataError ? (
+            { /* Show processing modal when payment is in progress and not yet completed/failed */ }
+            {(isProcessingPayment && paymentStatus !== 'completed' && paymentStatus !== 'failed') && (
+                <Modal isOpen={true} onClose={() => { /* Modal is not dismissible by user */ }}>
+                    <ProcessingModalContent paymentStatusMessage={paymentStatusMessage} onInitiatePayment={paymentMethod === 'stkPush' ? handleInitiatePayment : handleManualPaymentConfirmation} />
+                </Modal>
+            )}
+
+            { (initialDataError && !isProcessingPayment) ? (
                 <Modal isOpen={true} onClose={() => { /* Don't close if loading */ }}>
                     <h3 className={styles.modalTitle}>{initialDataError ? 'Error' : 'Loading'}</h3>
                     <p className={styles.modalMessage}>{initialDataError || 'Loading checkout details...'}</p>
-                    {loadingInitialData && !initialDataError && (
-                        <div className={styles.spinner}></div>
-                    )}
                     {initialDataError && (
                         <button onClick={() => { setInitialDataError(null); navigate('/events'); }} className={commonFormStyles.secondaryButton}>
                             Go to Events

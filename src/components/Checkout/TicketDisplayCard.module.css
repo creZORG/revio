@@ -1,0 +1,236 @@
+/* src/components/Checkout/TicketDisplayCard.module.css */
+
+/* All styles directly defined, no composes */
+.ticketCard {
+    /* Copied from CheckoutPage.module.css .sectionCard */
+    background-color: var(--naks-surface);
+    padding: 25px; /* Slightly less padding for individual tickets */
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 30px; /* Default margin */
+    border: 1px solid var(--naks-border-light);
+    transition: all 0.3s ease;
+
+    /* Specific TicketDisplayCard styles */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px; /* Space between elements within the card */
+    position: relative; /* For the banner */
+    overflow: hidden; /* Ensure banner doesn't overflow */
+}
+body.dark-mode .ticketCard {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.ticketCard.noBanner {
+    padding-top: 25px; /* Adjust padding if no banner image */
+}
+
+.ticketBanner {
+    width: calc(100% + 50px); /* Extend beyond padding for full width */
+    height: 80px; /* Fixed height for banner */
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: -25px; /* Adjust for padding */
+    filter: brightness(0.7); /* Dim banner slightly for text readability */
+    z-index: 0; /* Behind content */
+}
+
+.ticketContent {
+    position: relative; /* Bring content above banner */
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--naks-text-primary); /* Use primary text color for content */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for readability */
+}
+.ticketContent > h4, .ticketContent > p {
+    color: var(--naks-text-primary); /* Ensure all text is primary unless specified */
+}
+.ticketContent .ticketName, .ticketContent .eventName {
+    color: var(--naks-text-primary); /* Override for these specific elements if needed */
+}
+body.dark-mode .ticketContent > h4, body.dark-mode .ticketContent > p {
+    color: var(--naks-text-primary);
+}
+
+
+.ticketName {
+    font-size: var(--font-size-h3); /* Larger ticket name */
+    font-weight: var(--font-weight-bold);
+    color: var(--naks-primary-dark); /* Use dark primary for ticket name */
+    margin-top: 10px; /* Space from top edge */
+}
+
+.eventName {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-text-primary); /* Event name in primary text color */
+}
+
+.qrCodeContainer {
+    background-color: var(--naks-surface); /* White background for QR code */
+    padding: 15px; /* Padding around QR code */
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-md); /* Prominent shadow for QR code */
+    margin: 20px 0; /* Space above/below */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* Don't shrink */
+}
+body.dark-mode .qrCodeContainer {
+    background-color: var(--naks-gray-100); /* Lighter gray in dark mode */
+}
+
+.qrCodeImage {
+    width: 180px; /* Larger QR code */
+    height: 180px;
+    display: block;
+}
+
+.ticketDetailsList {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--naks-text-primary); /* Primary text color for details */
+}
+
+.ticketDetailsList p {
+    margin: 0;
+    font-size: var(--font-size-medium);
+}
+
+.ticketDetailsList strong {
+    color: var(--naks-primary-dark); /* Dark primary for labels */
+    font-weight: var(--font-weight-semibold);
+    margin-right: 5px;
+}
+
+.ticketIdText {
+    font-family: monospace;
+    font-size: var(--font-size-small);
+    color: var(--naks-text-light); /* Lighter gray for ID */
+    word-break: break-all;
+    margin-top: 10px;
+}
+
+.supportInfo {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    color: var(--naks-text-secondary);
+    font-size: var(--font-size-small);
+    line-height: 1.4;
+}
+
+.supportEmail, .supportPhone {
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-primary-dark);
+}
+
+.socialIconsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.socialIcon {
+    color: var(--naks-primary); /* Primary color for social icons */
+    font-size: 24px;
+    transition: transform 0.2s ease;
+}
+.socialIcon:hover {
+    transform: scale(1.2);
+}
+
+.warningText {
+    font-size: var(--font-size-x-small);
+    color: var(--naks-error); /* Red for warning */
+    margin-top: 20px;
+    font-style: italic;
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    padding: 10px;
+    border: 1px solid var(--naks-error);
+    border-radius: var(--border-radius-small);
+    background-color: var(--naks-error-light);
+}
+
+.ticketActionButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.ticketActionButton {
+    /* Base button styles copied from Common/Button.module.css */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    border: none; /* Ensure no default button border */
+}
+.ticketActionButton.print {
+    background-color: var(--naks-info);
+    color: var(--naks-white);
+}
+.ticketActionButton.print:hover {
+    background-color: var(--naks-info-dark);
+}
+.ticketActionButton.download {
+    background-color: var(--naks-gray-300);
+    color: var(--naks-text-primary);
+}
+.ticketActionButton.download:hover {
+    background-color: var(--naks-gray-400);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ticketCard {
+        padding: 20px;
+        gap: 10px;
+    }
+    .ticketBanner {
+        height: 60px;
+    }
+    .ticketName {
+        font-size: var(--font-size-h4);
+    }
+    .eventName {
+        font-size: var(--font-size-medium);
+    }
+    .qrCodeImage {
+        width: 120px;
+        height: 120px;
+    }
+    .ticketDetailsList p {
+        font-size: var(--font-size-small);
+    }
+    .ticketActionButton {
+        font-size: var(--font-size-x-small);
+        padding: 8px 12px;
+    }
+    .socialIcon {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,30 @@
+/* src/components/Styles/Glassmorphism.module.css */
+
+.glassCard {
+    background: rgba(255, 255, 255, 0.15); /* Slightly transparent white for light mode */
+    border-radius: var(--border-radius-large); /* Use existing border-radius variable */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Soft, deep shadow */
+    backdrop-filter: blur(10px); /* The core glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    overflow: hidden; /* Important for content within */
+    transition: all 0.3s ease-in-out; /* Smooth transitions for hover effects */
+}
+
+.glassCard:hover {
+    transform: translateY(-5px); /* Subtle lift on hover */
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45); /* Enhanced shadow on hover */
+}
+
+/* Dark mode adjustments for glassmorphism - slightly darker transparency */
+/* Assuming a class like '.dark-mode' or similar is applied to a parent element or body */
+.glassCard.dark { /* This class will be applied by the component if dark mode is active */
+    background: rgba(0, 0, 0, 0.2); /* Darker transparent black */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border in dark mode */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+}
+
+.glassCard.dark:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.8);
+}

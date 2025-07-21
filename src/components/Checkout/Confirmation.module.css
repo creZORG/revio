@@ -1,103 +1,226 @@
 /* src/components/Checkout/Confirmation.module.css */
 
-.sectionCard {
-    background-color: var(--color-background-card);
-    padding: 25px;
-    border-radius: var(--border-radius-large);
-    box-shadow: var(--shadow-elevation-small);
-    margin-bottom: 25px;
-    border: 1px solid var(--color-border);
-}
-
-.sectionHeader {
-    font-size: var(--font-size-h3);
-    color: var(--color-primary);
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: var(--font-weight-semibold);
-}
-
-.confirmationContent {
+/* All styles directly defined, no composes */
+.confirmationContainer {
+    max-width: 90%; /* Occupy more width of the page */
+    width: 100%; /* Ensure it takes full width within max-width */
+    margin: 40px auto; /* Center it with margin */
+    padding: 40px; /* More generous padding */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 25px;
+
+    /* Base card styles (copied from CheckoutPage.module.css sectionCard) */
+    background-color: var(--naks-surface); /* Default background */
+    border-radius: var(--border-radius); /* Use theme border-radius */
+    box-shadow: var(--shadow-md); /* Use theme shadow */
+    margin-bottom: 30px; /* Default margin */
+    border: 1px solid var(--naks-border-light); /* Default border */
+
+    /* Glassmorphism overrides */
+    background-color: rgba(255, 255, 255, 0.1); /* Lighter transparent background */
+    backdrop-filter: blur(15px); /* Stronger blur */
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.4); /* More prominent glass border */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3); /* Deeper shadow */
 }
 
-/* Icons for different statuses */
-.confirmationIconSuccess {
-    width: 80px;
-    height: 80px;
-    color: var(--color-success); /* Green for success */
+body.dark-mode .confirmationContainer {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+}
+
+.confirmationContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between major sections */
+}
+
+.iconSuccess {
+    width: 100px;
+    height: 100px;
+    color: var(--naks-success); /* Green from theme */
     margin-bottom: 20px;
+    animation: bounceIn 0.8s ease-out;
 }
 
-.confirmationIconInfo {
-    width: 80px;
-    height: 80px;
-    color: var(--color-info); /* Blue for info/pending */
+.iconInfo {
+    width: 100px;
+    height: 100px;
+    color: var(--naks-info); /* Blue from theme */
     margin-bottom: 20px;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.confirmationIconFailed {
-    width: 80px;
-    height: 80px;
-    color: var(--color-error); /* Red for failure */
+.messageHeader {
+    font-size: var(--font-size-h2); /* Larger header */
+    font-weight: var(--font-weight-bold);
+    color: var(--naks-text-primary); /* Primary text color */
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.messageSubHeader {
+    font-size: var(--font-size-large);
+    color: var(--naks-text-secondary);
     margin-bottom: 20px;
-}
-
-
-/* Messages for different statuses */
-.confirmationMessageSuccess {
-    font-size: var(--font-size-h4);
-    color: var(--color-success-dark);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: 10px;
-}
-
-.confirmationMessageInfo {
-    font-size: var(--font-size-h4);
-    color: var(--color-info-dark);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: 10px;
-}
-
-.confirmationMessageFailed {
-    font-size: var(--font-size-h4);
-    color: var(--color-error-dark);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: 10px;
-}
-
-.confirmationSubMessage {
-    font-size: var(--font-size-medium);
-    color: var(--color-text-secondary);
-    margin-bottom: 20px; /* Space below main message */
     line-height: 1.5;
 }
 
-.smallText {
-    font-size: var(--font-size-small);
-    color: var(--color-text-secondary);
-    margin-top: 10px;
+.orderSummarySection {
+    /* All styles directly defined, no composes */
+    background-color: var(--naks-surface); /* Default background */
+    border-radius: var(--border-radius); /* Use theme border-radius */
+    box-shadow: var(--shadow-md); /* Use theme shadow */
+    padding: 30px;
+    margin-bottom: 30px; /* Default margin */
+    border: 1px solid var(--naks-border-light); /* Default border */
+
+    /* Glassmorphism overrides */
+    background-color: rgba(255, 255, 255, 0.15); /* More transparent for inner card */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-md);
+    padding: 30px;
+    width: 100%;
+    max-width: 700px; /* Limit width for readability */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.dashboardLink {
-    color: var(--naks-primary);
-    text-decoration: underline;
-    font-weight: 500;
-    cursor: pointer;
+body.dark-mode .orderSummarySection {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
-.dashboardLink:hover {
+
+.orderSummaryHeader {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-primary-dark); /* Dark primary for header */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.orderDetailItem {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    font-size: var(--font-size-medium);
+    color: var(--naks-text-primary);
+}
+.orderDetailItem:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.orderDetailLabel {
+    font-weight: var(--font-weight-medium);
+    color: var(--naks-text-secondary);
+}
+
+.orderDetailValue {
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-text-primary);
+}
+
+.ticketGridSection {
+    width: 100%;
+}
+
+.ticketGridHeader {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
     color: var(--naks-primary-dark);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.ticketsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 30px; /* Space between ticket cards */
+    justify-content: center;
+    width: 100%;
+}
+
+.actionButtonsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.actionButton {
+    /* Base button styles applied directly in JSX */
+    padding: 15px 25px; /* Larger padding */
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-medium);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.actionButton.primary {
+    background: linear-gradient(45deg, var(--naks-secondary), var(--naks-primary)); /* Pink-orange gradient */
+    border: none;
+}
+.actionButton.primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(var(--naks-primary-rgb), 0.4);
+}
+
+.actionButton.secondary {
+    background-color: var(--naks-gray-200);
+    color: var(--naks-text-primary);
+    border: 1px solid var(--naks-gray-300);
+}
+.actionButton.secondary:hover {
+    background-color: var(--naks-gray-300);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .actionButton.secondary {
+    background-color: var(--naks-gray-300);
+    color: var(--naks-text-primary);
+    border-color: var(--naks-gray-400);
+}
+body.dark-mode .actionButton.secondary:hover {
+    background-color: var(--naks-gray-400);
 }
 
 
-/* Spinner for loading states */
+/* Animations */
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.1); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
 .spinner {
-    border: 4px solid var(--color-neutral-200);
-    border-top: 4px solid var(--naks-primary); /* Pink spinner */
+    border: 4px solid var(--naks-gray-200);
+    border-top: 4px solid var(--naks-primary);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -110,91 +233,33 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Navigation Buttons */
-.navigationButtons {
-    display: flex;
-    justify-content: center; /* Center buttons */
-    margin-top: 30px;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-}
-
-.navigationButtons button {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 20px;
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-bold);
-    border-radius: var(--border-radius-medium);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .sectionCard {
+    .confirmationContainer {
+        padding: 20px;
+        margin: 20px auto;
+    }
+    .messageHeader {
+        font-size: var(--font-size-h3);
+    }
+    .messageSubHeader {
+        font-size: var(--font-size-medium);
+    }
+    .orderSummarySection {
         padding: 20px;
     }
-    .sectionHeader {
+    .orderSummaryHeader, .ticketGridHeader {
         font-size: var(--font-size-h4);
     }
-    .confirmationIconSuccess, .confirmationIconInfo, .confirmationIconFailed {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 15px;
+    .ticketsGrid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 20px;
     }
-    .confirmationMessageSuccess, .confirmationMessageInfo, .confirmationMessageFailed {
-        font-size: var(--font-size-h5);
+    .actionButtonsContainer {
+        max-width: 100%;
     }
-    .confirmationSubMessage, .smallText {
-        font-size: var(--font-size-small);
-    }
-    .spinner {
-        width: 30px;
-        height: 30px;
-        margin: 15px auto;
-    }
-    .navigationButtons {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .navigationButtons button {
-        width: 100%;
-        padding: 10px 15px;
-        font-size: var(--font-size-small);
-    }
-}
-
-@media (max-width: 480px) {
-    .sectionCard {
-        padding: 15px;
-    }
-    .sectionHeader {
-        font-size: var(--font-size-large);
-    }
-    .confirmationIconSuccess, .confirmationIconInfo, .confirmationIconFailed {
-        width: 50px;
-        height: 50px;
-        margin-bottom: 10px;
-    }
-    .confirmationMessageSuccess, .confirmationMessageInfo, .confirmationMessageFailed {
-        font-size: var(--font-size-large);
-    }
-    .confirmationSubMessage, .smallText {
-        font-size: var(--font-size-x-small);
-    }
-    .spinner {
-        width: 25px;
-        height: 25px;
-        margin: 10px auto;
-    }
-    .navigationButtons button {
-        padding: 8px 12px;
-        font-size: var(--font-size-x-small);
+    .actionButton {
+        font-size: var(--font-size-medium);
+        padding: 12px 20px;
     }
 }

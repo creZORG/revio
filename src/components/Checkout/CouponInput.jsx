@@ -1,55 +1,49 @@
-// src/components/Checkout/CouponInput.jsx
 import React from 'react';
-import TextInput from '../Common/TextInput.jsx';
-import Button from '../Common/Button.jsx';
-import styles from './CouponInput.module.css';
-// Removed: import { TagIcon } from '@heroicons/react/24/outline'; // No longer needed if icon is removed from TextInput
+import styles from './CouponInput.module.css'; // Import the CSS Module
 
-/**
- * Renders the coupon input section.
- * Allows users to enter and apply coupon codes, and displays applied coupon information.
- *
- * @param {object} props - The component props.
- * @param {string} props.couponCode - The current value of the coupon input.
- * @param {function} props.setCouponCode - Setter for the coupon code.
- * @param {object} props.appliedCoupon - Object containing details of the applied coupon (e.g., { code: 'NAKSYETU10', discount: 0.10 }).
- * @param {function} props.handleApplyCoupon - Function to call when the "Apply Coupon" button is clicked.
- * @param {number} props.totalAmount - The current total amount of the order, including any discounts.
- */
-const CouponInput = ({ couponCode, setCouponCode, appliedCoupon, handleApplyCoupon, totalAmount }) => {
+const CouponInput = ({
+    couponCode,
+    setCouponCode,
+    applyCoupon,
+    appliedCoupon,
+    isApplying, // Indicates if a process (like payment initiation) is ongoing
+}) => {
+    const handleInputChange = (e) => {
+        setCouponCode(e.target.value);
+    };
+
+    const handleApplyClick = () => {
+        applyCoupon(couponCode);
+    };
+
     return (
-        <section className={styles.sectionCard}>
-            <h2 className={styles.sectionHeader}>Do you have a coupon?</h2>
-            <p className={styles.couponIntro}>Enter your coupon code below to apply discounts to your order.</p>
-
-            <div className={styles.couponInputContainer}>
-                <TextInput
-                    label="Coupon Code"
-                    id="couponCode"
-                    name="couponCode"
+        <div className={styles.couponContainer}>
+            <div className={styles.inputWrapper}>
+                <input
                     type="text"
                     value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    placeholder="e.g., NAKSYETU10"
-                    // Removed: icon={TagIcon} // Removed the icon prop
+                    onChange={handleInputChange}
+                    placeholder="Enter coupon code"
+                    className={`${styles.inputField} dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200`}
+                    disabled={isApplying || appliedCoupon} // Disable if applying or a coupon is already applied
+                    aria-label="Coupon code input"
                 />
-                <Button onClick={handleApplyCoupon} className={styles.applyCouponButton}>
-                    Apply Coupon
-                </Button>
+                <button
+                    onClick={handleApplyClick}
+                    className={styles.applyButton}
+                    disabled={isApplying || !couponCode.trim() || !!appliedCoupon} // Disable if applying, input is empty, or coupon already applied
+                >
+                    {isApplying ? 'Applying...' : (appliedCoupon ? 'Applied' : 'Apply')}
+                </button>
             </div>
-
             {appliedCoupon && (
-                <div className={styles.appliedCouponInfo}>
-                    <p>Coupon <strong>{appliedCoupon.code}</strong> applied!</p>
-                    <p>Discount: <strong>{(appliedCoupon.discount * 100).toFixed(0)}% OFF</strong></p>
-                </div>
+                <p className={`${styles.feedbackMessage} ${styles.successMessage}`}>
+                    Coupon '{appliedCoupon.code}' applied! You get KES {appliedCoupon.discount.toFixed(2)} off.
+                </p>
             )}
-
-            <div className={styles.totalSection}>
-                <span>Total Amount:</span>
-                <span className={styles.totalAmount}>KES {totalAmount.toFixed(2)}</span>
-            </div>
-        </section>
+            {/* You might add an error message display here if applyCoupon provides detailed error */}
+            {/* For example: {!appliedCoupon && couponCode.trim() && !isApplying && <p className={`${styles.feedbackMessage} ${styles.errorMessage}`}>Invalid or expired coupon code.</p>} */}
+        </div>
     );
 };
 

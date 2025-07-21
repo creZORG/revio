@@ -1,68 +1,57 @@
-// src/pages/Organizer/Dashboard/OrganizerSidebar.jsx
 import React from 'react';
-import styles from './MobileNav.module.css';
-import {
-  XMarkIcon,
-  HomeIcon,
-  CalendarDaysIcon,
-  PlusCircleIcon,
-  GiftIcon,
-  WalletIcon,
-  UsersIcon,
-  Cog6ToothIcon
-} from '@heroicons/react/24/outline'; // Importing specific icons
+import { NavLink } from 'react-router-dom'; // Using NavLink for active styling
+import { FaTachometerAlt, FaCalendarAlt, FaChartBar, FaTags, FaWallet, FaCog } from 'react-icons/fa'; // Icons for navigation
+import styles from '../OrganizerDashboardPage.module.css'; // Use main dashboard styles
 
-const OrganizerSidebar = ({ activeTab, setActiveTab, isSidebarOpen, toggleSidebar }) => {
-  const navItems = [
-    { id: 'overview', name: 'Overview', icon: HomeIcon },
-    { id: 'my-events', name: 'My Events', icon: CalendarDaysIcon },
-    { id: 'create-event', name: 'Create Event', icon: PlusCircleIcon },
-    { id: 'promotions', name: 'Promotions', icon: GiftIcon },
-    { id: 'wallet', name: 'Wallet', icon: WalletIcon },
-    { id: 'rsvp-applicants', name: 'RSVP Applicants', icon: UsersIcon, disabled: true },
-    { id: 'my-profile', name: 'My Profile', icon: Cog6ToothIcon },
-  ];
-
-  return (
-    <>
-      {/* Mobile Sidebar Overlay (rendered first for z-index below sidebar) */}
-      {isSidebarOpen && (
-        <div className={styles.overlay} onClick={toggleSidebar}></div>
-      )}
-
-      {/* Sidebar */}
-      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
-        <div className={styles.sidebarHeader}>
-          {/* Naks Yetu Title with Gradient */}
-          <h2 className={styles.naksYetuTitle}>
-            Naks Yetu
-          </h2>
-          {/* Close button for mobile sidebar */}
-          <button onClick={toggleSidebar} className={styles.closeButton}>
-            <XMarkIcon className="h-6 w-6 text-white" />
-          </button>
-        </div>
-        <nav className={styles.navList}>
-          {navItems.map((item) => {
-            const Icon = item.icon; // Component for the icon
-            return (
-              <button
-                key={item.id}
-                className={`${styles.navItem} ${activeTab === item.id ? styles.activeNavItem : ''} ${item.disabled ? styles.disabledNavItem : ''}`}
-                onClick={() => !item.disabled && setActiveTab(item.id)}
-                disabled={item.disabled}
-              >
-                <Icon className={styles.navItemIcon} />
-                <span className={styles.navItemText}>
-                  {item.name}
-                </span>
-              </button>
-            );
-          })}
-        </nav>
-      </aside>
-    </>
-  );
+const OrganizerSidebar = ({ activeTab, setActiveTab }) => {
+    return (
+        <aside className={styles.sidebar}>
+            <nav className={styles.sidebarNav}>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'overview' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('overview')}
+                >
+                    <FaTachometerAlt className={styles.navIcon} />
+                    Overview
+                </button>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'my-events' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('my-events')}
+                >
+                    <FaCalendarAlt className={styles.navIcon} />
+                    My Events
+                </button>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'sales-analytics' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('sales-analytics')}
+                >
+                    <FaChartBar className={styles.navIcon} />
+                    Sales Analytics
+                </button>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'promotions' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('promotions')}
+                >
+                    <FaTags className={styles.navIcon} />
+                    Promotions
+                </button>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'wallet' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('wallet')}
+                >
+                    <FaWallet className={styles.navIcon} />
+                    Wallet
+                </button>
+                <button
+                    className={`${styles.navItem} ${activeTab === 'profile-settings' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('profile-settings')}
+                >
+                    <FaCog className={styles.navIcon} />
+                    Profile Settings
+                </button>
+            </nav>
+        </aside>
+    );
 };
 
 export default OrganizerSidebar;

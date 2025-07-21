@@ -1,98 +1,93 @@
-// /src/services/cartService.js
-import { db } from '../utils/firebaseConfig'; 
-import { doc, getDoc, setDoc, onSnapshot, updateDoc, deleteField } from 'firebase/firestore'; 
+// src/services/cartService.jsx
+import { db } from '../utils/firebaseConfig.js';
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, deleteField } from 'firebase/firestore';
 
-const APP_ID = "1:147113503727:web:1d9d351c30399b2970241a"; 
+const FIREBASE_PROJECT_ID = "naksyetu-9c648"; // Ensure this matches your project ID
+const USERS_COLLECTION_PATH = `artifacts/${FIREBASE_PROJECT_ID}/users`;
 
+/**
+ * Gets a reference to the user's cart document.
+ * @param {string} userId The ID of the user.
+ * @returns {DocumentReference}
+ */
 const getUserCartRef = (userId) => {
-    if (!userId) {
-        // Log a warning or throw a more specific error in a real app
-        console.warn("cartService: getUserCartRef called with null or undefined userId.");
-        // Return a dummy ref or throw to prevent crashes if user ID is genuinely missing
-        return doc(db, "temp_carts/invalid_user"); 
-    }
-    return doc(db, `artifacts/${APP_ID}/users/${userId}/privateData/cart`);
+  return doc(db, USERS_COLLECTION_PATH, userId, 'private', 'cart');
 };
 
+/**
+ * Fetches the current state of the user's cart.
+ * @param {string} userId The ID of the user.
+ * @returns {Promise<Object>} The cart items object.
+ */
 export const getCart = async (userId) => {
-    try {
-        const cartRef = getUserCartRef(userId);
-        const docSnap = await getDoc(cartRef);
-        if (docSnap.exists()) {
-            return docSnap.data().items || {}; 
-        }
-        return {}; 
-    } catch (error) {
-        console.error("cartService: Error getting cart:", error);
-        return {};
-    }
+  try {
+    const cartDocRef = getUserCartRef(userId);
+    const cartSnapshot = await getDoc(cartDocRef);
+    const cartData = cartSnapshot.exists() ? cartSnapshot.data() : {};
+    console.log(`cartService: Fetched cart for user ${userId}:`, cartData);
+    return cartData;
+  } catch (error) {
+    console.error(`cartService: Error fetching cart for user ${userId}:`, error);
+    return {};
+  }
 };
 
-export const updateCart = async (userId, cartItems) => {
-    try {
-        const cartRef = getUserCartRef(userId);
-        const cartDataToSet = {};
-        let hasItems = false;
-
-        for (const ticketId in cartItems) {
-            if (cartItems[ticketId] > 0) {
-                cartDataToSet[ticketId] = cartItems[ticketId];
-                hasItems = true;
-            } else {
-                // If quantity is 0, explicitly delete the field in Firestore
-                cartDataToSet[ticketId] = deleteField();
-            }
-        }
-
-        if (hasItems) {
-            await setDoc(cartRef, { items: cartDataToSet, updatedAt: new Date() }, { merge: true });
-        } else {
-            // If no items are left after update, clear the 'items' map entirely
-            await setDoc(cartRef, { items: {}, updatedAt: new Date() });
-        }
-        
-        // CORRECTED: Use console.log for JavaScript, remove PHP syntax
-        console.log(`cartService: Cart updated in Firestore for user: ${userId}. Items: ${JSON.stringify(cartItems)}`); 
-        return true;
-    } catch (error) {
-        console.error("cartService: Error updating cart:", error);
-        throw new Error("Failed to update cart in database.");
-    }
+/**
+ * Updates the user's cart with new items or quantities.
+ * This function expects an object where keys are ticket IDs and values are the full ticket objects
+ * (e.g., { ticketId: { id: 'ticket_1', name: 'Entry', quantity: 2, price: 1000, ... } }).
+ * To remove an item, set its value to `deleteField()`.
+ * @param {string} userId The ID of the user.
+ * @param {Object} itemsToUpdate An object containing ticket IDs and their updated data or `deleteField()`.
+ * @returns {Promise<void>}
+ */
+export const updateCart = async (userId, itemsToUpdate) => {
+  try {
+    const cartDocRef = getUserCartRef(userId);
+    // Use setDoc with merge: true for partial updates or adding new fields (tickets)
+    // This ensures existing fields (other tickets) are not overwritten
+    await setDoc(cartDocRef, itemsToUpdate, { merge: true });
+    console.log(`cartService: Cart updated in Firestore for user: ${userId}. Items:`, JSON.stringify(itemsToUpdate));
+  } catch (error) {
+    console.error(`cartService: Error updating cart for user ${userId}:`, error);
+    throw error; // Re-throw to allow calling component to handle
+  }
 };
 
+/**
+ * Clears the user's entire cart.
+ * @param {string} userId The ID of the user.
+ * @returns {Promise<void>}
+ */
 export const clearUserCart = async (userId) => {
-    try {
-        const cartRef = getUserCartRef(userId);
-        // Set 'items' to an empty map to explicitly clear it
-        await setDoc(cartRef, { items: {}, updatedAt: new Date() }); 
-        // CORRECTED: Use console.log for JavaScript
-        console.log(`cartService: Cart cleared in Firestore for user: ${userId}`); 
-        return true;
-    } catch (error) {
-        console.error("cartService: Error clearing cart:", error);
-        if (error.code === 'not-found') {
-            return true; 
-        }
-        throw new Error("Failed to clear cart in database.");
-    }
+  try {
+    const cartDocRef = getUserCartRef(userId);
+    // Setting an empty object with merge: false effectively overwrites the entire document
+    // or you can use deleteDoc if you want to remove the document entirely.
+    // For clearing, `setDoc({}, { merge: false })` is safer than `deleteDoc` if you want to keep the document existing.
+    await setDoc(cartDocRef, {}); // Overwrite with an empty object to clear
+    console.log(`cartService: Cart cleared for user: ${userId}`);
+  } catch (error) {
+    console.error(`cartService: Error clearing cart for user ${userId}:`, error);
+    throw error;
+  }
 };
 
+/**
+ * Subscribes to real-time updates for the user's cart.
+ * @param {string} userId The ID of the user.
+ * @param {function(Object): void} callback Callback function to receive cart updates.
+ * @returns {function(): void} An unsubscribe function.
+ */
 export const subscribeToCart = (userId, callback) => {
-    if (!userId) {
-        console.warn("cartService: Cannot subscribe to cart: userId is null or undefined.");
-        // Return no-op unsubscribe function
-        return () => {}; 
-    }
-    const cartRef = getUserCartRef(userId);
-    const unsubscribe = onSnapshot(cartRef, (docSnap) => {
-        if (docSnap.exists()) {
-            callback(docSnap.data().items || {});
-        } else {
-            callback({}); 
-        }
-    }, (error) => {
-        console.error("cartService: Error subscribing to cart:", error);
-        // Optionally notify user about real-time sync issues
-    });
-    return unsubscribe; 
+  const cartDocRef = getUserCartRef(userId);
+  const unsubscribe = onSnapshot(cartDocRef, (snapshot) => {
+    const cartData = snapshot.exists() ? snapshot.data() : {};
+    console.log(`cartService: Real-time cart update received for user ${userId}:`, cartData);
+    callback(cartData);
+  }, (error) => {
+    console.error(`cartService: Error subscribing to cart for user ${userId}:`, error);
+    callback({}); // Pass empty cart on error
+  });
+  return unsubscribe;
 };

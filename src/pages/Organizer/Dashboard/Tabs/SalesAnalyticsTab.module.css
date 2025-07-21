@@ -1,0 +1,114 @@
+/* src/pages/Organizer/Dashboard/Tabs/SalesAnalyticsTab.module.css */
+
+.analyticsContainer {
+    padding: 30px;
+    background-color: var(--naks-bg-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    color: var(--naks-text-primary);
+    font-family: 'Inter', sans-serif;
+}
+body.dark-mode .analyticsContainer {
+    background-color: var(--bg-dark);
+}
+
+.header {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    color: var(--naks-primary-dark);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.loadingMessage, .errorMessage, .noDataMessage {
+    text-align: center;
+    font-size: var(--font-size-large);
+    color: var(--naks-text-secondary);
+    padding: 50px 0;
+}
+.errorMessage {
+    color: var(--naks-error);
+}
+
+.chartSection, .topSellingSection, .demographicsSection {
+    background-color: var(--naks-surface);
+    padding: 25px;
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--naks-border-light);
+    margin-bottom: 30px;
+}
+body.dark-mode .chartSection, body.dark-mode .topSellingSection, body.dark-mode .demographicsSection {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.sectionTitle {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-text-primary);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Chart specific styles (for recharts tooltip/legend if needed) */
+/* These are often inline in recharts, but can be overridden here */
+
+.topSellingList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.topSellingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--naks-gray-100);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--naks-gray-200);
+}
+body.dark-mode .topSellingItem {
+    background-color: var(--naks-gray-200);
+    border-color: var(--naks-gray-300);
+}
+
+.topSellingName {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--naks-text-primary);
+    flex-grow: 1;
+}
+
+.topSellingRevenue {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-semibold);
+    color: var(--naks-primary);
+    margin-left: 15px;
+}
+
+.topSellingTickets {
+    font-size: var(--font-size-small);
+    color: var(--naks-text-secondary);
+    margin-left: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .analyticsContainer {
+        padding: 20px;
+    }
+    .header, .sectionTitle {
+        font-size: var(--font-size-h3);
+    }
+    .chartSection, .topSellingSection, .demographicsSection {
+        padding: 15px;
+    }
+    .topSellingName, .topSellingRevenue, .topSellingTickets {
+        font-size: var(--font-size-small);
+    }
+}

@@ -1,0 +1,187 @@
+/* src/pages/Organizer/OrganizerDashboardPage.module.css */
+
+.dashboardContainer {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--naks-bg-light); /* Light background */
+    color: var(--naks-text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+body.dark-mode .dashboardContainer {
+    background-color: var(--bg-dark); /* Dark background */
+    color: var(--naks-text-primary);
+}
+
+.loadingMessage {
+    text-align: center;
+    font-size: var(--font-size-large);
+    color: var(--naks-text-secondary);
+    padding: 50px 0;
+    width: 100%;
+}
+
+/* --- Top Bar (for mobile and desktop header) --- */
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: var(--naks-surface); /* White surface */
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--naks-border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%; /* Occupy full width */
+}
+body.dark-mode .topBar {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.topBarTitle {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+    color: var(--naks-text-primary);
+}
+
+.topBarActions {
+    display: flex;
+    gap: 15px;
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    color: var(--naks-gray-400); /* Subtle icon color */
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.actionButton:hover {
+    color: var(--naks-primary); /* Pink accent on hover */
+}
+body.dark-mode .actionButton {
+    color: var(--naks-gray-100);
+}
+body.dark-mode .actionButton:hover {
+    color: var(--naks-secondary);
+}
+
+
+/* --- Main Content Wrapper (Sidebar + Main Content Area) --- */
+.mainContentWrapper {
+    display: flex;
+    flex-grow: 1; /* Take remaining height */
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 250px; /* Fixed width for desktop sidebar */
+    background-color: var(--naks-surface); /* White surface */
+    box-shadow: var(--shadow-md);
+    border-right: 1px solid var(--naks-border-light);
+    padding: 20px 0;
+    flex-shrink: 0; /* Prevent shrinking */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+body.dark-mode .sidebar {
+    background-color: var(--naks-surface);
+    border-color: var(--naks-border-medium);
+}
+
+.sidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Compact spacing between nav items */
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px; /* Generous padding for click area */
+    font-size: var(--font-size-medium);
+    color: var(--naks-text-secondary);
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.navItem:hover {
+    background-color: var(--naks-gray-100); /* Light gray hover */
+    color: var(--naks-text-primary);
+}
+body.dark-mode .navItem:hover {
+    background-color: var(--naks-gray-200);
+}
+
+.navItem.active {
+    background: linear-gradient(90deg, var(--naks-secondary) 0%, rgba(255,255,255,0) 100%); /* Pink gradient highlight */
+    color: var(--naks-text-primary);
+    font-weight: var(--font-weight-semibold);
+    border-left: 4px solid var(--naks-secondary); /* Stronger left border */
+    padding-left: 21px; /* Adjust padding due to border */
+}
+body.dark-mode .navItem.active {
+    background: linear-gradient(90deg, var(--naks-secondary) 0%, rgba(0,0,0,0) 100%);
+    border-left-color: var(--naks-secondary);
+}
+
+.navIcon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: var(--naks-gray-400); /* Subtle icon color */
+    transition: color 0.2s ease;
+}
+.navItem.active .navIcon {
+    color: var(--naks-secondary); /* Pink accent for active icon */
+}
+body.dark-mode .navIcon {
+    color: var(--naks-gray-100);
+}
+body.dark-mode .navItem.active .navIcon {
+    color: var(--naks-secondary);
+}
+
+
+/* --- Main Content Area --- */
+.mainContent {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: var(--naks-bg-light); /* Light background for content area */
+    transition: background-color 0.3s;
+}
+body.dark-mode .mainContent {
+    background-color: var(--bg-dark);
+}
+
+/* --- Responsive Adjustments --- */
+@media (min-width: 768px) { /* Desktop styles */
+    .topBar {
+        display: none; /* Hide top bar on desktop */
+    }
+    .mainContentWrapper {
+        margin-top: 0; /* No margin from top bar */
+    }
+}
+
+@media (max-width: 767px) { /* Mobile styles */
+    .dashboardContainer {
+        flex-direction: column; /* Stack top bar and main content */
+    }
+    .sidebar {
+        display: none; /* Hide sidebar on mobile by default */
+    }
+    .mainContentWrapper {
+        flex-direction: column;
+        width: 100%;
+        padding-top: 0; /* Adjust padding */
+    }
+    .mainContent {
+        padding: 20px; /* More compact padding for mobile */
+    }
+}
